@@ -1,0 +1,18 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+/* Navbar */
+.ct_top-menu-item {
+  @apply 
+  cursor-pointer py-1 hover:text-black relative after:absolute after:bottom-0 after:left-0 after:bg-mathcha after:h-1 after:w-0 hover:after:w-full after:transition-all after:ease-in-out after:duration-300;
+}
+.ct_icon {
+  @apply 
+  w-5 h-5 inline-block;
+}
+.ct_badge {
+  @apply 
+  text-xs text-center rounded-full px-1.5;
+}
