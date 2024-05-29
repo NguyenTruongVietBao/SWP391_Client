@@ -1,14 +1,17 @@
 /** @type {import('tailwindcss').Config} */
-module.exports = {
-  content: [
-    "./src/**/*.{js,jsx,ts,tsx}",
-  ],
-  theme: {
-    extend: {
-      colors: {
-        'mathcha': '#E8FFD9'
-      }
+
+module.exports={
+    content: [
+      "./src/**/*.{js,jsx,ts,tsx}",
+    ],
+    theme: {
+      extend: {
+        colors: {
+          'mathcha': '#E8FFD9',
+          'mathcha-green': '#59B379',
+          'mathcha-orange': '#FFC067'
+        }
+      },
     },
-  },
-  plugins: [],
-}
+    plugins: [],
+  }

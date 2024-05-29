@@ -6,58 +6,38 @@ import classNames from "classnames";
 import Footer from "../Footer/Footer";
 import Navbar from "../Header/Navbar";
 import Banner from "./Banner";
-const Navitem = ["explore", "resources", "creators"];
-const discover = [
-  {
-    price: "$278m",
-    field: "Trading Volume",
-  },
-  {
-    price: "300k",
-    field: "Art Work",
-  },
-  {
-    price: "1.8m",
-    field: "Total Users",
-  },
-];
+
 const dropsection = [
   {
     img: "/assets/nft/dropimg1.png",
-    title1: "Knight Sword",
+    title1: "Lớp 1",
     subtitle: "@santosox",
     eth: "3 ETH",
   },
   {
-    img: "/assets/nft/dropimg2.png",
-    title1: "Daft Punk",
-    subtitle: "@punix",
-    eth: "2.34 ETH",
+    img: "/assets/nft/dropimg6.png",
+    title1: "Lớp 2",
+    subtitle: "@kunai",
+    eth: "80 ETH",
   },
   {
     img: "/assets/nft/dropimg3.png",
-    title1: "Skater Girl",
+    title1: "Lớp 3",
     subtitle: "@inoino",
     eth: "10.5 ETH",
   },
   {
     img: "/assets/nft/dropimg4.png",
-    title1: "Grogu",
+    title1: "Lớp 4",
     subtitle: "@alexio",
     eth: "20.5 ETH",
   },
   {
     img: "/assets/nft/dropimg5.png",
-    title1: "Foodies",
+    title1: "Lớp 5",
     subtitle: "@animola",
     eth: "7 ETH",
-  },
-  {
-    img: "/assets/nft/dropimg6.png",
-    title1: "Friends Kawaii",
-    subtitle: "@kunai",
-    eth: "80 ETH",
-  },
+  }
 ];
 const sellNft = [
   {
@@ -130,6 +110,7 @@ const topcreator1 = [
     ethe: "53808",
   },
 ];
+
 const Button = ({
   size,
   className,
@@ -149,7 +130,7 @@ const Button = ({
         "flex justify-center items-center",
         size ? size : "",
         color ? color : "bg-blue",
-        font ? font : "font-[500] tracking-tight text-[#ECDBBA]"
+        font ? font : "font-[500] tracking-tight text-[#000]"
       )}
       {...props}
     >
@@ -167,29 +148,23 @@ const Button = ({
     </button>
   );
 };
-const Body = () => {
-  
+
+export default function Body() {
   return (
-    <div className="flex text-[#ECDBBA] flex-col items-center w-full overflow-x-hidden ">
-      {/* Header + Banner */}
-      <div className="bg-[#ECDBBA] gap-[43px] pb-10 flex flex-col items-center justify-center max-h-fit lg:h-[780px] w-full">
-          {/* Header */}
-        <Navbar/>
-          {/* Banner */}
-        <Banner/>
-      </div>
-      {/* Body */}
-      <div className="bg-[#191919] w-full flex flex-col  gap-[123px] justify-center items-center ">
+    <div className="flex text-[#000] flex-col items-center w-full overflow-x-hidden ">
+      <div className="bg-mathcha w-full flex flex-col  gap-[123px] justify-center items-center ">
+        
         <div className="px-[4%]">
           <div className="max-w-[1180px] flex flex-col gap-[50px]  lg:gap-[123px]">
-            <div className="mt-[30px] md:mt-[93px] flex flex-col gap-[50px] max-w-[1180px] justify-center w-full">
+            {/* Danh sách lớp học */}
+            <div className="mt-[30px] md:mt-[93px] flex flex-col gap-[50px] max-w-[1180px] justify-center w-full ">
               <div className=" flex justify-between items-center">
-                <div className="font-Cormorant  text-[30px] md:text-5xl font-bold leading-[58px] tracking-[0.03em]">
-                  Hot Drops
+                <div className="font-Cormorant  text-[30px] md:text-5xl font-bold leading-[58px] tracking-[0.03em] mb-3">
+                  Danh sách lớp học
                 </div>
                 <Button
-                  label="View More"
-                  className="text-xs  font-semibold text-center px-[30px] md:max-w-[166px] md:w-full py-3 border-2 border-[#ECDBBA] rounded-[68px] hover:text-white duration-1000 hover:bg-[#2D4263] hover:border-none"
+                  label="Xem thêm"
+                  className="text-xl font-bold text-center px-[30px] md:max-w-[166px] md:w-full py-3 border-2 border-mathcha-orange rounded-[68px] hover:text-white duration-1000 hover:bg-[#2D4263] hover:border-white"
                 />
               </div>
               <div>
@@ -198,7 +173,7 @@ const Body = () => {
                     return (
                       <div
                         key={index}
-                        className="hover:scale-105 duration-1000 cursor-pointer flex flex-col justify-center items-center md:max-w-[300px] lg:max-w-[338px] w-full py-[4%] lg:py-[2%] max-h-fit xl:h-[410px] border-4 border-[#ECDBBA] rounded-[28px]"
+                        className="hover:scale-105 duration-1000 cursor-pointer flex flex-col justify-center items-center md:max-w-[300px] lg:max-w-[338px] w-full py-[4%] lg:py-[2%] max-h-fit xl:h-[410px] border-4 border-mathcha-orange rounded-[28px]"
                       >
                         <div className="px-[4%] w-full flex flex-col gap-4 ">
                           <img
@@ -209,23 +184,22 @@ const Body = () => {
                           <div className="w-full flex flex-col gap-4">
                             <div className="flex flex-col gap-4">
                               <div className="flex flex-col gap-[3px] items-start justify-start">
-                                <div className="font-Cormorant text-[28px]  font-bold leading-[34px]">
+                                <div className="from-neutral-950 text-[28px] font-bold leading-[34px]">
                                   {data.title1}
                                 </div>
-                                <div className="font-montserrat text-sm font-normal leading-[17px]">
-                                  {data.subtitle}
-                                </div>
                               </div>
-                              <div className="flex justify-between">
-                                <div className="font-montserrat text-sm font-bold leading-[17px]">
-                                  3 ETH
+                              <div className="flex justify-between items-center">
+                                <div className="font-montserrat text-xl font-bold leading-[17px] text-red-500 ">
+                                  500.000 VNĐ
                                 </div>
-                                <div>
-                                  <img
-                                    src={"/assets/nft/dropicon.svg"}
-                                    alt="ethe"
-                                  />
-                                </div>
+                                <Button
+                                  label={"Mua ngay"}
+                                  className={"bg-mathcha-orange font-bold text-center border-2 rounded-[68px] p-2 hover:bg-black hover:border-white hover:text-white"}
+                                  startIcon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                                </svg>
+                                }
+                                />                                   
                               </div>
                             </div>
                           </div>
@@ -236,16 +210,46 @@ const Body = () => {
                 </div>
               </div>
             </div>
+            {/* Danh sách lớp học 2 */}
+            <div className="mt-[30px] md:mt-[93px] flex flex-col gap-[50px] max-w-[1180px] justify-center w-full ">
+              <div className=" flex justify-between items-center">
+                <div className="font-Cormorant  text-[30px] md:text-5xl font-bold leading-[58px] tracking-[0.03em] mb-3">
+                  Danh sách lớp học
+                </div>
+                <Button
+                  label="Xem thêm"
+                  className="text-xl font-bold text-center px-[30px] md:max-w-[166px] md:w-full py-3 border-2 border-mathcha-orange rounded-[68px] hover:text-white duration-1000 hover:bg-[#2D4263] hover:border-white"
+                />
+              </div>
+              <div>
+                <div className="items-center justify-center flex flex-wrap gap-[30px] md:gap-[50px] lg:gap-[83px] md:px-0 px-[3%] w-full ">
+                      <div
+                        className="hover:scale-105 duration-1000 cursor-pointer flex flex-col justify-center items-center md:max-w-[300px] lg:max-w-[338px] w-full py-[4%] lg:py-[2%] max-h-fit xl:h-[410px] border-4 border-mathcha-orange rounded-[28px]"
+                      >
+                        <div className="px-[4%] w-full flex flex-col gap-4 ">
+                          <img
+                            src={"/assets/Class/class-1.png"}
+                            alt="dropmainback"
+                            className="rounded-3xl w-full "
+                          />
+                     
+                        </div>
+                      </div>
+               
+                </div>
+              </div>
+            </div>
+            {/* Học sinh tiêu biểu */}
             <div className="items-center flex flex-col gap-9 ">
               <div className="font-Cormorant text-[25px] sm:text-5xl  font-bold leading-[58px]">
-                Create and sell your NFTs
+                Học sinh tiêu biểu
               </div>
               <div className="cursor-pointer flex flex-wrap justify-center gap-10  xl:gap-[84px] px-[4%] lg:px-0">
                 {sellNft.map((data, index) => {
                   return (
                     <div
                       key={index}
-                      className="px-[17px] hover:border-1 duration-1000 hover:shadow-pupularCard hover:shadow-white w-full lg:max-w-[280px] xl:max-w-[337px] pb-[2%] max-h-fit bg-[#2D4263] border-[4px] border-[#2D4263] rounded-[28px] flex flex-col gap-2.5 items-center justify-center"
+                      className="px-[17px] hover:border-1 duration-1000 hover:shadow-pupularCard hover:shadow-white w-full lg:max-w-[280px] xl:max-w-[337px] pb-[2%] max-h-fit bg-mathcha-orange border-[4px] border-black rounded-[28px] flex flex-col gap-2.5 items-center justify-center"
                     >
                       <div className="max-w-[200px]">
                         <img src={data.img} alt="img" />
@@ -263,9 +267,11 @@ const Body = () => {
             </div>
           </div>
         </div>
+
+        {/* Feedback */}
         <div className="flex flex-col items-center gap-[70px]">
-          <div className="text-5xl font-Cormorant leading-[58px] font-bol">
-            Top Creators
+          <div className="text-5xl font-Cormorant leading-[58px] font-bold">
+            Feedback
           </div>
           <div className="flex  ">
             <Marquee gradient={false} pauseOnHover>
@@ -342,15 +348,21 @@ const Body = () => {
             </Marquee>
           </div>
         </div>
+
+        {/* Liên hệ  */}
         <div className="px-3 w-full">
-          <div className="mb-[70px] flex gap-9 flex-col justify-center items-center w-full bg-[#C84B31] max-h-fit py-[3%] rounded-3xl">
-            <div className="flex flex-col text-center items-center gap-[15px]">
-              <div className="text-[20px] sm:text-[34px] lg:text-5xl leading-[58px] font-bold font-Cormorant tracking-[0.03em]">
-                Join Our Community
+          <div className="mb-[70px] flex gap-9 flex-col justify-center w-full items-center bg-mathcha-orange max-h-fit py-[3%] rounded-3xl">
+            <div className="flex flex-col text-center items-center gap-[15px] w-9/12 ">
+              <div className="text-[20px] sm:text-[34px] lg:text-5xl leading-[58px] font-bold font-Cormorant tracking-[0.03em] ">
+                Liên hệ
               </div>
-              <div className="font-montserrat tracking-[0.03em] px-2 text-[15px] md:text-xl leading-[24px] font-normal">
-                Meet the company team, artist and collector for platform
-                updates, announcements, and more ...
+              <div class="mb-4">
+              <label for="feeling" class="font-semibold mb-2 block">How do you feel today(Optional)</label>
+                  <input type="text" id="feeling" placeholder="Sleepy" class="border rounded px-4 py-2 w-full"/>
+              </div>
+              <div class="mb-6">
+                  <label for="support" class="font-semibold mb-2 block">What can we do for you? (Optional)</label>
+                  <textarea id="support" placeholder="Due to the health issues I've been going through, I am lacking sleep and feeling exhausted." class="border rounded px-4 py-2 w-full h-24"></textarea>
               </div>
             </div>
             <Button
@@ -361,10 +373,8 @@ const Body = () => {
             />
           </div>
         </div>
+
       </div>
-      {/* Footer */}
-      {/* <Footer/> */}
     </div>
   );
-};
-export default Body;
+}

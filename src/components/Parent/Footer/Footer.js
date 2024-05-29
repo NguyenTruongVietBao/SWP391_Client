@@ -1,5 +1,6 @@
 import React from 'react'
 import classNames from "classnames";
+import { Link } from 'react-router-dom';
 
 const Button = ({
   size,
@@ -40,16 +41,13 @@ const Button = ({
 };
 export default function Footer() {
   return (
-    <div className="flex text-[#ECDBBA] flex-col items-center w-full overflow-x-hidden ">
-            <div className=" bg-[#191919] w-full flex justify-center pb-[30px] flex-col items-center gap-[50px]">
-        <div className=" border-[5px] border-[#ECDBBA] w-full "></div>
+    <div className="flex text-mathcha-orange flex-col items-center w-full overflow-x-hidden ">
+      <div className=" bg-[#191919] w-full flex justify-center pb-[30px] flex-col items-center gap-[50px]">
+        <div className=" border-[5px] border-mathcha-orange w-full "></div>
         <div className="px-[5%] xl:px-0   flex-col flex gap-5 md:flex-row  md:gap-5  md:flex items-start justify-between max-w-[1180px] w-full">
           <div className="text-start -mt-[25px] max-w-[464px] w-full flex flex-col  gap-[11px] ">
-            <a
-              href="#"
-              className="text-[64px] leading-[78px] font-extrabold font-montserratAlter "
-            >
-              ED
+            <a href="/" className="text-[64px] leading-[78px] font-extrabold font-montserratAlter">
+              <img src='/assets/Logo-removebg.png' width={150}/>
             </a>
             <div className="text-base leading-5 tracking-[0.03em] font-normal font-montserrat ">
               The largest 3D NFT marketplace. Authentic and truly unique digital
