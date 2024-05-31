@@ -18,6 +18,7 @@ module.exports={
         },
         backgroundImage: {
           'login-wallpaper': "url('/assets/wallpaper-login.png')",
+          'admin-wallpaper': "url('/assets/admin-wallpaper.png')"
         }
       },
     },

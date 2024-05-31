@@ -9,7 +9,7 @@ export default function DetailCourse() {
           {/* Left*/}
           <div className="ml-10">
             <div className="text-base leading-7 text-gray-700">
-              <p className="text-base font-semibold leading-7 text-yellow-400">
+              <p className="text-base font-semibold leading-7 text-mathcha-orange">
                 Chi tiết khóa học
               </p>
               <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
@@ -17,19 +17,17 @@ export default function DetailCourse() {
               </h1>
               <div className="max-w-xl">
                 <p className="mt-6">
-                  - <strong>Chương trình toán lớp 1</strong> thường tập trung vào những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm quen với các số và phép tính đơn giản
+                  <strong> - Mô tả khóa học: </strong> thường tập trung vào những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm quen với các số và phép tính đơn giản
                 </p>
-                <p className="mt-6 ml-5">
-                Chương trình toán lớp 1 thường tập trung vào những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm quen với các số và phép tính đơn giản
-
+                <p className="my-5">
+                  <strong> - Yêu cầu khóa học: </strong> Chương trình toán lớp 1 thường tập trung vào những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm quen với các số và phép tính đơn giản
                 </p>
-                <p className="mt-6 ml-5">
-                Chương trình toán lớp 1 thường tập trung vào những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm quen với các số và phép tính đơn giản
-  
+                <p>
+                  <strong> - Kết quả đạt được: </strong>Chương trình toán lớp 1 thường tập trung vào những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm quen với các số và phép tính đơn giản
                 </p>
               </div>
             </div>
-            <dl className="mt-10 grid grid-cols-3 gap-8 border-t border-gray-900/10 pt-10">
+            <dl className="mt-5 grid grid-cols-2 gap-8 border-t border-gray-900/10 pt-10">
               <div>
                 <dt className="text-sm font-semibold leading-6 text-gray-600">
                   Đội ngũ giảng viên
@@ -49,6 +47,14 @@ export default function DetailCourse() {
               <div>
                 <dt className="text-sm font-semibold leading-6 text-gray-600">
                   Chất lượng đào tạo
+                </dt>
+                <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
+                  $1.5K
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm font-semibold leading-6 text-gray-600">
+                Thời gian học tập
                 </dt>
                 <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
                   $1.5K
@@ -74,7 +80,6 @@ export default function DetailCourse() {
                 />
                 <div className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#E8FFD9] to-[rgba(153,229,219,1)]" />
               </div>
-              {/* <img className="relative rounded-2xl" src='/assets/Logo.png' alt='course'/> */}
               <iframe
                 className="relative rounded-2xl"
                 width="420"
@@ -85,12 +90,13 @@ export default function DetailCourse() {
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                 allowfullscreen
               ></iframe>
+
               <figure className="relative isolate">
                 <svg
                   viewBox="0 0 162 128"
                   fill="none"
                   aria-hidden="true"
-                  className="absolute -left-2 -top-4 -z-10 h-32 stroke-white/20"
+                  className="absolute -left-2 -top-4 -z-10 h-32 stroke-white/50"
                 >
                   <path
                     id="0ef284b8-28c2-426e-9442-8655d393522e"
@@ -98,17 +104,10 @@ export default function DetailCourse() {
                   />
                   <use href="#0ef284b8-28c2-426e-9442-8655d393522e" x={86} />
                 </svg>
-
-                <section
-                  aria-labelledby="sale-heading"
-                  class="relative mx-auto flex max-w-7xl flex-col my-7 items-center text-start sm:px-6 lg:px-8"
-                >
-                  <div class="mx-auto max-w-2xl lg:max-w-none">
-                    <h2
-                      id="sale-heading"
-                      class="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl"
-                    >
-                      love 1
+                <section className="max-w-7xl flex-col my-10 mx-2">
+                  <div className="text-left max-w-2xl lg:max-w-none">
+                    <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
+                      Toán lớp 1
                     </h2>
                   </div>
                 </section>

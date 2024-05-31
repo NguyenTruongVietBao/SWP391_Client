@@ -1,11 +1,10 @@
 import React from 'react'
-import BodyPage from '../pages/Admin/BodyPage'
-function AdminRouter() {
+import AdminPage from '../pages/Admin/AdminPage'
+
+export default function AdminRouter() {
   return (
     <div>
-        <BodyPage/>
+      <AdminPage/>
     </div>
   )
 }
-
-export default AdminRouter
