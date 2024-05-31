@@ -1,10 +1,10 @@
 import React from 'react'
-import Body from '../components/Manager/Body'
+import ManagerPage from '../pages/Manager/ManagerPage'
 
 function ManagerRouter() {
   return (
     <div>
-        <Body/>
+      <ManagerPage/>
     </div>
   )
 }

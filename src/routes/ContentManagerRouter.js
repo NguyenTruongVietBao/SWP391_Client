@@ -1,11 +1,10 @@
 import React from 'react'
-import Body from '../components/ContentManager/Body'
-import Body2 from '../components/ContentManager/Body2'
+import ContentManagerPage from '../pages/ContentManager/ContentManagerPage'
 
 export default function ContentManagerRouter() {
   return (
     <div>
-        <Body2/>
+        <ContentManagerPage/>
     </div>
   )
 }

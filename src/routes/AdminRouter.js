@@ -1,9 +1,9 @@
 import React from 'react'
-import Body from '../components/Admin/Body'
+import BodyPage from '../pages/Admin/BodyPage'
 function AdminRouter() {
   return (
     <div>
-        <Body/>
+        <BodyPage/>
     </div>
   )
 }

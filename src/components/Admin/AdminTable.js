@@ -363,7 +363,7 @@ const products = [
   }
 ];
 
-const Body = () => {
+const AdminTable = () => {
   const [searchValue, setSearchValue] = useState();
   const [productList, setProductList] = useState(products);
   const [rowsLimit] = useState(5);
@@ -847,4 +847,4 @@ const Body = () => {
     </div>
   );
 };
-export default Body;
+export default AdminTable;

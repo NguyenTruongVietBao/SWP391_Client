@@ -211,7 +211,7 @@ export default function Body() {
               </div>
             </div>
             {/* Danh sách lớp học 2 */}
-            <div className="mt-[30px] md:mt-[93px] flex flex-col gap-[50px] max-w-[1180px] justify-center w-full ">
+            {/* <div className="mt-[30px] md:mt-[93px] flex flex-col gap-[50px] max-w-[1180px] justify-center w-full ">
               <div className=" flex justify-between items-center">
                 <div className="font-Cormorant  text-[30px] md:text-5xl font-bold leading-[58px] tracking-[0.03em] mb-3">
                   Danh sách lớp học
@@ -238,7 +238,7 @@ export default function Body() {
                
                 </div>
               </div>
-            </div>
+            </div> */}
             {/* Học sinh tiêu biểu */}
             <div className="items-center flex flex-col gap-9 ">
               <div className="font-Cormorant text-[25px] sm:text-5xl  font-bold leading-[58px]">
@@ -350,25 +350,23 @@ export default function Body() {
         </div>
 
         {/* Liên hệ  */}
-        <div className="px-3 w-full">
+        <div className="px-3 w-156">
           <div className="mb-[70px] flex gap-9 flex-col justify-center w-full items-center bg-mathcha-orange max-h-fit py-[3%] rounded-3xl">
-            <div className="flex flex-col text-center items-center gap-[15px] w-9/12 ">
+            <div className="flex flex-col text-center items-center gap-[15px] w-full">
               <div className="text-[20px] sm:text-[34px] lg:text-5xl leading-[58px] font-bold font-Cormorant tracking-[0.03em] ">
                 Liên hệ
               </div>
-              <div class="mb-4">
-              <label for="feeling" class="font-semibold mb-2 block">How do you feel today(Optional)</label>
-                  <input type="text" id="feeling" placeholder="Sleepy" class="border rounded px-4 py-2 w-full"/>
-              </div>
-              <div class="mb-6">
-                  <label for="support" class="font-semibold mb-2 block">What can we do for you? (Optional)</label>
-                  <textarea id="support" placeholder="Due to the health issues I've been going through, I am lacking sleep and feeling exhausted." class="border rounded px-4 py-2 w-full h-24"></textarea>
+              <div className="w-2/3 items-center  ">
+                <span>123</span>
+                <input className="w-full" />
+                <span>123</span>
+                <input className="w-full" />
               </div>
             </div>
             <Button
-              startIcon={<img src={"/assets/nft/discord.svg"} alt="discord" />}
-              label="Launch Discord"
-              color="bg-[#2D4263]"
+              // startIcon={<img src={"/assets/Logo.png"} alt="discord" />}
+              label="Gửi"
+              color="bg-[#fff]"
               className="max-w-[252px] text-lg w-full py-3 md:py-3 flex gap-2.5 justify-center items-center rounded-[68px]"
             />
           </div>

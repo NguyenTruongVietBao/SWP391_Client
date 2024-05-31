@@ -39,3 +39,12 @@ npm i classnames
 
 ## Pagination
 npm i react-paginate
+
+
+
+## Structure folder ReactJS
+/component : chứa các Component có thể Reusable
+/service : các khai báo về endpoint API
+/pages : chứa các React component đại diện cho các trang riêng lẻ trong ứng dụng.
+/configs : các config về kết nối http, axios, .v.v.
+/assets: nơi chứa những file css, hình ảnh, icons, fonts và các file media khác 

@@ -1,12 +1,13 @@
-import Image from "next/image";
+// import Image from "next/image";
 import React from "react";
+import { Link } from "react-router-dom";
 const Error404 = () => {
   return (
     <div className="h-[100vh] bg-white items-center flex justify-center px-5 lg:px-0">
       <div className="w-[415px] text-center flex-col items-center justify-center mx-auto gap-[100px]">
         <div className="mb-8 md:mb-[56px]">
           <div className="max-w-[312px] w-full h-[160px] relative flex justify-center items-center mx-auto">
-            <Image src="/assets/components/404/404-green.png" fill alt="404" />
+            {/* <Image src="/assets/components/404/404-green.png" fill alt="404" /> */}
           </div>
         </div>
         <div>
@@ -23,7 +24,7 @@ const Error404 = () => {
           </div>
           <div>
             <button className="bg-[#8AC732] text-white font-sans max-w-[146px] w-full h-[48px] rounded-[100px] font-medium text-sm">
-              Home Page
+              <Link to={"/home"}>Home Page</Link>
             </button>
           </div>
         </div>
