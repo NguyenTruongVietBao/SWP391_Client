@@ -1,11 +1,9 @@
-import React, { useState } from "react";
-import Marquee from "react-fast-marquee";
-import "@fontsource/cormorant";
-import "@fontsource/montserrat";
+import React, { useState, useEffect} from "react";
+import {useNavigate} from 'react-router-dom'
 import classNames from "classnames";
-import Footer from "../Footer/Footer";
-import Navbar from "../Header/Navbar";
-import Banner from "./Banner";
+import Marquee from "react-fast-marquee";
+import {listCourses} from '../../../services/CourseService/CourseService'
+import "@fontsource/montserrat";
 
 const dropsection = [
   {
@@ -150,6 +148,19 @@ const Button = ({
 };
 
 export default function Body() {
+  const [courses, setCourses] = useState([]);
+  const navigator = useNavigate();
+    // fetch data
+    useEffect(()=>{
+      getCourseAll()
+    })
+    //Get All Course
+    function getCourseAll(){
+      listCourses().then((res)=>{
+        setCourses(res.data)
+      })
+    }
+    
   return (
     <div className="flex text-[#000] flex-col items-center w-full overflow-x-hidden ">
       <div className="bg-mathcha w-full flex flex-col  gap-[123px] justify-center items-center ">
@@ -169,7 +180,7 @@ export default function Body() {
               </div>
               <div>
                 <div className="items-center justify-center flex flex-wrap gap-[30px] md:gap-[50px] lg:gap-[83px] md:px-0 px-[3%] w-full ">
-                  {dropsection.map((data, index) => {
+                  {courses.map((data, index) => {
                     return (
                       <div
                         key={index}
@@ -177,7 +188,7 @@ export default function Body() {
                       >
                         <div className="px-[4%] w-full flex flex-col gap-4 ">
                           <img
-                            src={data.img}
+                            src={`/assets/Class/${data.image}`}
                             alt="dropmainback"
                             className="rounded-3xl w-full "
                           />
@@ -185,12 +196,12 @@ export default function Body() {
                             <div className="flex flex-col gap-4">
                               <div className="flex flex-col gap-[3px] items-start justify-start">
                                 <div className="from-neutral-950 text-[28px] font-bold leading-[34px]">
-                                  {data.title1}
+                                  {data.title}
                                 </div>
                               </div>
                               <div className="flex justify-between items-center">
                                 <div className="font-montserrat text-xl font-bold leading-[17px] text-red-500 ">
-                                  500.000 VNĐ
+                                  {data.discount_price}.000 VNĐ
                                 </div>
                                 <Button
                                   label={"Mua ngay"}

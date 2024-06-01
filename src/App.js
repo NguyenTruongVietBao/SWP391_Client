@@ -5,6 +5,7 @@ import ParentRouter from "./routes/ParentRouter";
 import AdminRouter from "./routes/AdminRouter";
 import { Link,Route, Routes   } from "react-router-dom";
 import Error404 from "./components/Error404/Error404";
+import AdminTable from "./components/Admin/AdminTable";
 
 function App() {
   return (
@@ -24,6 +25,7 @@ function App() {
         <Route path="/content-manager" element={<ContentManagerRouter/>}></Route>
         <Route path="/manager" element={<ManagerRouter/>}></Route>
         <Route path="/student" element={<StudentRouter/>}></Route>
+        <Route path="/123123" element={<AdminTable/>}></Route>
       </Routes>
 
     </div>

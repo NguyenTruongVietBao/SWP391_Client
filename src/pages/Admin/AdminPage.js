@@ -54,7 +54,7 @@ export default function AdminPage() {
             <div id="content" className="bg-white/10 col-span-9 rounded-lg p-6">
                 {/* Manage Course */}
                 <div id="manage-course">
-                    <h1 className="font-bold py-4 uppercase">Manage Course</h1>
+                    <h1 className="font-bold pb-4 uppercase">Manage Course</h1>
                     <div className="overflow-x-scroll">
                     <table className="w-full whitespace-nowrap">
                         <thead className="bg-black/60">
