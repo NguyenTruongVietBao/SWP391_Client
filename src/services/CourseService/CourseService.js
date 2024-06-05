@@ -11,3 +11,5 @@ export const getCourseById = (course_id) => axios.get(REST_API_URL + '/' + cours
 export const updateCourse = (course_id, course) => axios.put(REST_API_URL + '/' + course_id, course)
 
 export const deleteCourse = (course_id) => axios.delete(REST_API_URL + '/' + course_id)
+
+export const getChapterById = (course_id) => axios.get(REST_API_URL + '/' + course_id)

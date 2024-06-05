@@ -12,7 +12,6 @@ import Footer from '../components/Parent/Footer/Footer';
 import DetailCourse from '../pages/Parent/Course/DetailCourse';
 import Login from '../pages/Login/Login';
 import Register from '../pages/Login/Register';
-
 export default function ParentRouter() {
   return (
     <>
@@ -23,7 +22,7 @@ export default function ParentRouter() {
           <Route path='about' element={<About/>}></Route>
           <Route path='discount' element={<Discount/>}></Route>
           <Route path='qanda' element={<QandA/>}></Route>   
-          <Route path="/course-detail" element={<DetailCourse/>}></Route> 
+          <Route path="/course/:id" element={<DetailCourse/>}></Route> 
           <Route path="/login" element={<Login/>}></Route> 
           <Route path="/register" element={<Register/>}></Route> 
       </Routes>

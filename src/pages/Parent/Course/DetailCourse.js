@@ -1,32 +1,154 @@
-import { Button } from '@headlessui/react';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import './DetailCourse.css'
+import { useParams } from 'react-router-dom';
+import { getCourseById } from '../../../services/CourseService/CourseService';
+import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import { ChevronDownIcon } from '@heroicons/react/20/solid'
+
 export default function DetailCourse() {
+  const [course, setCourse] = useState(null)
+  const {id} = useParams();
+
+  useEffect(()=>{
+    getCourseById(id)
+      .then((res)=>{setCourse(res.data)})
+      .catch (console.log("error"))
+  }, [id])
+  
+  useEffect(()=>{
+    getCourseById(id)
+      .then((res)=>{setCourse(res.data)})
+      .catch (console.log("error"))
+  }, [id])
+  
+  if (!course) {
+    return <div>Loading...</div>; // Show a loading message while course data is being fetched
+  }
+
   return (
     <div className="bg-white pb-10 mt-5">
       <div className="mx-auto max-w-7xl px-6 lg:px-8">
         <div className="mx-auto grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-16 sm:gap-y-24 lg:mx-0 lg:max-w-none lg:grid-cols-2">
           {/* Left*/}
           <div className="ml-10">
+            {/* Description */}
             <div className="text-base leading-7 text-gray-700">
               <p className="text-base font-semibold leading-7 text-mathcha-orange">
                 Chi tiết khóa học
               </p>
               <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Toán lớp 1
+                Đến với {course.title}
               </h1>
               <div className="max-w-xl">
                 <p className="mt-6">
-                  <strong> - Mô tả khóa học: </strong> thường tập trung vào những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm quen với các số và phép tính đơn giản
+                  <strong> - Mô tả khóa học: </strong> thường tập trung vào
+                  những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm
+                  quen với các số và phép tính đơn giản
                 </p>
                 <p className="my-5">
-                  <strong> - Yêu cầu khóa học: </strong> Chương trình toán lớp 1 thường tập trung vào những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm quen với các số và phép tính đơn giản
+                  <strong> - Yêu cầu khóa học: </strong> Chương trình toán lớp 1
+                  thường tập trung vào những khái niệm cơ bản và nền tảng nhất,
+                  giúp học sinh làm quen với các số và phép tính đơn giản
                 </p>
                 <p>
-                  <strong> - Kết quả đạt được: </strong>Chương trình toán lớp 1 thường tập trung vào những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm quen với các số và phép tính đơn giản
+                  <strong> - Kết quả đạt được: </strong>Chương trình toán lớp 1
+                  thường tập trung vào những khái niệm cơ bản và nền tảng nhất,
+                  giúp học sinh làm quen với các số và phép tính đơn giản
                 </p>
               </div>
             </div>
+            {/* Accordions */}
+            <div className="pt-6 w-full">
+              <div className="mx-auto w-full max-w-lg divide-y divide-black/5 rounded-xl bg-black/5">
+                <Disclosure as="div" className="p-6" defaultOpen={true}>
+                  <DisclosureButton className="group flex w-full items-center justify-between">
+                    <span className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
+                      - What is your refund policy?
+                    </span>
+                    <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
+                  </DisclosureButton>
+                  <DisclosurePanel className="mt-2 text-sm/5 text-black/50">
+                    <Disclosure as="div" className="px-6 mb-2">
+                      <DisclosureButton className="group flex w-full items-center justify-between">
+                        <span className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
+                          + Do you offer technical support?
+                        </span>
+                        <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
+                      </DisclosureButton>
+                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
+                          * Bai 1
+                      </DisclosurePanel>
+                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
+                          *  Bai 3
+                      </DisclosurePanel>
+                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
+                      * Bai 3
+                      </DisclosurePanel>
+                    </Disclosure>
+                    <Disclosure as="div" className="px-6 mb-2">
+                      <DisclosureButton className="group flex w-full items-center justify-between">
+                        <span className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
+                          + Do you offer technical support?
+                        </span>
+                        <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
+                      </DisclosureButton>
+                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
+                          * Bai 1
+                      </DisclosurePanel>
+                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
+                          *  Bai 3
+                      </DisclosurePanel>
+                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
+                      * Bai 3
+                      </DisclosurePanel>
+                    </Disclosure>
+                  </DisclosurePanel>
+                  <DisclosureButton className="group flex w-full items-center justify-between">
+                    <span className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
+                      - What is your refund policy?
+                    </span>
+                    <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
+                  </DisclosureButton>
+                  <DisclosurePanel className="mt-2 text-sm/5 text-black/50">
+                    <Disclosure as="div" className="px-6 mb-2">
+                      <DisclosureButton className="group flex w-full items-center justify-between">
+                        <span className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
+                          + Do you offer technical support?
+                        </span>
+                        <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
+                      </DisclosureButton>
+                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
+                          * Bai 1
+                      </DisclosurePanel>
+                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
+                          *  Bai 3
+                      </DisclosurePanel>
+                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
+                      * Bai 3
+                      </DisclosurePanel>
+                    </Disclosure>
+                    <Disclosure as="div" className="px-6 mb-2">
+                      <DisclosureButton className="group flex w-full items-center justify-between">
+                        <span className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
+                          + Do you offer technical support?
+                        </span>
+                        <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
+                      </DisclosureButton>
+                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
+                          * Bai 1
+                      </DisclosurePanel>
+                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
+                          *  Bai 3
+                      </DisclosurePanel>
+                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
+                      * Bai 3
+                      </DisclosurePanel>
+                    </Disclosure>
+                  </DisclosurePanel>
+                </Disclosure>               
+              </div>
+            </div>
+            {/* More info */}
             <dl className="mt-5 grid grid-cols-2 gap-8 border-t border-gray-900/10 pt-10">
               <div>
                 <dt className="text-sm font-semibold leading-6 text-gray-600">
@@ -54,7 +176,7 @@ export default function DetailCourse() {
               </div>
               <div>
                 <dt className="text-sm font-semibold leading-6 text-gray-600">
-                Thời gian học tập
+                  Thời gian học tập
                 </dt>
                 <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
                   $1.5K
@@ -62,7 +184,6 @@ export default function DetailCourse() {
               </div>
             </dl>
           </div>
-          
           {/* Right */}
           <div className="ml-20 lg:pr-4 mt-3">
             <div className="relative overflow-hidden rounded-3xl px-6 pb-9 pt-10 shadow-2xl sm:px-12 lg:max-w-lg lg:px-8 lg:pb-8 xl:px-10 xl:pb-10">
@@ -107,19 +228,23 @@ export default function DetailCourse() {
                 <section className="max-w-7xl flex-col my-10 mx-2">
                   <div className="text-left max-w-2xl lg:max-w-none">
                     <h2 className="text-4xl font-bold tracking-tight text-gray-900 sm:text-5xl lg:text-6xl">
-                      Toán lớp 1
+                      {course.title}
                     </h2>
                   </div>
                 </section>
                 <div className="flex items-center justify-center gap-32 ">
-                    <div>
-                      <h1 className='line-through text-lg '>1.000.000 VND</h1>                  
-                      <h1 className='text-2xl font-bold text-red-500'>500.000 VND</h1>
-                    </div> 
-                    <div>
-                      <button className="button-30">Học ngay</button>
-                    </div>                 
-                </div>              
+                  <div>
+                    <h1 className="line-through text-lg ">
+                      {course.original_price}.000 VND
+                    </h1>
+                    <h1 className="text-2xl font-bold text-red-500">
+                      {course.discount_price}.000 VND
+                    </h1>
+                  </div>
+                  <div>
+                    <button className="button-30">Học ngay</button>
+                  </div>
+                </div>
               </figure>
             </div>
           </div>

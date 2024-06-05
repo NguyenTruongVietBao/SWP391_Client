@@ -1,11 +1,11 @@
 import React from 'react'
-import ContentManger2 from '../../components/ContentManager/ContentManger2'
+import ContentManger from '../../components/ContentManager/ContentManger'
 
 export default function ContentManagerPage() {
   return (
     <div>
         <div>
-            <ContentManger2/>
+            <ContentManger/>
         </div>
     </div>
   )

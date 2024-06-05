@@ -1,42 +1,11 @@
 import React, { useState, useEffect} from "react";
-import {useNavigate} from 'react-router-dom'
+import {Link} from 'react-router-dom'
 import classNames from "classnames";
 import Marquee from "react-fast-marquee";
-import {listCourses} from '../../../services/CourseService/CourseService'
+import { listCourses} from '../../../services/CourseService/CourseService'
 import "@fontsource/montserrat";
 
-const dropsection = [
-  {
-    img: "/assets/nft/dropimg1.png",
-    title1: "Lớp 1",
-    subtitle: "@santosox",
-    eth: "3 ETH",
-  },
-  {
-    img: "/assets/nft/dropimg6.png",
-    title1: "Lớp 2",
-    subtitle: "@kunai",
-    eth: "80 ETH",
-  },
-  {
-    img: "/assets/nft/dropimg3.png",
-    title1: "Lớp 3",
-    subtitle: "@inoino",
-    eth: "10.5 ETH",
-  },
-  {
-    img: "/assets/nft/dropimg4.png",
-    title1: "Lớp 4",
-    subtitle: "@alexio",
-    eth: "20.5 ETH",
-  },
-  {
-    img: "/assets/nft/dropimg5.png",
-    title1: "Lớp 5",
-    subtitle: "@animola",
-    eth: "7 ETH",
-  }
-];
+
 const sellNft = [
   {
     img: "/assets/nft/paint.png",
@@ -149,7 +118,7 @@ const Button = ({
 
 export default function Body() {
   const [courses, setCourses] = useState([]);
-  const navigator = useNavigate();
+
     // fetch data
     useEffect(()=>{
       getCourseAll()
@@ -160,6 +129,7 @@ export default function Body() {
         setCourses(res.data)
       })
     }
+
     
   return (
     <div className="flex text-[#000] flex-col items-center w-full overflow-x-hidden ">
@@ -186,10 +156,10 @@ export default function Body() {
                         key={index}
                         className="hover:scale-105 duration-1000 cursor-pointer flex flex-col justify-center items-center md:max-w-[300px] lg:max-w-[338px] w-full py-[4%] lg:py-[2%] max-h-fit xl:h-[410px] border-4 border-mathcha-orange rounded-[28px]"
                       >
-                        <div className="px-[4%] w-full flex flex-col gap-4 ">
+                        <div className="px-[4%] w-full flex flex-col gap-4">
                           <img
                             src={`/assets/Class/${data.image}`}
-                            alt="dropmainback"
+                            alt="a"
                             className="rounded-3xl w-full "
                           />
                           <div className="w-full flex flex-col gap-4">
@@ -203,14 +173,13 @@ export default function Body() {
                                 <div className="font-montserrat text-xl font-bold leading-[17px] text-red-500 ">
                                   {data.discount_price}.000 VNĐ
                                 </div>
-                                <Button
-                                  label={"Mua ngay"}
+                                <Link
+                                  to={`/course/${data.course_id}`}
+                                  // onClick={()=>getCourseById(data.course_id)}
                                   className={"bg-mathcha-orange font-bold text-center border-2 rounded-[68px] p-2 hover:bg-black hover:border-white hover:text-white"}
-                                  startIcon={<svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                  <path strokeLinecap="round" strokeLinejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
-                                </svg>
-                                }
-                                />                                   
+                                >
+                                  Mua ngay
+                                 </Link>                                  
                               </div>
                             </div>
                           </div>

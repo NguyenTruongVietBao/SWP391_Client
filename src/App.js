@@ -16,7 +16,6 @@ function App() {
         <li><Link to={"/manager"}>Manager</Link></li>
         <li><Link to={"/student"}>Student</Link></li>
         <li><Link to={"/"}>Home</Link></li>      
-        <li><Link to={"/course-detail"}>CourseDetail</Link></li>      
         <li><Link to={"/login"}>Login</Link></li>      
       </ul>
       <Routes>
