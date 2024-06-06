@@ -2,7 +2,7 @@ import React from 'react'
 import "@fontsource/cormorant";
 import "@fontsource/montserrat";
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from '../pages/Parent/Home';
+import ParentPage from '../pages/Parent/ParentPage';
 import About from '../pages/Parent/About/About';
 import QandA from '../pages/Parent/QandA/QandA';
 import Contact from '../pages/Parent/Contact/Contact';
@@ -18,7 +18,7 @@ export default function ParentRouter() {
       <Navbar/>
       <Routes>
           <Route path='contact' element={<Contact/>}></Route>
-          <Route path='' element={<Home/>}></Route>    
+          <Route path='' element={<ParentPage/>}></Route>    
           <Route path='about' element={<About/>}></Route>
           <Route path='discount' element={<Discount/>}></Route>
           <Route path='qanda' element={<QandA/>}></Route>   

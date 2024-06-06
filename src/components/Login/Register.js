@@ -1,8 +1,7 @@
 // import { Button, Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react'
 // import { useState } from 'react'
-// import Register from './Register'
 
-// export default function Login() {
+// export default function Register() {
 //   let [isOpen, setIsOpen] = useState(false)
 
 //   function open() {
@@ -43,7 +42,7 @@
 //                         <div className="flex flex-wrap content-center justify-center rounded-l-md bg-white" style={{width: '24rem', height: '32rem'}}>
 //                           <div className="w-72">
 //                             {/* Heading */}
-//                             <h1 className="text-xl font-semibold">Welcome back</h1>
+//                             <h1 className="text-xl font-semibold">Register</h1>
 //                             <small className="text-gray-400">Welcome back! Please enter your details</small>
 //                             {/* Form */}
 //                             <form className="mt-4">
@@ -70,7 +69,7 @@
 //                             {/* Footer */}
 //                             <div className="text-center">
 //                               <span className="text-xs text-gray-400 font-semibold">Don't have account?</span>
-//                               <a className="text-xs font-semibold text-purple-700">{<Register/>}</a>
+//                               <a href="#" className="text-xs font-semibold text-purple-700">Sign up</a>
 //                             </div>
 //                           </div>
 //                         </div>
