@@ -8,19 +8,19 @@ import "@fontsource/montserrat";
 
 const sellNft = [
   {
-    img: "/assets/nft/paint.png",
-    title: "Create Artwork",
+    img: "/assets/Student/outstanding-student-1.png",
+    title: "Chị A",
     desc: "Create your collection, Add social links, a description, profile & banner images, and set a secondary sales fee",
   },
   {
-    img: "/assets/nft/time.png",
-    title: "Add your NFTs",
-    desc: "Upload your work, add a title and description, and customize your NFTs with properties, stats, and unlockable content.",
+    img: "/assets/Student/outstanding-student-2.png",
+    title: "Anh B",
+    desc: "Upload your work, add a title and description, and customize your NFTs with properties, stats",
   },
   {
-    img: "/assets/nft/box.png",
-    title: "List them for sale",
-    desc: "Choose between auctions and declining-price listings. You choose how you want to sell your NFTs, and we help you sell them!",
+    img: "/assets/Student/outstanding-student-3.png",
+    title: "Chị C",
+    desc: "Choose between auctions and declining-price listings. You choose how you want to sell your NFTs",
   },
 ];
 const topcreator = [
@@ -50,7 +50,7 @@ const topcreator = [
     ethe: "16548",
   },
 ];
-const topcreator1 = [
+const topcreator2 = [
   {
     img: "/assets/nft/creator6.png",
     name: "Gregg Prosacco V",
@@ -133,7 +133,7 @@ export default function Body() {
     
   return (
     <div className="flex text-[#000] flex-col items-center w-full overflow-x-hidden ">
-      <div className="bg-mathcha w-full flex flex-col  gap-[123px] justify-center items-center ">
+      <div className="bg-mathcha w-full flex flex-col  gap-[100px] justify-center items-center ">
         
         <div className="px-[4%]">
           <div className="max-w-[1180px] flex flex-col gap-[50px]  lg:gap-[123px]">
@@ -190,35 +190,7 @@ export default function Body() {
                 </div>
               </div>
             </div>
-            {/* Danh sách lớp học 2 */}
-            {/* <div className="mt-[30px] md:mt-[93px] flex flex-col gap-[50px] max-w-[1180px] justify-center w-full ">
-              <div className=" flex justify-between items-center">
-                <div className="font-Cormorant  text-[30px] md:text-5xl font-bold leading-[58px] tracking-[0.03em] mb-3">
-                  Danh sách lớp học
-                </div>
-                <Button
-                  label="Xem thêm"
-                  className="text-xl font-bold text-center px-[30px] md:max-w-[166px] md:w-full py-3 border-2 border-mathcha-orange rounded-[68px] hover:text-white duration-1000 hover:bg-[#2D4263] hover:border-white"
-                />
-              </div>
-              <div>
-                <div className="items-center justify-center flex flex-wrap gap-[30px] md:gap-[50px] lg:gap-[83px] md:px-0 px-[3%] w-full ">
-                      <div
-                        className="hover:scale-105 duration-1000 cursor-pointer flex flex-col justify-center items-center md:max-w-[300px] lg:max-w-[338px] w-full py-[4%] lg:py-[2%] max-h-fit xl:h-[410px] border-4 border-mathcha-orange rounded-[28px]"
-                      >
-                        <div className="px-[4%] w-full flex flex-col gap-4 ">
-                          <img
-                            src={"/assets/Class/class-1.png"}
-                            alt="dropmainback"
-                            className="rounded-3xl w-full "
-                          />
-                     
-                        </div>
-                      </div>
-               
-                </div>
-              </div>
-            </div> */}
+            
             {/* Học sinh tiêu biểu */}
             <div className="items-center flex flex-col gap-9 ">
               <div className="font-Cormorant text-[25px] sm:text-5xl  font-bold leading-[58px]">
@@ -229,16 +201,18 @@ export default function Body() {
                   return (
                     <div
                       key={index}
-                      className="px-[17px] hover:border-1 duration-1000 hover:shadow-pupularCard hover:shadow-white w-full lg:max-w-[280px] xl:max-w-[337px] pb-[2%] max-h-fit bg-mathcha-orange border-[4px] border-black rounded-[28px] flex flex-col gap-2.5 items-center justify-center"
+                      className="px-[17px] hover:border-1 duration-1000 hover:shadow-pupularCard hover:shadow-white w-full lg:max-w-[280px] xl:max-w-[337px] pb-[2%] max-h-fit bg-white border-[4px] border-black rounded-[28px] flex flex-col gap-2.5 items-center justify-center"
                     >
                       <div className="max-w-[200px]">
                         <img src={data.img} alt="img" />
                       </div>
-                      <div className="whitespace-nowrap font-Cormorant text-[23px] sm:text-4xl  md:text-[26px] lg:text-4xl font-semibold leading-[44px]">
-                        {data.title}
-                      </div>
-                      <div className="font-montserrat text-[15px] text-center md:text-[22px] lg:text-base  md:leading-[25px] font-normal leading-5  tracking-[0.03em]">
-                        {data.desc}
+                      <div className="bg-blue-50 rounded-lg ">
+                        <div className="bg-blue-100 rounded-lg whitespace-nowrap font-Cormorant text-[23px] sm:text-4xl text-center md:text-[26px] lg:text-4xl font-semibold leading-[44px]">
+                          {data.title}
+                        </div>
+                        <div className="font-montserrat rounded-lg text-[15px] text-center md:text-[22px] lg:text-base  md:leading-[25px] font-normal leading-5  tracking-[0.03em]">
+                          {data.desc}
+                        </div>
                       </div>
                     </div>
                   );
@@ -251,7 +225,7 @@ export default function Body() {
         {/* Feedback */}
         <div className="flex flex-col items-center gap-[70px]">
           <div className="text-5xl font-Cormorant leading-[58px] font-bold">
-            Feedback
+            Đánh giá khóa học
           </div>
           <div className="flex  ">
             <Marquee gradient={false} pauseOnHover>
@@ -292,7 +266,7 @@ export default function Body() {
           </div>
           <div className="flex">
             <Marquee gradient={false} speed={20} direction="right" pauseOnHover>
-              {topcreator1.map((data, index) => {
+              {topcreator2.map((data, index) => {
                 return (
                   <div
                     key={index}
@@ -330,28 +304,37 @@ export default function Body() {
         </div>
 
         {/* Liên hệ  */}
-        <div className="px-3 w-156">
-          <div className="mb-[70px] flex gap-9 flex-col justify-center w-full items-center bg-mathcha-orange max-h-fit py-[3%] rounded-3xl">
-            <div className="flex flex-col text-center items-center gap-[15px] w-full">
-              <div className="text-[20px] sm:text-[34px] lg:text-5xl leading-[58px] font-bold font-Cormorant tracking-[0.03em] ">
-                Liên hệ
+        <div className="flex flex-col items-center justify-center p-12 bg-mathcha-orange rounded-2xl">
+          <div className="text-5xl font-Cormorant leading-[58px] font-bold">            Liên hệ
+          </div>
+          <div className="w-128 mx-auto">
+            <form action="https://formbold.com/s/FORM_ID" method="POST">
+              <div className="mb-5 w-full">
+                <label htmlFor="name" className="mb-3 block text-base font-medium text-[#07074D]">
+                  Họ và tên
+                </label>
+                <input type="text" name="name" id="name" placeholder="Họ và tên" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
               </div>
-              <div className="w-2/3 items-center  ">
-                <span>123</span>
-                <input className="w-full" />
-                <span>123</span>
-                <input className="w-full" />
+              <div className="mb-5">
+                <label htmlFor="email" className="mb-3 block text-base font-medium text-[#07074D]">
+                  Số điện thoại
+                </label>
+                <input type="email" name="email" id="email" placeholder="Số điện thoại" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
               </div>
-            </div>
-            <Button
-              // startIcon={<img src={"/assets/Logo.png"} alt="discord" />}
-              label="Gửi"
-              color="bg-[#fff]"
-              className="max-w-[252px] text-lg w-full py-3 md:py-3 flex gap-2.5 justify-center items-center rounded-[68px]"
-            />
+              <div className="mb-5">
+                <label htmlFor="message" className="mb-3 block text-base font-medium text-[#07074D]">
+                  Thắc mắc
+                </label>
+                <textarea rows={4} name="message" id="message" placeholder="Thắc mắc" className="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" defaultValue={""} />
+              </div>
+              <div>
+                <button className="hover:shadow-form rounded-md bg-mathcha-green py-3 px-8 text-base font-semibold text-white outline-none">
+                  Gửi
+                </button>
+              </div>
+            </form>
           </div>
         </div>
-
       </div>
     </div>
   );

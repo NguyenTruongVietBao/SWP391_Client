@@ -96,28 +96,14 @@ export default function StudentPage() {
                         <p className="text-5xl text-indigo-900"><strong>Lớp 1</strong></p>
                         <a href className="bg-blue-300 text-xl text-white underline hover:no-underline inline-block rounded-full mt-12 px-8 py-2"><strong>See messages</strong></a>
                     </div>
-                </div>
-            </div>
-        </div>
-        {/* Footer */}
-        <div className=" border-[5px] border-mathcha-orange w-full "></div>
-        <div className=" bg-orange-100 text-blue-800 px-10 z-10 w-full">
-            <div className="flex items-center justify-between text-5x1">
-                {/* <div className="font-bold text-blue-900 text-3xl"><span className="text-orange-600">my</span> Course</div> */}
-                <div className="">
-                    <img src="/assets/Logo-removebg.png" width={150} alt="a"/>
-                </div>
-                {/* <a href="/" className="text-2xl font-bold ">Khóa học của tôi</a>
-                <a href="/" className="text-2xl font-bold ">Ngân hàng câu hỏi</a> */}
-                <div className="flex justify-start text-gray-700">
-                  <div className="relative w-full">
-                    <input type="text" className="w-full backdrop-blur-sm bg-white/20 py-2 px-10 rounded-lg focus:outline-none border-2 border-gray-950 focus:border-violet-300 transition-colors duration-300" placeholder="Tìm kiếm khóa học" />
-                    <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
-                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
-                          <path strokeLinecap="round" strokeLinejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z" />
-                      </svg>
+                    <div className="bg-no-repeat bg-blue-100 border border-blue-300 rounded-xl h-96 ml-2 p-6" style={{backgroundImage: 'url(https://previews.dropbox.com/p/thumb/AAuwpqWfUgs9aC5lRoM_f-yi7OPV4txbpW1makBEj5l21sDbEGYsrC9sb6bwUFXTSsekeka5xb7_IHCdyM4p9XCUaoUjpaTSlKK99S_k4L5PIspjqKkiWoaUYiAeQIdnaUvZJlgAGVUEJoy-1PA9i6Jj0GHQTrF_h9MVEnCyPQ-kg4_p7kZ8Yk0TMTL7XDx4jGJFkz75geOdOklKT3GqY9U9JtxxvRRyo1Un8hOObbWQBS1eYE-MowAI5rNqHCE_e-44yXKY6AKJocLPXz_U4xp87K4mVGehFKC6dgk_i5Ur7gspuD7gRBDvd0sanJ9Ybr_6s2hZhrpad-2WFwWqSNkh/p.png?fv_content=true&size_mode=5)', backgroundPosition: '100% 40%'}}>
+                        <p className="text-5xl text-indigo-900"><strong>Lớp 1</strong></p>
+                        <a href className="bg-blue-300 text-xl text-white underline hover:no-underline inline-block rounded-full mt-12 px-8 py-2"><strong>See messages</strong></a>
                     </div>
-                  </div>
+                    <div className="bg-no-repeat bg-blue-100 border border-blue-300 rounded-xl h-96 ml-2 p-6" style={{backgroundImage: 'url(https://previews.dropbox.com/p/thumb/AAuwpqWfUgs9aC5lRoM_f-yi7OPV4txbpW1makBEj5l21sDbEGYsrC9sb6bwUFXTSsekeka5xb7_IHCdyM4p9XCUaoUjpaTSlKK99S_k4L5PIspjqKkiWoaUYiAeQIdnaUvZJlgAGVUEJoy-1PA9i6Jj0GHQTrF_h9MVEnCyPQ-kg4_p7kZ8Yk0TMTL7XDx4jGJFkz75geOdOklKT3GqY9U9JtxxvRRyo1Un8hOObbWQBS1eYE-MowAI5rNqHCE_e-44yXKY6AKJocLPXz_U4xp87K4mVGehFKC6dgk_i5Ur7gspuD7gRBDvd0sanJ9Ybr_6s2hZhrpad-2WFwWqSNkh/p.png?fv_content=true&size_mode=5)', backgroundPosition: '100% 40%'}}>
+                        <p className="text-5xl text-indigo-900"><strong>Lớp 1</strong></p>
+                        <a href className="bg-blue-300 text-xl text-white underline hover:no-underline inline-block rounded-full mt-12 px-8 py-2"><strong>See messages</strong></a>
+                    </div>
                 </div>
             </div>
         </div>
