@@ -1,33 +1,61 @@
 import React, { useEffect, useState } from 'react';
 import './DetailCourse.css'
 import { useParams } from 'react-router-dom';
-import { getCourseById } from '../../../services/CourseService/CourseService';
+import { getChapterByCourseId, getCourseById } from '../../../services/CourseService/CourseService';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import axios from 'axios';
 
 export default function DetailCourse() {
   const [course, setCourse] = useState(null)
+  const [chapters, setChapters] = useState([]);
   const {id} = useParams();
+  
+  // useEffect(() => {
+  //   const fetchChapters = async () => {
+  //     const response = await axios.get(`http://localhost:8080/course/${id}/chapters`);
+  //     setChapters(response.data);
+  //   };
+  //   fetchChapters();
+  // }, [id]);
 
-  useEffect(()=>{
-    getCourseById(id)
-      .then((res)=>{setCourse(res.data)})
-      .catch (console.log("error"))
-  }, [id])
+    useEffect(()=>{
+      getCourseById(id)
+        .then((res)=>{setCourse(res.data)})
+        .catch (console.log("error"))
+    }, [id])
+
+    useEffect(() => {
+      const fetchChaptersTopicsAndLessons = async () => {
+          const chaptersResponse = await axios.get(`http://localhost:8080/course/${id}/chapters`);
+          const chaptersData = chaptersResponse.data;
+          
+          const chaptersWithTopicsAndLessons = await Promise.all(chaptersData.map(async (chapter) => {
+            const topicsResponse = await axios.get(`http://localhost:8080/course/${id}/chapters/${chapter.chapter_id}/topics`);
+            const topicsData = topicsResponse.data;
   
-  useEffect(()=>{
-    getCourseById(id)
-      .then((res)=>{setCourse(res.data)})
-      .catch (console.log("error"))
-  }, [id])
+            const topicsWithLessons = await Promise.all(topicsData.map(async (topic) => {
+              const lessonsResponse = await axios.get(`http://localhost:8080/course/${id}/chapters/${chapter.chapter_id}/topics/${topic.topic_id}/lessons`);
+              return { ...topic, lessons: lessonsResponse.data };
+            }));
   
+            return { ...chapter, topics: topicsWithLessons };
+          }));
+          
+          setChapters(chaptersWithTopicsAndLessons);
+      };
+  
+      fetchChaptersTopicsAndLessons();
+    }, [id]);
+
   if (!course) {
     return <div>Loading...</div>; // Show a loading message while course data is being fetched
   }
 
   return (
     <div className="bg-white pb-10 mt-5">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
+      <div className=" border-[5px] border-mathcha w-full "></div>
+      <div className="mt-3 mx-auto max-w-7xl">
         <div className="mx-auto grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-16 sm:gap-y-24 lg:mx-0 lg:max-w-none lg:grid-cols-2">
           {/* Left*/}
           <div className="ml-10">
@@ -58,131 +86,59 @@ export default function DetailCourse() {
               </div>
             </div>
             {/* Accordions */}
-            <div className="pt-6 w-full">
-              <div className="mx-auto w-full max-w-lg divide-y divide-black/5 rounded-xl bg-black/5">
-                <Disclosure as="div" className="p-6" defaultOpen={true}>
-                  <DisclosureButton className="group flex w-full items-center justify-between">
-                    <span className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
-                      - What is your refund policy?
-                    </span>
-                    <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
-                  </DisclosureButton>
-                  <DisclosurePanel className="mt-2 text-sm/5 text-black/50">
-                    <Disclosure as="div" className="px-6 mb-2">
-                      <DisclosureButton className="group flex w-full items-center justify-between">
-                        <span className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
-                          + Do you offer technical support?
-                        </span>
-                        <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
-                      </DisclosureButton>
-                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
-                          * Bai 1
-                      </DisclosurePanel>
-                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
-                          *  Bai 3
-                      </DisclosurePanel>
-                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
-                      * Bai 3
-                      </DisclosurePanel>
-                    </Disclosure>
-                    <Disclosure as="div" className="px-6 mb-2">
-                      <DisclosureButton className="group flex w-full items-center justify-between">
-                        <span className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
-                          + Do you offer technical support?
-                        </span>
-                        <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
-                      </DisclosureButton>
-                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
-                          * Bai 1
-                      </DisclosurePanel>
-                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
-                          *  Bai 3
-                      </DisclosurePanel>
-                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
-                      * Bai 3
-                      </DisclosurePanel>
-                    </Disclosure>
-                  </DisclosurePanel>
-                  <DisclosureButton className="group flex w-full items-center justify-between">
-                    <span className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
-                      - What is your refund policy?
-                    </span>
-                    <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
-                  </DisclosureButton>
-                  <DisclosurePanel className="mt-2 text-sm/5 text-black/50">
-                    <Disclosure as="div" className="px-6 mb-2">
-                      <DisclosureButton className="group flex w-full items-center justify-between">
-                        <span className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
-                          + Do you offer technical support?
-                        </span>
-                        <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
-                      </DisclosureButton>
-                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
-                          * Bai 1
-                      </DisclosurePanel>
-                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
-                          *  Bai 3
-                      </DisclosurePanel>
-                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
-                      * Bai 3
-                      </DisclosurePanel>
-                    </Disclosure>
-                    <Disclosure as="div" className="px-6 mb-2">
-                      <DisclosureButton className="group flex w-full items-center justify-between">
-                        <span className="text-sm/6 font-medium text-black group-data-[hover]:text-black/80">
-                          + Do you offer technical support?
-                        </span>
-                        <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
-                      </DisclosureButton>
-                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
-                          * Bai 1
-                      </DisclosurePanel>
-                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
-                          *  Bai 3
-                      </DisclosurePanel>
-                      <DisclosurePanel className="mt-2 ml-5 text-sm/5 text-black/70">
-                      * Bai 3
-                      </DisclosurePanel>
-                    </Disclosure>
-                  </DisclosurePanel>
-                </Disclosure>               
+            <div className="py-5 w-full">
+              <div className="mx-auto w-full divide-y divide-black/5 rounded-xl bg-black/5">
+                {chapters.map((chapter, index) => (
+                  <Disclosure
+                    key={index}
+                    as="div"
+                    className="p-6"
+                    defaultOpen={true}
+                  >
+                    {/* Chapter */}
+                    <DisclosureButton className="group flex w-full items-center justify-between">
+                      <span className="text-2xl font-medium text-black group-data-[hover]:text-black/80">
+                        {chapter.title}
+                      </span>
+                      <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
+                    </DisclosureButton>
+                    
+                    <DisclosurePanel className="mt-2 text-sm/5 text-black/50">
+                      {chapter.topics.map((topic, topicIndex) => (
+                        <Disclosure
+                          key={topicIndex}
+                          as="div"
+                          className="px-6 mb-2"
+                        >
+                          {/* Topic */}
+                          <DisclosureButton className="group flex w-full items-center justify-between">
+                            <span className="text-lg font-medium mt-2 text-black group-data-[hover]:text-black/80">
+                              {topicIndex+1}. {topic.title}
+                            </span>
+                            <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
+                          </DisclosureButton>
+                          {/* Lessons */}
+                          {topic.lessons && topic.lessons.map((lesson, lessonIndex) => (
+                            
+                              <DisclosurePanel key={lessonIndex} className="flex items-center justify-between gap-5 mt-3 mb-5 ml-6 text-sm/5 text-black/70">
+                                <div>
+                                  <span className=" text-base">
+                                    + {lesson.title},{lesson.number}, <a href={lesson.video_url}>Video_URL</a>, <a href={lesson.document}>Document_URL</a>
+                                  </span>
+                                </div>
+                                <div>
+                                  <button className='p-2 bg-white w-24'>Học ngay</button>
+                                </div>
+                              </DisclosurePanel>
+                            ))}
+                        </Disclosure>
+                      ))}
+                    </DisclosurePanel>
+                  </Disclosure>
+                ))}
               </div>
             </div>
-            {/* More info */}
-            <dl className="mt-5 grid grid-cols-2 gap-8 border-t border-gray-900/10 pt-10">
-              <div>
-                <dt className="text-sm font-semibold leading-6 text-gray-600">
-                  Đội ngũ giảng viên
-                </dt>
-                <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                  end of 2023
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-semibold leading-6 text-gray-600">
-                  Số lượng học viên
-                </dt>
-                <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                  uncounted
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-semibold leading-6 text-gray-600">
-                  Chất lượng đào tạo
-                </dt>
-                <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                  $1.5K
-                </dd>
-              </div>
-              <div>
-                <dt className="text-sm font-semibold leading-6 text-gray-600">
-                  Thời gian học tập
-                </dt>
-                <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                  $1.5K
-                </dd>
-              </div>
-            </dl>
+            
           </div>
           {/* Right */}
           <div className="ml-20 lg:pr-4 mt-3">
@@ -205,13 +161,13 @@ export default function DetailCourse() {
                 className="relative rounded-2xl"
                 width="420"
                 height="237"
-                src="https://www.youtube.com/embed/rJabgOChWiM?list=RD-Ur6nekzM4Q"
-                title="Khóa Ly Biệt - Voi Bản Đôn | The Masked Singer Vietnam 2023 [Audio Lyric]"
+                src="https://www.youtube.com/embed/A8C71-mSkAk"
+                title="WREN EVANS - LOI CHOI không điểm dừng | Full Album Experience (ft. itsnk)"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                referrerpolicy="strict-origin-when-cross-origin"
                 allowfullscreen
               ></iframe>
-
               <figure className="relative isolate">
                 <svg
                   viewBox="0 0 162 128"
@@ -247,7 +203,44 @@ export default function DetailCourse() {
                 </div>
               </figure>
             </div>
+            {/* More info */}
+            <dl className="text-center mt-5 grid grid-cols-2 gap-8 border-t border-gray-900/10 pt-10">
+              <div>
+                <dt className="text-sm font-semibold leading-6 text-gray-600">
+                  Đội ngũ giảng viên
+                </dt>
+                <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
+                  end of 2023
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm font-semibold leading-6 text-gray-600">
+                  Số lượng học viên
+                </dt>
+                <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
+                  uncounted
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm font-semibold leading-6 text-gray-600">
+                  Chất lượng đào tạo
+                </dt>
+                <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
+                  $1.5K
+                </dd>
+              </div>
+              <div>
+                <dt className="text-sm font-semibold leading-6 text-gray-600">
+                  Thời gian học tập
+                </dt>
+                <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
+                  $1.5K
+                </dd>
+              </div>
+            </dl>
           </div>
+
+
         </div>
       </div>
     </div>

@@ -25,7 +25,6 @@ function App() {
         <Route path="/student" element={<StudentRouter/>}></Route>
         <Route path="/123123" element={<AdminTable/>}></Route>
       </Routes>
-
     </div>
   );
 }
