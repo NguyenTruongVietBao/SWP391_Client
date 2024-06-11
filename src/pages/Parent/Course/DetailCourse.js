@@ -9,7 +9,7 @@ import axios from 'axios';
 export default function DetailCourse() {
   const [course, setCourse] = useState(null)
   const [chapters, setChapters] = useState([]);
-  const {id} = useParams();
+  const {courseId} = useParams();
   
   // useEffect(() => {
   //   const fetchChapters = async () => {
@@ -20,22 +20,22 @@ export default function DetailCourse() {
   // }, [id]);
 
     useEffect(()=>{
-      getCourseById(id)
+      getCourseById(courseId)
         .then((res)=>{setCourse(res.data)})
         .catch (console.log("error"))
-    }, [id])
+    }, [courseId])
 
     useEffect(() => {
       const fetchChaptersTopicsAndLessons = async () => {
-          const chaptersResponse = await axios.get(`http://localhost:8080/course/${id}/chapters`);
+          const chaptersResponse = await axios.get(`http://localhost:8080/course/${courseId}/chapters`);
           const chaptersData = chaptersResponse.data;
           
           const chaptersWithTopicsAndLessons = await Promise.all(chaptersData.map(async (chapter) => {
-            const topicsResponse = await axios.get(`http://localhost:8080/course/${id}/chapters/${chapter.chapter_id}/topics`);
+            const topicsResponse = await axios.get(`http://localhost:8080/chapters/${chapter.chapter_id}/topics`);
             const topicsData = topicsResponse.data;
   
             const topicsWithLessons = await Promise.all(topicsData.map(async (topic) => {
-              const lessonsResponse = await axios.get(`http://localhost:8080/course/${id}/chapters/${chapter.chapter_id}/topics/${topic.topic_id}/lessons`);
+              const lessonsResponse = await axios.get(`http://localhost:8080/topics/${topic.topic_id}/lessons`);
               return { ...topic, lessons: lessonsResponse.data };
             }));
   
@@ -46,7 +46,7 @@ export default function DetailCourse() {
       };
   
       fetchChaptersTopicsAndLessons();
-    }, [id]);
+    }, [courseId]);
 
   if (!course) {
     return <div>Loading...</div>; // Show a loading message while course data is being fetched
@@ -61,29 +61,29 @@ export default function DetailCourse() {
           <div className="ml-10">
             {/* Description */}
             <div className="text-base leading-7 text-gray-700">
-              <p className="text-base font-semibold leading-7 text-mathcha-orange">
-                Chi tiết khóa học
-              </p>
-              <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
-                Đến với {course.title}
-              </h1>
-              <div className="max-w-xl">
-                <p className="mt-6">
-                  <strong> - Mô tả khóa học: </strong> thường tập trung vào
-                  những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm
-                  quen với các số và phép tính đơn giản
+                <p className="text-base font-semibold leading-7 text-mathcha-orange">
+                    Chi tiết khóa học
                 </p>
-                <p className="my-5">
-                  <strong> - Yêu cầu khóa học: </strong> Chương trình toán lớp 1
-                  thường tập trung vào những khái niệm cơ bản và nền tảng nhất,
-                  giúp học sinh làm quen với các số và phép tính đơn giản
-                </p>
-                <p>
-                  <strong> - Kết quả đạt được: </strong>Chương trình toán lớp 1
-                  thường tập trung vào những khái niệm cơ bản và nền tảng nhất,
-                  giúp học sinh làm quen với các số và phép tính đơn giản
-                </p>
-              </div>
+                <h1 className="mt-2 text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">
+                    Đến với {course.title}
+                </h1>
+                <div className="max-w-xl">
+                    <p className="mt-6">
+                      <strong> - Mô tả khóa học: </strong> thường tập trung vào
+                      những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm
+                      quen với các số và phép tính đơn giản
+                    </p>
+                    <p className="my-5">
+                      <strong> - Yêu cầu khóa học: </strong> Chương trình toán lớp 1
+                      thường tập trung vào những khái niệm cơ bản và nền tảng nhất,
+                      giúp học sinh làm quen với các số và phép tính đơn giản
+                    </p>
+                    <p>
+                      <strong> - Kết quả đạt được: </strong>Chương trình toán lớp 1
+                      thường tập trung vào những khái niệm cơ bản và nền tảng nhất,
+                      giúp học sinh làm quen với các số và phép tính đơn giản
+                    </p>
+                </div>
             </div>
             {/* Accordions */}
             <div className="py-5 w-full">
@@ -102,7 +102,7 @@ export default function DetailCourse() {
                       </span>
                       <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
                     </DisclosureButton>
-                    
+
                     <DisclosurePanel className="mt-2 text-sm/5 text-black/50">
                       {chapter.topics.map((topic, topicIndex) => (
                         <Disclosure
@@ -118,12 +118,16 @@ export default function DetailCourse() {
                             <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
                           </DisclosureButton>
                           {/* Lessons */}
-                          {topic.lessons && topic.lessons.map((lesson, lessonIndex) => (
-                            
+                          {topic.lessons && topic.lessons.map((lesson, lessonIndex) => (                           
                               <DisclosurePanel key={lessonIndex} className="flex items-center justify-between gap-5 mt-3 mb-5 ml-6 text-sm/5 text-black/70">
                                 <div>
-                                  <span className=" text-base">
-                                    + {lesson.title},{lesson.number}, <a href={lesson.video_url}>Video_URL</a>, <a href={lesson.document}>Document_URL</a>
+                                  <span className="text-base">
+                                    <ul>
+                                      <li> - {lesson.title}</li>
+                                      <li>+ Num of lesson: {lesson.number}</li>
+                                      <li>+ <a href={lesson.video_url}>Video_URL</a></li>
+                                      <li>+ <a href={lesson.document}>Document_URL</a></li>
+                                    </ul>
                                   </span>
                                 </div>
                                 <div>

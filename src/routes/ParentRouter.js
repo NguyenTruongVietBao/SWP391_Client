@@ -22,7 +22,7 @@ export default function ParentRouter() {
           <Route path='about' element={<About/>}></Route>
           <Route path='discount' element={<Discount/>}></Route>
           <Route path='qanda' element={<QandA/>}></Route>   
-          <Route path="/course/:id" element={<DetailCourse/>}></Route> 
+          <Route path="/course/:courseId" element={<DetailCourse/>}></Route> 
           <Route path="/login" element={<Login/>}></Route> 
           <Route path="/register" element={<Register/>}></Route> 
       </Routes>

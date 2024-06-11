@@ -78,43 +78,6 @@ const topcreator2 = [
   },
 ];
 
-const Button = ({
-  size,
-  className,
-  color,
-  font,
-  label,
-  endIcon,
-  startIcon,
-  endIconClassName,
-  startIconClassName,
-  ...props
-}) => {
-  return (
-    <button
-      className={classNames(
-        className,
-        "flex justify-center items-center",
-        size ? size : "",
-        color ? color : "bg-blue",
-        font ? font : "font-[500] tracking-tight text-[#000]"
-      )}
-      {...props}
-    >
-      {startIcon && (
-        <div className={classNames(startIconClassName || "")}>{startIcon}</div>
-      )}
-      <div className="relative">
-        <div className="flex justify-center items-center gap-3">
-          <div className="label">{label}</div>
-        </div>
-      </div>
-      {endIcon && (
-        <div className={classNames(endIconClassName || "")}>{endIcon}</div>
-      )}
-    </button>
-  );
-};
 
 export default function Body() {
   const [courses, setCourses] = useState([]);
@@ -133,7 +96,7 @@ export default function Body() {
     
   return (
     <div className="flex text-[#000] flex-col items-center w-full overflow-x-hidden ">
-      <div className="bg-mathcha w-full flex flex-col  gap-[100px] justify-center items-center ">
+      <div className="bg-white w-full flex flex-col  gap-[100px] justify-center items-center ">
         
         <div className="px-[4%]">
           <div className="max-w-[1180px] flex flex-col gap-[50px]  lg:gap-[123px]">
@@ -143,10 +106,10 @@ export default function Body() {
                 <div className="font-Cormorant  text-[30px] md:text-5xl font-bold leading-[58px] tracking-[0.03em] mb-3">
                   Danh sách lớp học
                 </div>
-                <Button
-                  label="Xem thêm"
-                  className="text-xl font-bold text-center px-[30px] md:max-w-[166px] md:w-full py-3 border-2 border-mathcha-orange rounded-[68px] hover:text-white duration-1000 hover:bg-[#2D4263] hover:border-white"
-                />
+                <Link className="flex text-lg font-bold text-center px-[30px] py-3 border-2 border-mathcha-orange rounded-[68px] hover:text-white duration-1000 hover:bg-[#2D4263] hover:border-white"
+                  font="text-white font-normal">
+                  Xem thêm
+                </Link>
               </div>
               <div>
                 <div className="items-center justify-center flex flex-wrap gap-[30px] md:gap-[50px] lg:gap-[83px] md:px-0 px-[3%] w-full ">
@@ -304,7 +267,7 @@ export default function Body() {
         </div>
 
         {/* Liên hệ  */}
-        <div className="flex flex-col items-center justify-center p-12 bg-mathcha-orange rounded-2xl">
+        <div className="flex flex-col items-center justify-center p-12 bg-mathcha-orange rounded-2xl mb-10">
           <div className="text-5xl font-Cormorant leading-[58px] font-bold">            Liên hệ
           </div>
           <div className="w-128 mx-auto">
