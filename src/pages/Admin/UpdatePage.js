@@ -5,20 +5,26 @@ import { getUserById } from '../../services/UserService/UserService';
 
 export default function UpdatePage() {
     const [user, setUser] = useState(null);
+    const [error, setError] = useState(null);
     const { userId } = useParams();
 
     useEffect(() => {
+        if (!userId) {
+            setError('User ID is not provided.');
+            return;
+        }
         getUserById(userId)
             .then((res) => {
                 setUser(res.data);
             })
-            .catch((error) => {
-                console.log("error", error);
+            .catch((err) => {
+                console.error('Error fetching user:', err);
+                setError('Error fetching user data. Please try again later.');
             });
     }, [userId]);
 
     if (!user) {
-        return <div>Loading...</div>;
+        return <div className="text-red-500 text-center mt-10">{error}</div>;
     }
 
     return (

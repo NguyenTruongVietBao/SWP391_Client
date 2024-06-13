@@ -45,7 +45,7 @@ export default function Navbar() {
   // const [isNavOpen, setIsNavOpen] = useState(false);
   return (
     <div className="flex flex-col items-center w-full overflow-x-hidden ">
-      <div className="bg-[#fefefe] flex flex-col items-center justify-center w-full">
+      <div className="bg-gradient-to-r from-mathcha via-white to-mathcha flex flex-col items-center justify-center w-full py-2">
         <div className="px-3 relative xl:px-0 sm:px-3 flex max-w-[1180px] items-center justify-between w-full">
             {/* LOGO */}
             <div className="cursor-pointer">
@@ -145,7 +145,6 @@ export default function Navbar() {
               </div>
             </div> */}
         </div>
-        <div className=" border-[3px] border-white w-full "></div>
       </div>
     </div>
   )

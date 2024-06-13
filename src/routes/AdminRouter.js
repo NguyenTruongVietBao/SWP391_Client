@@ -8,7 +8,6 @@ export default function AdminRouter() {
   return (
       <Routes>
           <Route path='/' element={<AdminPage/>}></Route>
-          
           <Route path='create' element={<CreatePage/>}></Route>
           <Route path='update/:userId' element={<UpdatePage/>}></Route>
       </Routes>

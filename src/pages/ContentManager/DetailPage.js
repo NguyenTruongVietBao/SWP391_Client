@@ -7,9 +7,9 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react
 import Menu from '../../components/ContentManager/Menu';
 
 export default function DetailPage() {
-    const [course, setCourse] = useState(null)
-  const [chapters, setChapters] = useState([]);
-  const {courseId} = useParams();
+   const [course, setCourse] = useState(null)
+   const [chapters, setChapters] = useState([]);
+   const {courseId} = useParams();
   
   // useEffect(() => {
   //   const fetchChapters = async () => {

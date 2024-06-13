@@ -2,7 +2,7 @@ import axios from 'axios'
 
 const REST_API_COURSE = 'http://localhost:8080/course';
 
-export const listCourses = () => axios.get(REST_API_COURSE);
+export const listCourses = () => axios.get(REST_API_COURSE + '/get');
 
 export const createCourse = (course) => axios.post(REST_API_COURSE,course)
 

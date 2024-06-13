@@ -21,30 +21,31 @@ export default function DetailCourse() {
 
     useEffect(()=>{
       getCourseById(courseId)
-        .then((res)=>{setCourse(res.data)})
+        .then((res)=>{setCourse(res.data.data)})
         .catch (console.log("error"))
     }, [courseId])
 
     useEffect(() => {
       const fetchChaptersTopicsAndLessons = async () => {
-          const chaptersResponse = await axios.get(`http://localhost:8080/course/${courseId}/chapters`);
-          const chaptersData = chaptersResponse.data;
+          const chaptersResponse = await axios.get(`http://localhost:8080/chapter/course/${courseId}`);
+          const chaptersData = chaptersResponse.data.data;
           
           const chaptersWithTopicsAndLessons = await Promise.all(chaptersData.map(async (chapter) => {
-            const topicsResponse = await axios.get(`http://localhost:8080/chapters/${chapter.chapter_id}/topics`);
-            const topicsData = topicsResponse.data;
+            const topicsResponse = await axios.get(`http://localhost:8080/topic/chapter/${chapter.chapter_id}`);
+            const topicsData = topicsResponse.data.data;
   
             const topicsWithLessons = await Promise.all(topicsData.map(async (topic) => {
-              const lessonsResponse = await axios.get(`http://localhost:8080/topics/${topic.topic_id}/lessons`);
-              return { ...topic, lessons: lessonsResponse.data };
+              const lessonsResponse = await axios.get(`http://localhost:8080/lessons/topic/${topic.topic_id}`);
+              return { ...topic, lessons: lessonsResponse.data.data };
             }));
   
-            return { ...chapter, topics: topicsWithLessons };
+            return { ...chapter
+              , topics: topicsWithLessons 
+            };
           }));
           
           setChapters(chaptersWithTopicsAndLessons);
       };
-  
       fetchChaptersTopicsAndLessons();
     }, [courseId]);
 
@@ -53,8 +54,7 @@ export default function DetailCourse() {
   }
 
   return (
-    <div className="bg-white pb-10 mt-5">
-      <div className=" border-[5px] border-mathcha w-full "></div>
+    <div className="bg-gradient-to-r from-mathcha via-white to-mathcha pb-10 mt-8">
       <div className="mt-3 mx-auto max-w-7xl">
         <div className="mx-auto grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-16 sm:gap-y-24 lg:mx-0 lg:max-w-none lg:grid-cols-2">
           {/* Left*/}
@@ -141,8 +141,7 @@ export default function DetailCourse() {
                   </Disclosure>
                 ))}
               </div>
-            </div>
-            
+            </div>                          
           </div>
           {/* Right */}
           <div className="ml-20 lg:pr-4 mt-3">
@@ -165,7 +164,7 @@ export default function DetailCourse() {
                 className="relative rounded-2xl"
                 width="420"
                 height="237"
-                src="https://www.youtube.com/embed/A8C71-mSkAk"
+                src="https://www.youtube.com/embed/LnTPJcUQdNU"
                 title="WREN EVANS - LOI CHOI không điểm dừng | Full Album Experience (ft. itsnk)"
                 frameborder="0"
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -214,7 +213,7 @@ export default function DetailCourse() {
                   Đội ngũ giảng viên
                 </dt>
                 <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                  end of 2023
+                  Nhiệt huyết - Tận tâm
                 </dd>
               </div>
               <div>
@@ -222,7 +221,7 @@ export default function DetailCourse() {
                   Số lượng học viên
                 </dt>
                 <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                  uncounted
+                  1.500 người
                 </dd>
               </div>
               <div>
@@ -230,7 +229,7 @@ export default function DetailCourse() {
                   Chất lượng đào tạo
                 </dt>
                 <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                  $1.5K
+                  Tiêu chuẩn quốc tế
                 </dd>
               </div>
               <div>
@@ -238,7 +237,7 @@ export default function DetailCourse() {
                   Thời gian học tập
                 </dt>
                 <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                  $1.5K
+                  13 hrs
                 </dd>
               </div>
             </dl>
