@@ -50,38 +50,33 @@ export default function Footer() {
               <img src='/assets/Logo-removebg.png' width={150}/>
             </a>
             <div className="text-base leading-5 tracking-[0.03em] font-normal font-montserrat ">
-              The largest 3D NFT marketplace. Authentic and truly unique digital
-              creation. Signed and issued by the creator. made possible by
-              blockchain technology
+            Nếu Gymnasium là nơi tập luyện để phát triển thể lực thì Mathcha là nơi học sinh rèn luyện để phát triển Tư duy, trí thông minh thông qua Toán học
             </div>
           </div>
-          <div className=" items-start  flex flex-col gap-2 md:gap-[21px]">
+          <div className=" items-center  flex flex-col gap-2 md:gap-[21px]">
             <div className="font-Cormorant whitespace-nowrap  sm:text-2xl leading-[29px] tracking-[0.03em] font-bold">
-              Quick Links
+              Liên kết nhanh
             </div>
-            <div className="text-start font-montserrat text-base leading-5 tracking-[0.03em] flex flex-col gap-2.5 font-medium">
-              <a href="#_"> About</a>
-              <a href="#_"> Blog</a>
-              <a href="#_"> Press</a>
+            <div className="text-center font-montserrat text-base leading-5 tracking-[0.03em] flex flex-col gap-2.5 font-medium">
+              <a href="#_"> Ưu đãi</a>
+              <a href="#_"> Liên hệ</a>
+              <a href="#_"> Hỏi đáp</a>
             </div>
           </div>
           <div className="items-start  flex flex-col gap-2 md:gap-[21px]">
             <div className="font-Cormorant text-2xl leading-[29px] tracking-[0.03em] font-bold">
-              Resources
+              Hệ thống trung tâm
             </div>
             <div className="text-start font-montserrat text-base leading-5 tracking-[0.03em] flex flex-col gap-2.5 font-medium">
-              <a href="#_"> Help Center</a>
-              <a href="#_"> Community</a>
-              <a href="#_"> Partners</a>
+              <a href="#_">S7.01 Vinhome GrandPark</a>
+              <a href="#_">0982 123 234</a>
+              <a href="#_">mathcha88@fpt.edu.com</a>
             </div>
           </div>
           <div className="items-start flex flex-col gap-2 md:gap-[21px]">
-            <div className="text-start font-Cormorant text-2xl leading-[29px] tracking-[0.03em] font-bold">
-              Subscribe
-            </div>
             <div className="font-montserrat text-base leading-5 tracking-[0.03em] flex flex-col gap-2.5 font-medium">
               <Button
-                label="Get NFT updates"
+                label="Học ngay"
                 className="border whitespace-nowrap flex justify-center items-center gap-2.5 px-[24px] border-[#ECDBBA] max-w-[221px] py-[8px] rounded-[68px]"
                 endIcon={
                   <img src={"/assets/nft/rightarrow.svg"} alt="get nft" />

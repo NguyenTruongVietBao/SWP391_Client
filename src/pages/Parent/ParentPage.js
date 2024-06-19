@@ -110,10 +110,10 @@ export default function ParentPage() {
                   Danh sách lớp học
                 </div>
                 {!showAll && courses.length > 6 && (
-                <Link className="flex text-lg font-bold text-center px-[30px] py-3 border-2 border-mathcha-orange rounded-[68px] hover:text-white duration-1000 hover:bg-[#2D4263] hover:border-white"
-                  font="text-white font-normal">
-                  Xem thêm
-                </Link>
+                  <Link to={'/course'} className="flex text-lg font-bold text-center px-[30px] py-3 border-2 border-mathcha-orange rounded-[68px] hover:text-white duration-1000 hover:bg-[#2D4263] hover:border-white"
+                    font="text-white font-normal">
+                    Xem thêm
+                  </Link>
                 )}
               </div>
               <div>
@@ -160,27 +160,32 @@ export default function ParentPage() {
               </div>
             </div>
             {/* Học sinh tiêu biểu */}
-            <div className="items-center max-w-full flex flex-col gap-9 bg-gradient-to-r from-mathcha  via-white  to-mathcha rounded-3xl">
-              <h1 className="text-5xl font-bold font-mathcha-font">Học sinh tiêu biểu</h1>
+            <div className="items-center w-full flex flex-col gap-9 bg-mathcha rounded-3xl py-3">
+            {/* <div className="items-center max-w-full flex flex-col gap-9 bg-gradient-to-r from-mathcha  via-white  to-mathcha rounded-3xl"> */}
+              <h1 className="text-5xl font-bold">Chương trình giảng dạy</h1>
               <div className="flex items-center justify-between gap-10">
                   <div className="text-center w-1/4">
                     <img src="./assets/uom mam.png" alt="a" width={300}/>
-                    <span className="font-bold">123123123</span>
+                    <span className="font-bold">CHƯƠNG TRÌNH KHỞI ĐẦU</span>
+                    <div className="font-bold mb-5">(3 – 6 TUỔI)</div>                   
                     <p>Chương trình Khởi đầu trang bị cho trẻ nền tảng vững chắc về kiến thức Toán và thúc đẩy quá trình phát triển Tư duy.</p>
                   </div>
                   <div className="text-center w-1/4">
                   <img src="./assets/tieu hoc 1.png" alt="a" width={300}/>
-                    <span className="font-bold">123123123</span>
+                    <span className="font-bold">CHƯƠNG TRÌNH TIỂU HỌC</span>
+                    <div className="font-bold mb-5">(6 – 11 TUỔI)</div>
                     <p>Chương trình Khởi đầu trang bị cho trẻ nền tảng vững chắc về kiến thức Toán và thúc đẩy quá trình phát triển Tư duy.</p>
                   </div>
                   <div className="text-center w-1/4">
                   <img src="./assets/tieu hoc 2.png" alt="a" width={300}/>
-                    <span className="font-bold">123123123</span>
+                    <span className="font-bold">CHƯƠNG TRÌNH TRUNG HỌC</span>
+                    <div className="font-bold mb-5">(11 – 15 TUỔI)</div>
                     <p>Chương trình Khởi đầu trang bị cho trẻ nền tảng vững chắc về kiến thức Toán và thúc đẩy quá trình phát triển Tư duy.</p>
                   </div>
                   <div className="text-center w-1/4">
                   <img src="./assets/tieu hoc 3.png" alt="a" width={300}/>
-                    <span className="font-bold">123123123</span>
+                    <span className="font-bold">CHƯƠNG TRÌNH TRUNG HỌC</span>
+                    <div className="font-bold mb-5">(11 – 15 TUỔI)</div>
                     <p>Chương trình Khởi đầu trang bị cho trẻ nền tảng vững chắc về kiến thức Toán và thúc đẩy quá trình phát triển Tư duy.</p>
                   </div>           
               </div> 
@@ -189,8 +194,8 @@ export default function ParentPage() {
         </div>
 
         {/* Feedback */}
-        <div className="flex flex-col items-center gap-[70px] my-10">
-          <div className="text-5xl font-Cormorant leading-[58px] font-bold">
+        <div className="flex flex-col items-center gap-[70px] my-6 bg-mathcha py-2">
+          <div className="text-5xl leading-[58px] font-bold ">
             Đánh giá khóa học
           </div>
           <div className="flex">
@@ -270,7 +275,7 @@ export default function ParentPage() {
         </div>
 
         {/* Liên hệ  */}
-        <div className="flex flex-col items-center justify-center p-12 bg-orange-300 rounded-2xl mb-10">
+        <div className="flex flex-col items-center justify-center p-12 backdrop-blur-sm bg-mathcha-green/30  rounded-2xl mb-10">
           <div className="text-5xl font-Cormorant leading-[58px] font-bold mb-5">            
             Đăng ký tư vấn
           </div>
@@ -295,7 +300,7 @@ export default function ParentPage() {
                 <textarea rows={4} name="message" id="message" placeholder="Thắc mắc" className="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" defaultValue={""} />
               </div>
               <div>
-                <button className="hover:shadow-form rounded-md bg-mathcha-green py-3 px-8 text-base font-semibold text-white outline-none">
+                <button className="hover:shadow-form rounded-md bg-mathcha-orange py-3 px-8 text-base font-semibold  outline-none">
                   Gửi
                 </button>
               </div>

@@ -5,6 +5,7 @@ import axios from 'axios';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import Menu from '../../components/ContentManager/Menu';
+import Loading from '../../components/Loading/Loading';
 
 export default function DetailPage() {
    const [course, setCourse] = useState(null)
@@ -19,39 +20,42 @@ export default function DetailPage() {
   //   fetchChapters();
   // }, [id]);
 
-    useEffect(()=>{
-      getCourseById(courseId)
-        .then((res)=>{setCourse(res.data)})
-        .catch (console.log("error"))
-    }, [courseId])
+  useEffect(()=>{
+    getCourseById(courseId)
+      .then((res)=>{setCourse(res.data.data)})
+      .catch (console.log("error"))
+  }, [courseId])
 
-    useEffect(() => {
-      const fetchChaptersTopicsAndLessons = async () => {
-          const chaptersResponse = await axios.get(`http://localhost:8080/course/${courseId}/chapters`);
-          const chaptersData = chaptersResponse.data;
-          
-          const chaptersWithTopicsAndLessons = await Promise.all(chaptersData.map(async (chapter) => {
-            const topicsResponse = await axios.get(`http://localhost:8080/chapters/${chapter.chapter_id}/topics`);
-            const topicsData = topicsResponse.data;
-  
-            const topicsWithLessons = await Promise.all(topicsData.map(async (topic) => {
-              const lessonsResponse = await axios.get(`http://localhost:8080/topics/${topic.topic_id}/lessons`);
-              return { ...topic, lessons: lessonsResponse.data };
-            }));
-  
-            return { ...chapter, topics: topicsWithLessons };
+  useEffect(() => {
+    const fetchChaptersTopicsAndLessons = async () => {
+        const chaptersResponse = await axios.get(`http://localhost:8080/chapter/course/${courseId}`);
+        const chaptersData = chaptersResponse.data.data;
+        
+        const chaptersWithTopicsAndLessons = await Promise.all(chaptersData.map(async (chapter) => {
+          const topicsResponse = await axios.get(`http://localhost:8080/topic/chapter/${chapter.chapter_id}`);
+          const topicsData = topicsResponse.data.data;
+
+          const topicsWithLessons = await Promise.all(topicsData.map(async (topic) => {
+            const lessonsResponse = await axios.get(`http://localhost:8080/lessons/topic/${topic.topic_id}`);
+            return { ...topic, lessons: lessonsResponse.data.data };
           }));
-          
-          setChapters(chaptersWithTopicsAndLessons);
-      };
-  
-      fetchChaptersTopicsAndLessons();
-    }, [courseId]);
+
+          return { ...chapter
+            , topics: topicsWithLessons 
+          };
+        }));
+        
+        setChapters(chaptersWithTopicsAndLessons);
+    };
+    fetchChaptersTopicsAndLessons();
+  }, [courseId]);
 
   if (!course) {
-    return <div>Loading...</div>;
+    return <div className='flex flex-col items-center justify-center h-screen'><Loading/></div>;
   }
-
+  if (!chapters) {
+    return <div className='flex flex-col items-center justify-center h-screen'><Loading/></div>;
+}
   return (
      <div className="antialiased bg-orange-50 w-full min-h-screen text-black relative py-4">
         <div className="grid grid-cols-12 mx-auto gap-2 sm:gap-4 md:gap-6 lg:gap-10 xl:gap-14 max-w-7xl my-10 px-2">
@@ -63,7 +67,7 @@ export default function DetailPage() {
                     <div className="container py-6 mx-auto">
                         {/* Top */}
                         <div className="lg:w-4/5 mx-auto flex flex-wrap">
-                            <img alt="a" className="lg:w-1/2 w-full h-fit object-center rounded border border-gray-200" src={`/assets/Class/${course.image}`} />
+                            <img alt="a" className="lg:w-1/2 w-full h-fit object-center rounded border border-gray-200" src={`/assets/Class/${course.image}.png`} />
                             <div className="lg:w-1/2 w-full lg:pl-10 lg:mt-0">
                                 <h2 className="text-sm title-font text-gray-500 tracking-widest">BRAND NAME</h2>
                                 <h1 className="text-gray-900 text-3xl title-font font-medium mb-1">{course.title}</h1>

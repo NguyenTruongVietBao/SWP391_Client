@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 
 export default function StudentPage() {
   return (
-    <div className="bg-mathcha min-h-screen">
+    <div className="bg-cover min-h-screen" style={{backgroundImage: 'url("/assets/wallpaper-learning-student.png")'}}>
         {/* Navbar */}
         <div className=" bg-orange-100 text-blue-800 px-10 z-10 w-full">
             <div className="flex items-center justify-between text-5x1">
@@ -26,15 +26,15 @@ export default function StudentPage() {
         {/* Main */}
         <div className="flex flex-row py-12 px-10 ">
             {/* Menu */}
-            <div className="w-2/12 mr-10 border-2">
+            <div className="w-2/12 mr-10">
                 <div className="bg-white rounded-xl shadow-lg mb-6 px-6 py-4 items-center justify-center">
-                    <a href='/student' className="flex text-gray-600 hover:text-black my-4 mb-8 w-full">
+                    <a href='/learning' className="flex text-gray-600 hover:text-black my-4 mb-8 w-full">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                             <path strokeLinecap="round" strokeLinejoin="round" d="m2.25 12 8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
                         </svg>
                         <span> Home</span>
                     </a>
-                    <a href='/student' className="flex text-gray-600 hover:text-black mt-8 my-4 mb-8 w-full">
+                    <a href='/learning' className="flex text-gray-600 hover:text-black mt-8 my-4 mb-8 w-full">
                       <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25" />
                       </svg>
@@ -63,12 +63,12 @@ export default function StudentPage() {
                 </div>
             </div>
             {/* Body */}
-            <div className="w-10/12 ">
+            <div className="w-10/12">
                 <div className="grid grid-cols-3 gap-10">
                     <div className="bg-no-repeat bg-blue-100 border-4 border-black rounded-xl h-120 py-3 flex flex-col items-center justify-center gap-5">
                         <img src='./assets/Class/class-1.png' alt='image_course' className='rounded-xl'/>
                         <p className="text-5xl text-indigo-900"><strong>Lớp 1</strong></p>
-                        <Link to={'./detail/1'} className="bg-orange-300 text-xl text-white rounded-full px-8 py-2 border-2 border-black"><strong>Học</strong></Link>
+                        <Link to={'./course/1'} className="bg-orange-300 text-xl text-white rounded-full px-8 py-2 border-2 border-black"><strong>Học</strong></Link>
                     </div>
                     <div className="bg-no-repeat bg-green-100 border-4 border-black rounded-xl h-120 py-3 flex flex-col items-center justify-center gap-5">
                         <img src='./assets/Class/class-1.png' alt='image_course' className='rounded-xl'/>

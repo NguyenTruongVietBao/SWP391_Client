@@ -21,7 +21,7 @@ module.exports={
           'admin-wallpaper': "url('/assets/admin-wallpaper.png')"
         },
         fontFamily: { 
-          "mathcha-font": ['LXGW WenKai TC', 'sans-cursive'] 
+          "mathcha-font": ['Exo 2', 'sans-serif'] 
         } 
       },
     },

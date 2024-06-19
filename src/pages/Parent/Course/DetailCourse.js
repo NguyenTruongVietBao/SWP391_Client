@@ -5,6 +5,7 @@ import { getChapterByCourseId, getCourseById } from '../../../services/CourseSer
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import axios from 'axios';
+import Loading from '../../../components/Loading/Loading';
 
 export default function DetailCourse() {
   const [course, setCourse] = useState(null)
@@ -50,12 +51,12 @@ export default function DetailCourse() {
     }, [courseId]);
 
   if (!course) {
-    return <div>Loading...</div>; // Show a loading message while course data is being fetched
+    return <div className='flex justify-center my-60'><Loading/></div>; // Show a loading message while course data is being fetched
   }
 
   return (
-    <div className="bg-gradient-to-r from-mathcha via-white to-mathcha pb-10 mt-8">
-      <div className="mt-3 mx-auto max-w-7xl">
+    <div className="bg-gradient-to-r from-mathcha via-white to-mathcha pb-10 ">
+      <div className="pt-10 mx-auto max-w-7xl">
         <div className="mx-auto grid max-w-2xl grid-cols-1 items-start gap-x-8 gap-y-16 sm:gap-y-24 lg:mx-0 lg:max-w-none lg:grid-cols-2">
           {/* Left*/}
           <div className="ml-10">

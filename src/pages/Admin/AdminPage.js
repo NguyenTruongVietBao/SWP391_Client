@@ -3,6 +3,9 @@ import { deleteUser, listUsers } from '../../services/UserService/UserService';
 import { Button, Dialog, DialogPanel, DialogTitle, Transition, TransitionChild } from '@headlessui/react';
 import { Link } from 'react-router-dom';
 import Menu from '../../components/Admin/Menu';
+import { toast } from 'react-toastify';
+import api from '../../config/axios';
+//Confirm to delete
 
 export default function AdminPage() {
     const [users, setUsers] = useState([]);
@@ -18,7 +21,7 @@ export default function AdminPage() {
     const getAllUsers = () => {
         listUsers()
             .then((res) => { 
-                setUsers(res.data); 
+                setUsers(res.data.data); 
                 setError(null);
             })
             .catch((error) => { 
@@ -26,7 +29,6 @@ export default function AdminPage() {
                 setError('Error fetching users. Please try again later.');
             });
     };
-
 
     const openDialog = (user) => {
         setSelectedUser(user);
@@ -38,19 +40,34 @@ export default function AdminPage() {
         setSelectedUser(null);
     };
 
-    const handleDelete = () => {
-        if (selectedUser) {
-            deleteUser(selectedUser.user_id)
-                .then(() => {
-                    getAllUsers();
-                    closeDialog();
-                })
-                .catch((error) => {
-                    console.error('Error deleting user:', error);
-                    setError('Error deleting user. Please try again later.');
-                    closeDialog();
-                });
+    const handleDelete = async() => {
+        // if (selectedUser) {
+        //     deleteUser(selectedUser.user_id)
+        //         .then(() => {
+        //             getAllUsers();
+        //             closeDialog();
+        //         })
+        //         .catch((error) => {
+        //             console.error('Error deleting user:', error);
+        //             setError('Error deleting user. Please try again later.');
+        //             closeDialog();
+        //         });
+        // }
+
+        try{
+            if(selectedUser) {
+                console.log(selectedUser)
+                setUsers(users.filter(user => user.user_id != selectedUser.user_id))
+                
+                closeDialog();
+                const response =  await deleteUser(selectedUser.user_id);
+                console.log(response)
+
+            }
+        }catch(e) {
+            toast.error(e.response.data)
         }
+
     };
 
     return (
@@ -97,7 +114,7 @@ export default function AdminPage() {
                                             <td className="py-3 px-2">{user.email}</td>
                                             <td className="py-3 px-2">{user.phone}</td>
                                             <td className="py-3 px-2">{user.address}</td>
-                                            <td className="py-3 px-2">{user.role_id}</td>
+                                            <td className="py-3 px-2">{user.role}</td>
                                             <td className="py-3 px-2">
                                                 <div className="inline-flex items-center space-x-3">
                                                     <Link to={`./update/${user.user_id}`} className="hover:text-white">

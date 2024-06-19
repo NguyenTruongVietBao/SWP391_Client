@@ -3,6 +3,7 @@ import { Button } from '@headlessui/react'
 import { listCourses } from '../../services/CourseService/CourseService'
 import {Link} from 'react-router-dom'
 import Menu from '../../components/ContentManager/Menu';
+import Loading from '../../components/Loading/Loading';
 
 export default function ContentManagerPage() {
     const [courses, setCourses] = useState([]);
@@ -21,6 +22,9 @@ export default function ContentManagerPage() {
             .catch((error) => {
                 console.log('Error fetching courses:', error);
             });
+    }
+    if (!courses) {
+        return <div className='flex flex-col items-center justify-center h-screen'><Loading/></div>;
     }
     return (
         <div className="antialiased bg-orange-50 w-full min-h-screen text-black relative py-4">
