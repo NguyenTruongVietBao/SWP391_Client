@@ -1,34 +1,59 @@
 import React, { useEffect, useState } from 'react';
 import './DetailCourse.css'
 import { useParams } from 'react-router-dom';
-import { getChapterByCourseId, getCourseById } from '../../../services/CourseService/CourseService';
-import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react'
+import { getCourseById } from '../../../services/CourseService/CourseService';
+import { Button, Dialog, DialogPanel, DialogTitle, Disclosure, DisclosureButton, DisclosurePanel, Transition, TransitionChild } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
 import axios from 'axios';
 import Loading from '../../../components/Loading/Loading';
+import api from '../../../config/axios';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../../redux/features/counterSlice';
 
 export default function DetailCourse() {
-  const [course, setCourse] = useState(null)
-  const [chapters, setChapters] = useState([]);
-  const {courseId} = useParams();
-  
-  // useEffect(() => {
-  //   const fetchChapters = async () => {
-  //     const response = await axios.get(`http://localhost:8080/course/${id}/chapters`);
-  //     setChapters(response.data);
-  //   };
-  //   fetchChapters();
-  // }, [id]);
+    const [course, setCourse] = useState(null);
+    const [chapters, setChapters] = useState([]);
+    const {courseId} = useParams();
+    const [students, setStudents] = useState([]);
+    const user = useSelector(selectUser);
+    const userId = user.user_id;
+    let [isOpen, setIsOpen] = useState(false)
 
+    // open close dialog
+    function open() {
+      setIsOpen(true)
+    }
+    function close() {
+      setIsOpen(false)
+    }
+
+    //get course by id
     useEffect(()=>{
       getCourseById(courseId)
         .then((res)=>{setCourse(res.data.data)})
         .catch (console.log("error"))
     }, [courseId])
 
+    //get student by parent id
+    useEffect(()=>{
+      const getStudentByParentId = async (userId) => {
+        try {
+            const response = await api.get(`/user/student/${userId}`);
+            return response;
+        } catch (err) {
+            throw err;
+        }
+      }; 
+      getStudentByParentId(userId)
+        .then((res)=>{setStudents(res.data.data)})
+        .catch (console.log("error"))
+    }, [userId])
+     
+
+    //get chapter topic lesson by parent id
     useEffect(() => {
       const fetchChaptersTopicsAndLessons = async () => {
-          const chaptersResponse = await axios.get(`http://localhost:8080/chapter/course/${courseId}`);
+          const chaptersResponse = await api.get(`http://localhost:8080/chapter/course/${courseId}`);
           const chaptersData = chaptersResponse.data.data;
           
           const chaptersWithTopicsAndLessons = await Promise.all(chaptersData.map(async (chapter) => {
@@ -36,7 +61,7 @@ export default function DetailCourse() {
             const topicsData = topicsResponse.data.data;
   
             const topicsWithLessons = await Promise.all(topicsData.map(async (topic) => {
-              const lessonsResponse = await axios.get(`http://localhost:8080/lessons/topic/${topic.topic_id}`);
+              const lessonsResponse = await api.get(`http://localhost:8080/lessons/topic/${topic.topic_id}`);
               return { ...topic, lessons: lessonsResponse.data.data };
             }));
   
@@ -50,9 +75,15 @@ export default function DetailCourse() {
       fetchChaptersTopicsAndLessons();
     }, [courseId]);
 
-  if (!course) {
-    return <div className='flex justify-center my-60'><Loading/></div>; // Show a loading message while course data is being fetched
-  }
+    //payment
+    useEffect(() => {
+      
+    });
+
+    //loading
+    if (!course) {
+      return <div className='flex justify-center my-60'><Loading/></div>; // Show a loading message while course data is being fetched
+    }
 
   return (
     <div className="bg-gradient-to-r from-mathcha via-white to-mathcha pb-10 ">
@@ -202,7 +233,7 @@ export default function DetailCourse() {
                     </h1>
                   </div>
                   <div>
-                    <button className="button-30">Học ngay</button>
+                    <button onClick={open} className="button-30">Mua ngay</button>
                   </div>
                 </div>
               </figure>
@@ -243,10 +274,47 @@ export default function DetailCourse() {
               </div>
             </dl>
           </div>
-
-
         </div>
       </div>
+      <>
+        <Transition appear show={isOpen}>
+          <Dialog as="div" className="relative z-10 focus:outline-none" onClose={close}>
+            <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+              <div className="flex min-h-full items-center justify-center p-4">
+                <TransitionChild
+                  enter="ease-out duration-300"
+                  enterFrom="opacity-0 transform-[scale(95%)]"
+                  enterTo="opacity-100 transform-[scale(100%)]"
+                  leave="ease-in duration-200"
+                  leaveFrom="opacity-100 transform-[scale(100%)]"
+                  leaveTo="opacity-0 transform-[scale(95%)]"
+                >
+                  <DialogPanel className="w-full max-w-xl h-96 rounded-xl bg-black/55 p-6 backdrop-blur-3xl">
+                    <DialogTitle className="text-4xl font-medium text-center text-white">
+                      Chọn học sinh cần học 
+                    </DialogTitle>
+                    <div className='flex justify-evenly my-10'>
+                    {students.map((student) => (
+                      <button className='flex items-center w-36 h-36' type='checkbox'>
+                          {student.student_id}
+                      </button>
+                    ))}                             
+                    </div>
+                    <div className="mt-4 flex justify-end">
+                      <Button
+                        className="gap-2 rounded-md bg-gray-50 py-3 px-4 text-xl font-semibold text-mathcha-green shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white"
+                        onClick={close}                    
+                      >
+                        Mua ngay
+                      </Button>
+                    </div>
+                  </DialogPanel>
+                </TransitionChild>
+              </div>
+            </div>
+          </Dialog>
+        </Transition>
+      </>
     </div>
   );
 }

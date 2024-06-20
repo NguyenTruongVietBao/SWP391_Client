@@ -5,6 +5,8 @@ import { Link } from 'react-router-dom';
 import Menu from '../../components/Admin/Menu';
 import { toast } from 'react-toastify';
 import api from '../../config/axios';
+import { useDispatch } from 'react-redux';
+import { logout } from '../../redux/features/counterSlice';
 //Confirm to delete
 
 export default function AdminPage() {
@@ -13,47 +15,34 @@ export default function AdminPage() {
     const [isOpen, setIsOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState(null);
 
+    // Get all users
     useEffect(() => {
+        const getAllUsers = () => {
+            listUsers()
+                .then((res) => { 
+                    setUsers(res.data.data); 
+                    setError(null);
+                })
+                .catch((error) => { 
+                    console.error('Error fetching users:', error); 
+                    setError('Error fetching users. Please try again later.');
+                });
+        };
         getAllUsers();
     }, []);
 
-    // Get all users
-    const getAllUsers = () => {
-        listUsers()
-            .then((res) => { 
-                setUsers(res.data.data); 
-                setError(null);
-            })
-            .catch((error) => { 
-                console.error('Error fetching users:', error); 
-                setError('Error fetching users. Please try again later.');
-            });
-    };
-
+    // open close Dialog
     const openDialog = (user) => {
         setSelectedUser(user);
         setIsOpen(true);
     };
-
     const closeDialog = () => {
         setIsOpen(false);
         setSelectedUser(null);
     };
 
+    // Delete user
     const handleDelete = async() => {
-        // if (selectedUser) {
-        //     deleteUser(selectedUser.user_id)
-        //         .then(() => {
-        //             getAllUsers();
-        //             closeDialog();
-        //         })
-        //         .catch((error) => {
-        //             console.error('Error deleting user:', error);
-        //             setError('Error deleting user. Please try again later.');
-        //             closeDialog();
-        //         });
-        // }
-
         try{
             if(selectedUser) {
                 console.log(selectedUser)

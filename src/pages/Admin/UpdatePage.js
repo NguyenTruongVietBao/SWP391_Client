@@ -457,7 +457,7 @@ export default function UpdatePage() {
         }
         if (!data.phone) {
             errors.phone = 'Phone is required';
-        } else if (!/^\d{3}-\d{3}-\d{4}$/.test(data.phone)) {
+        } else if (!/^09\d{8}$/.test(data.phone)) {
             errors.phone = 'Phone number is invalid. Format: 123-456-7890';
         }
         if (!data.address) errors.address = 'Address is required';

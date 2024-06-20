@@ -1,7 +1,16 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom'
+import { logout } from '../../redux/features/counterSlice';
 
 export default function StudentPage() {
+    const navigate = useNavigate();
+    //logout
+    const dispatch = useDispatch();
+    const handleLogout = () => {
+        navigate('/learning/login')
+        dispatch(logout())
+    }
   return (
     <div className="bg-cover min-h-screen" style={{backgroundImage: 'url("/assets/wallpaper-learning-student.png")'}}>
         {/* Navbar */}
@@ -54,12 +63,12 @@ export default function StudentPage() {
                         </svg>
                         <span> Profile</span>
                     </a>
-                    <a href className="flex text-gray-600 hover:text-black my-4 w-full">
+                    <span className="flex text-gray-600 hover:text-black my-4 w-full">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
                           <path strokeLinecap="round" strokeLinejoin="round" d="M8.25 9V5.25A2.25 2.25 0 0 1 10.5 3h6a2.25 2.25 0 0 1 2.25 2.25v13.5A2.25 2.25 0 0 1 16.5 21h-6a2.25 2.25 0 0 1-2.25-2.25V15m-3 0-3-3m0 0 3-3m-3 3H15" />
                         </svg>
-                        <span> Log out</span>
-                    </a>
+                        <button onClick={handleLogout}> Log out</button>
+                    </span>
                 </div>
             </div>
             {/* Body */}

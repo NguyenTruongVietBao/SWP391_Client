@@ -1,7 +1,16 @@
 import React from 'react'
-import { Link } from 'react-router-dom'
+import { useDispatch } from 'react-redux';
+import { Link, useNavigate } from 'react-router-dom'
+import { logout } from '../../redux/features/counterSlice';
 
 export default function Menu() {
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const handleLogout = () => {
+        navigate('/login')
+        dispatch(logout())
+    }
+    
   return (
     <div id="menu" className="bg-white/10 col-span-3 rounded-lg p-4">
         <h1 className="font-bold text-lg lg:text-3xl bg-gradient-to-br from-white via-white/50 to-transparent bg-clip-text text-transparent mb-2">
@@ -39,7 +48,7 @@ export default function Menu() {
                 </div>
             </span>
             {/* Logout */}
-            <a href='/' className="hover:bg-white/10 transition duration-150 ease-linear rounded-lg py-3 px-2 group">
+            <span className="hover:bg-white/10 transition duration-150 ease-linear rounded-lg py-3 px-2 group">
                 <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 space-x-2 items-center">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -47,10 +56,10 @@ export default function Menu() {
                         </svg>
                     </div>
                     <div>
-                        <p className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Logout</p>
+                        <button onClick={handleLogout} className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Logout</button>
                     </div>
                 </div>
-            </a>
+            </span>
         </div>
         <p className="text-sm text-center text-gray-900">v2.0.3 | © 2024 VietBao</p>
     </div>

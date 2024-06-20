@@ -5,6 +5,8 @@ import api from '../../config/axios'
 import { useDispatch } from 'react-redux'
 import { login } from '../../redux/features/counterSlice'
 import { toast } from 'react-toastify'
+import Navbar from '../../components/Parent/Header/Navbar'
+import Footer from '../../components/Parent/Footer/Footer'
 
 export default function Login() {
 
@@ -33,71 +35,73 @@ export default function Login() {
             }else if(role === 'CONTENT_MANAGER'){
                 navigate("/content-manager")
             }
-            
         }catch(e) {
             console.log(e);
         }
     }
   return (
     <>
-        <div className=" border-[5px] border-mathcha-orange w-full "></div>
-        <header className=" bg-cover h-screen" style={{backgroundImage: 'url("/assets/wallpaper-login.png")'}}>
-            <div className="content px-8 py-2">
-                <div className="body mt-20 mx-8">
+    <Navbar/>
+    <div className=" border-[5px] border-mathcha-orange w-full "></div>
+    <header className=" bg-cover h-screen" style={{backgroundImage: 'url("/assets/wallpaper-login.png")'}}>
+        <div className="content px-8 py-2">
+            <div className="body mt-10 mx-8">
                 <div className="md:flex items-center justify-between">
+                    {/* Left */}
                     <div className="w-full md:w-1/2 mr-auto" style={{textShadow: '0 20px 40px hsla(0,0%,0%,111)'}}>
-                    <h1 className="text-4xl font-bold text-white tracking-wide">Bạn</h1>
-                    <h2 className=" text-2xl font-bold text-white tracking-wide"> <span className="text-black">chưa có</span> tài khoản ?</h2>
-                    <p className="text-white">
-                        .
-                    </p>
-                    <span className="mt-9 text-white "><Link to="/register" className="text-black rounded-xl text-lg ml-2 font-bold py-2 px-2 bg-mathcha-orange">Đăng ký</Link></span>
+                        <h1 className="text-4xl font-bold text-white tracking-wide">Bạn</h1>
+                        <h2 className=" text-2xl font-bold text-white tracking-wide"> <span className="text-black">chưa có</span> tài khoản ?</h2>
+                        <p className="text-white">
+                            .
+                        </p>
+                        <span className="mt-9 text-white "><Link to="/register" className="text-black rounded-xl text-lg ml-2 font-bold py-2 px-2 bg-mathcha-orange hover:bg-mathcha">Đăng ký</Link></span>
                     </div>
+                    {/* Right */}
                     <div className="w-full md:max-w-md mt-6">
-                    <div className="card bg-white/5 p-6 backdrop-blur-2xl shadow-2xl rounded-lg px-4 py-4  mb-6 ">
-                        <form >
-                        <div className="flex items-center justify-center">
-                            <h2 className="text-2xl font-bold tracking-wide">
-                            Welcome back
-                            </h2> 
+                        <div className="flex items-center justify-end mb-5">
+                            <Link to={'/learning/login'} className='bg-pink-200 text-xl font-bold px-10 py-1 rounded-lg text-gray-700 hover:bg-mathcha'>Trang của bé</Link>
                         </div>
-                        <h2 className="text-xl text-center font-semibold text-gray-800 mb-2">
-                            Sign In
-                        </h2>
-                        <input type="text" 
-                                className="rounded px-4 w-full py-3 bg-gray-50  border border-gray-400 mb-6 text-gray-700 placeholder-gray-700 focus:bg-white focus:outline-none" 
-                                placeholder="Email seror phone "
-                                value={username}
-                                onChange={(e)=> setUsername(e.target.value)}
-                        />
-
-                        <input type="password" 
-                                className="rounded px-4 w-full py-3 bg-gray-50  border border-gray-400 mb-4 text-gray-700 placeholder-gray-700 focus:bg-white focus:outline-none" 
-                                placeholder="Password" 
-                                value={password}
-                                onChange={(e)=> setPassword(e.target.value)}
-                        />
-                        <div className="flex items-center justify-between">
-                            <a href="/" className="text-gray-600">Forgot Password?</a>
-                            <button onClick={handleLogin} className="bg-gray-800 text-gray-200 font-bold px-4 py-3 rounded"
-                                    type='submit'
-                            >
-                                Login
-                            </button>
+                        <div className="card bg-white/5 p-6 backdrop-blur-2xl shadow-2xl rounded-lg px-4 py-4  mb-6 ">                          
+                            <form >
+                            <div className="flex items-center justify-center my-7">
+                                <h2 className="text-4xl font-bold tracking-wide">
+                                    Welcome to <span className='text-mathcha-green'>Mathcha</span>
+                                </h2> 
+                            </div>
+                            <input  type="text" 
+                                    className="rounded px-4 w-full py-3 bg-gray-50  border border-gray-400 mb-6 text-gray-700 placeholder-gray-700 focus:bg-white focus:outline-none" 
+                                    placeholder="Tên đăng nhập"
+                                    value={username}
+                                    onChange={(e)=> setUsername(e.target.value)}
+                            />
+                            <input  type="password" 
+                                    className="rounded px-4 w-full py-3 bg-gray-50  border border-gray-400 mb-4 text-gray-700 placeholder-gray-700 focus:bg-white focus:outline-none" 
+                                    placeholder="Mật khẩu" 
+                                    value={password}
+                                    onChange={(e)=> setPassword(e.target.value)}
+                            />                      
+                            <div className="flex items-center justify-between">
+                                <a href="/" className="text-gray-700">Quên mật khẩu ?</a>
+                                <button onClick={handleLogin} className="bg-gray-800 text-gray-200 font-bold px-3 py-3 rounded"
+                                        type='submit'
+                                >
+                                    Đăng nhập
+                                </button>
+                            </div>
+                            <div className='flex items-center justify-center my-2'>
+                                Đăng nhập bằng Google
+                            </div>
+                            <div className='flex items-center justify-center'>
+                                Đăng nhập bằng Phone
+                            </div>
+                            </form>         
                         </div>
-                        <div className='flex items-center justify-center mb-2'>
-                            login with Google
-                        </div>
-                        <div className='flex items-center justify-center'>
-                            login with Phone
-                        </div>
-                        </form>         
                     </div>
-                    </div>
-                </div>
                 </div>
             </div>
-        </header>
+        </div>
+    </header>
+    <Footer/>
     </>
   )
 }
