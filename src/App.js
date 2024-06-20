@@ -27,22 +27,18 @@ function App() {
       if(user?.role === "PARENT"){
         return  <Navigate to={"/"} />
       }
+      if(user?.role === "STUDENT"){
+        return  <Navigate to={"/learning"} />
+      }
     }
     else return children;
   }
 
   return (
     <div className="App">
-      <ul className="flex gap-5 ">
-        <li><Link to={"/admin"}>Admin</Link></li>
-        <li><Link to={"/content-manager"}>Content Manager</Link></li>
-        <li><Link to={"/manager"}>Manager</Link></li>
-        <li><Link to={"/learning"}>Student</Link></li>
-        <li><Link to={"/learning/login"}>Student login</Link></li>
-        <li><Link to={"/"}>Home</Link></li>      
-      </ul>
       <Routes>
         <Route path="/*" element={<ParentRouter/>}></Route>
+        
         <Route path="/admin/*" element={
           <PrivateRoute role={"ADMIN"}>
             <AdminRouter/>

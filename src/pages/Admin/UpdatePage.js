@@ -437,7 +437,7 @@ export default function UpdatePage() {
 
     const getUserById = async (id) => {
         try {
-            const response = await api.get(`http://localhost:8080/user/get/${id}`);
+            const response = await api.get(`/user/get/${id}`);
             return response;
         } catch (err) {
             throw err;
@@ -483,7 +483,7 @@ export default function UpdatePage() {
         }
 
         try {
-            await api.put(`http://localhost:8080/user/${userId}`, updatedUser);
+            await api.put(`/user/${userId}`, updatedUser);
             toast.success('User updated successfully!');
             navigate('/admin')
         } catch (err) {

@@ -149,7 +149,7 @@ export default function CreatePage() {
         }
 
         try {
-            await api.post('http://localhost:8080/user/create', newUser);
+            await api.post('http://159.223.39.71:8080/user/create', newUser);
             toast.success('User updated successfully!');
             navigate('/admin');
         } catch (err) {
