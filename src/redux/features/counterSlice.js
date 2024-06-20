@@ -4,7 +4,7 @@ export const counterSlice = createSlice({
   name: "user",
   initialState: null,
   reducers: {
-    // nhận vào stay hien tai va update bang payload
+    // nhận vào state hien tai va update bang payload
     login: (state, actions) => {
       state = actions.payload;
       return state;

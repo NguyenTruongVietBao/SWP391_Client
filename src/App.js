@@ -5,7 +5,6 @@ import ParentRouter from "./routes/ParentRouter";
 import AdminRouter from "./routes/AdminRouter";
 import { Link,Navigate,Route, Routes   } from "react-router-dom";
 // import Error404 from "./components/Error404/Error404";
-import AdminTable from "./components/Admin/AdminTable";
 import { useSelector } from "react-redux";
 import { selectUser } from "./redux/features/counterSlice";
 import { toast } from "react-toastify";
@@ -16,7 +15,6 @@ function App() {
     const user = useSelector(selectUser);
     if(role !== user?.role) {
       toast.error("You don't have permission to access !!!")
-      // return  <Navigate to={"/"} />
       if(user?.role === "ADMIN"){
         return  <Navigate to={"/admin"} />
       }
@@ -63,11 +61,13 @@ function App() {
           </PrivateRoute>
         }>          
         </Route>
-        <Route path="/learning/*" element={
+        {/* <Route path="/learning/*" element={
           <PrivateRoute role={"STUDENT"}>
             <StudentRouter/>
           </PrivateRoute>
         }>          
+        </Route> */}
+        <Route path="/learning/*" element={<StudentRouter/>}>          
         </Route>
       </Routes>
     </div>

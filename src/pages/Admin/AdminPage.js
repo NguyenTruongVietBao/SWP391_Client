@@ -57,17 +57,14 @@ export default function AdminPage() {
         try{
             if(selectedUser) {
                 console.log(selectedUser)
-                setUsers(users.filter(user => user.user_id != selectedUser.user_id))
-                
+                setUsers(users.filter(user => user.user_id !== selectedUser.user_id))
                 closeDialog();
                 const response =  await deleteUser(selectedUser.user_id);
                 console.log(response)
-
             }
         }catch(e) {
             toast.error(e.response.data)
         }
-
     };
 
     return (
@@ -154,7 +151,7 @@ export default function AdminPage() {
                                     <DialogTitle as="h3" className="text-base/7 font-medium text-white">
                                         Confirm Deletion
                                     </DialogTitle>
-                                    <p className="mt-2 text-sm/6 text-white/50">
+                                    <p className="mt-2 text-sm/6 text-white/90">
                                         Are you sure you want to delete this user? This action cannot be undone.
                                     </p>
                                     <div className="mt-4 flex justify-end gap-2">
