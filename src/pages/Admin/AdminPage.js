@@ -69,7 +69,7 @@ export default function AdminPage() {
                             <h1 className="font-bold py-4 uppercase">List of users</h1>
                             <Button className="inline-flex items-center gap-2 rounded-md bg-gradient-to-br from-black/60 via-black/80 to-black/60 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white">
                                 <Link to={'./create'} className='flex'>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 mr-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 mr-2 ">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>
                                     Add user
@@ -83,7 +83,6 @@ export default function AdminPage() {
                                         <th className="text-left py-3 px-2 rounded-l-lg">Name</th>
                                         <th className="text-left py-3 px-2">Email</th>
                                         <th className="text-left py-3 px-2">Phone</th>
-                                        <th className="text-left py-3 px-2">Address</th>
                                         <th className="text-left py-3 px-2">Role</th>
                                         <th className="text-left py-3 px-2 rounded-r-lg">Actions</th>
                                     </tr>
@@ -93,13 +92,12 @@ export default function AdminPage() {
                                         <tr key={index} className="border-b border-gray-800">
                                             <td className="py-3 px-2 font-bold">
                                                 <div className="inline-flex space-x-3 items-center">
-                                                    <span><img className="rounded-full w-8 h-8" src="/assets/admin-avatar.png" alt="s" /></span>
+                                                    <span><img className="rounded-full min-w-8 h-8" src="/assets/admin-avatar.png" alt="s" /></span>
                                                     <span>{user.last_name} {user.first_name}</span>
                                                 </div>
                                             </td>
                                             <td className="py-3 px-2">{user.email}</td>
                                             <td className="py-3 px-2">{user.phone}</td>
-                                            <td className="py-3 px-2">{user.address}</td>
                                             <td className="py-3 px-2">{user.role}</td>
                                             <td className="py-3 px-2">
                                                 <div className="inline-flex items-center space-x-3">

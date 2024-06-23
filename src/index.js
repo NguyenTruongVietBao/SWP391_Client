@@ -7,7 +7,7 @@ import reportWebVitals from './reportWebVitals';
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
 import { persistor, store } from './redux/store';
-import { ToastContainer, toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 // import 'bootstrap/dist/css/bootstrap.min.css'
 

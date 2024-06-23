@@ -1,9 +1,11 @@
 import React from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { useDispatch } from 'react-redux';
-import { logout } from '../../redux/features/counterSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { logout, selectUser } from '../../redux/features/counterSlice';
 
 export default function Menu() {
+    const user = useSelector(selectUser);
+
     const navigate = useNavigate();
     //logout
     const dispatch = useDispatch();
@@ -14,26 +16,25 @@ export default function Menu() {
   return (
     <div id="menu" className="bg-black/10 col-span-3 rounded-lg p-4 ">
         <h1 className="font-bold text-lg lg:text-3xl bg-gradient-to-br from-black via-black/70 to-transparent bg-clip-text text-transparent">
-            ContentManager<span className="text-indigo-400">.</span>
+            Content 
+            <p>Manager<span className="text-indigo-400">.</span></p>
         </h1>
-        <p className="text-slate-800 text-sm mb-2">Welcome back</p>
         {/* User info */}
-        <a href="/" className="flex flex-col space-y-2 md:space-y-0 md:flex-row mb-5 items-center md:space-x-2 hover:bg-white/10 group transition duration-150 ease-linear rounded-lg group w-full py-3 px-2">
+        <Link to={'/content-manager/update'} className="flex flex-col space-y-2 md:space-y-0 md:flex-row mb-5 items-center md:space-x-2 hover:bg-white/10 group transition duration-150 ease-linear rounded-lg group w-full py-3 px-2">
             <div>
-                <img className="rounded-full w-10 h-10 relative object-cover" src="https://img.freepik.com/free-photo/no-problem-concept-bearded-man-makes-okay-gesture-has-everything-control-all-fine-gesture-wears-spectacles-jumper-poses-against-pink-wall-says-i-got-this-guarantees-something_273609-42817.jpg?w=1800&t=st=1669749937~exp=1669750537~hmac=4c5ab249387d44d91df18065e1e33956daab805bee4638c7fdbf83c73d62f125" alt="a" />
+                <img className="rounded-full w-10 h-10 relative object-cover" src="./assets/admin-avatar.png" alt="a" />
             </div>
             <div>
-                <p className="font-medium group-hover:text-indigo-400 leading-4">Viet Bao</p>
-                <span className="text-xs text-slate-800">ahihi</span>
+                <p className="font-medium group-hover:text-indigo-400 leading-4">{user.username}</p>
             </div>
-        </a>
+        </Link>
         
         <hr className="my-2 border-slate-700" />
 
         {/* Menu */}
         <div id="menu" className="flex flex-col space-y-2 my-5">
             {/* Dashboard */}
-            <span href='#statistic' className="hover:bg-white/10 transition duration-150 ease-linear rounded-lg py-3 px-2 group">
+            <span  className="hover:bg-white/10 transition duration-150 ease-linear rounded-lg py-3 px-2 group">
                 <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 space-x-2 items-center">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 group-hover:text-indigo-400">
@@ -41,7 +42,7 @@ export default function Menu() {
                         </svg>
                     </div>
                     <div>       
-                        <Link to={'./'}>            
+                        <Link to={'/content-manager'}>            
                         <p className="font-bold text-base lg:text-lg text-black leading-4 group-hover:text-indigo-400">Dashboard</p>
                         <p className="text-slate-900 text-sm hidden md:block">Manage course</p>                           
                         </Link>

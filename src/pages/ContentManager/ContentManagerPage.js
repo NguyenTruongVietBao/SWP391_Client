@@ -4,6 +4,8 @@ import { listCourses } from '../../services/CourseService/CourseService'
 import {Link} from 'react-router-dom'
 import Menu from '../../components/ContentManager/Menu';
 import Loading from '../../components/Loading/Loading';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/features/counterSlice';
 
 export default function ContentManagerPage() {
     const [courses, setCourses] = useState([]);

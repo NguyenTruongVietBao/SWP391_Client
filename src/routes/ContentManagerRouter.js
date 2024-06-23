@@ -4,6 +4,7 @@ import { Route, Routes } from 'react-router-dom'
 import ReviewPage from '../pages/ContentManager/ReviewPage'
 import DetailPage from '../pages/ContentManager/DetailPage'
 import CreatePage from '../pages/ContentManager/CreatePage'
+import ProfilePage from '../pages/ContentManager/ProfilePage'
 import UpdatePage from '../pages/ContentManager/UpdatePage'
 
 export default function ContentManagerRouter() {
@@ -14,6 +15,7 @@ export default function ContentManagerRouter() {
           <Route path='create' element={<CreatePage/>}></Route>
           <Route path='update/:courseId' element={<UpdatePage/>}></Route>
           <Route path='review' element={<ReviewPage/>}></Route>
+          <Route path='profile' element={<ProfilePage/>}></Route>
           <Route path='detail/:courseId' element={<DetailPage/>}></Route>
         </Routes>
      </div>

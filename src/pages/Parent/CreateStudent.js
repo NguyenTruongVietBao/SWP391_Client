@@ -1,10 +1,13 @@
-import React, { useState } from 'react'
-import Menu from '../../components/Admin/Menu'
-import api from '../../config/axios';
+import React, { useState } from 'react';
+import Menu from '../../components/Parent/Body/Menu';
 import { toast } from 'react-toastify';
+import api from '../../config/axios';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/features/counterSlice';
 import { useNavigate } from 'react-router-dom';
 
-export default function CreatePage() {
+export default function CreateStudent() {
+    const user = useSelector(selectUser)
     const [formErrors, setFormErrors] = useState({});
     const [error, setError] = useState(null);
     const navigate = useNavigate();
@@ -22,7 +25,6 @@ export default function CreatePage() {
         }
         if (!data.phone) errors.phone = 'Phone is required';   
         if (!data.address) errors.address = 'Address is required';
-        if (!data.role) errors.role = 'Role is required';
         return errors;
     };
 
@@ -36,8 +38,7 @@ export default function CreatePage() {
             password: e.target.password.value,
             email: e.target.email.value,
             phone: e.target.phone.value,
-            address: e.target.address.value,
-            role: e.target.role.value,
+            address: e.target.address.value
         };
 
         const errors = validateForm(newUser);
@@ -48,9 +49,9 @@ export default function CreatePage() {
         }
 
         try {
-            await api.post('/user/create', newUser);
+            await api.post(`/student/user/${user.user_id}`, newUser);
             toast.success('User updated successfully!');
-            navigate('/admin');
+            navigate('/');
         } catch (err) {
             console.log(newUser);
             console.error('Error adding user:', err);
@@ -59,19 +60,11 @@ export default function CreatePage() {
     };
 
     return (
-        <div
-            className="antialiased w-full min-h-screen text-slate-100 relative py-4"
-            style={{ backgroundImage: 'url("/assets/admin-wallpaper.png")' }}
-        >
+        <div className="antialiased w-full min-h-screen text-slate-100 relative py-4 bg-gradient-to-r from-mathcha via-white to-mathcha">
             <div className="grid grid-cols-12 mx-auto gap-2 sm:gap-4 md:gap-6 lg:gap-10 xl:gap-14 max-w-7xl my-10 px-2">
-                {/* Menu */}
                 <Menu />
-                {/* Content */}
-                <div id="content" className="bg-white/10 col-span-9 rounded-lg p-6">
-                    <div
-                        className="bg-stone-600 flex items-center justify-center p-12"
-                        style={{ backgroundImage: 'url("/assets/admin-wallpaper.png")' }}
-                    >
+                <div id="content" className="bg-black/10 col-span-9 rounded-lg p-6">
+                    <div className="flex items-center justify-center p-12">
                         <div className="mx-auto w-full max-w-[550px]">
                             <div className="text-6xl font-bold text-center mb-10">
                                 Add User
@@ -79,7 +72,7 @@ export default function CreatePage() {
                             <form onSubmit={handleAddUser}>
                                 <div className="flex justify-between mb-5">
                                     <div>
-                                        <label htmlFor="first_name" className="mb-3 block text-base font-medium text-white">
+                                        <label htmlFor="first_name" className="mb-3 block text-base font-medium text-gray-800">
                                             First Name
                                         </label>
                                         <input
@@ -92,7 +85,7 @@ export default function CreatePage() {
                                         {formErrors.first_name && <span className="text-red-500">{formErrors.first_name}</span>}
                                     </div>
                                     <div>
-                                        <label htmlFor="last_name" className="mb-3 block text-base font-medium text-white">
+                                        <label htmlFor="last_name" className="mb-3 block text-base font-medium text-gray-800">
                                             Last Name
                                         </label>
                                         <input
@@ -107,7 +100,7 @@ export default function CreatePage() {
                                 </div>
                                 <div className="flex justify-between mb-5">
                                     <div>
-                                        <label htmlFor="username" className="mb-3 block text-base font-medium text-white">
+                                        <label htmlFor="username" className="mb-3 block text-base font-medium text-gray-800">
                                             Username
                                         </label>
                                         <input
@@ -120,7 +113,7 @@ export default function CreatePage() {
                                         {formErrors.username && <span className="text-red-500">{formErrors.username}</span>}
                                     </div>
                                     <div>
-                                        <label htmlFor="password" className="mb-3 block text-base font-medium text-white">
+                                        <label htmlFor="password" className="mb-3 block text-base font-medium text-gray-800">
                                             Password
                                         </label>
                                         <input
@@ -134,7 +127,7 @@ export default function CreatePage() {
                                     </div>
                                 </div>
                                 <div className="mb-5">
-                                    <label htmlFor="email" className="mb-3 block text-base font-medium text-white">
+                                    <label htmlFor="email" className="mb-3 block text-base font-medium text-gray-800">
                                         Email
                                     </label>
                                     <input
@@ -147,7 +140,7 @@ export default function CreatePage() {
                                     {formErrors.email && <span className="text-red-500">{formErrors.email}</span>}
                                 </div>
                                 <div className="mb-5">
-                                    <label htmlFor="phone" className="mb-3 block text-base font-medium text-white">
+                                    <label htmlFor="phone" className="mb-3 block text-base font-medium text-gray-800">
                                         Phone
                                     </label>
                                     <input
@@ -159,7 +152,7 @@ export default function CreatePage() {
                                     {formErrors.phone && <span className="text-red-500">{formErrors.phone}</span>}
                                 </div>
                                 <div className="mb-5">
-                                    <label htmlFor="address" className="mb-3 block text-base font-medium text-white">
+                                    <label htmlFor="address" className="mb-3 block text-base font-medium text-gray-800">
                                         Address
                                     </label>
                                     <input
@@ -170,31 +163,6 @@ export default function CreatePage() {
                                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     />
                                     {formErrors.address && <span className="text-red-500">{formErrors.address}</span>}
-                                </div>
-                                <div className="mb-5">
-                                    <label htmlFor="role" className="mb-3 block text-base font-medium text-white">
-                                        Role
-                                    </label>
-                                    <div className="flex justify-between mb-5 items-center">
-                                        {["CONTENT_MANAGER", "MANAGER", "PARENT", "STUDENT"].map((role, index) => (
-                                            <div key={index} className="flex">
-                                                <input
-                                                    type="radio"
-                                                    id={`role-${index}`}
-                                                    name="role"
-                                                    value={role}
-                                                    className="peer hidden"
-                                                />
-                                                <label
-                                                    htmlFor={`role-${index}`}
-                                                    className="select-none cursor-pointer rounded-lg border-2 border-gray-200 py-3 px-4 font-bold text-gray-200 transition-colors duration-200 ease-in-out peer-checked:bg-gray-200 peer-checked:text-gray-900 peer-checked:border-gray-200"
-                                                >
-                                                    {role}
-                                                </label>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    {formErrors.role && <span className="text-red-500">{formErrors.role}</span>}
                                 </div>
                                 <div>
                                     <button className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">

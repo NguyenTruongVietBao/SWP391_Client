@@ -1,9 +1,12 @@
 import React, { useState, useEffect} from "react";
-import {Link} from 'react-router-dom'
+import {Link, useLocation, useNavigate, useParams} from 'react-router-dom'
 import Marquee from "react-fast-marquee";
 import "@fontsource/montserrat";
-import { listCourses } from "../../services/CourseService/CourseService";
-// Just list 6 course first, if > 6 display button Xem thêm
+import { listCourses, listCoursesNotBought } from "../../services/CourseService/CourseService";
+import api from "../../config/axios";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/features/counterSlice";
+import { toast } from "react-toastify";
 
 const sellNft = [
   {
@@ -79,15 +82,29 @@ const topcreator2 = [
 
 
 export default function ParentPage() {
-  const [courses, setCourses] = useState([]);
-  const [displayedCourses, setDisplayedCourses] = useState([]);
-  const [showAll, setShowAll] = useState(false);
+    const [courses, setCourses] = useState([]);
+    const [displayedCourses, setDisplayedCourses] = useState([]);
+    const [showAll, setShowAll] = useState(false);
+    const user = useSelector(selectUser);
+    const [userId, setUserId] = useState(null);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const searchParams = new URLSearchParams(location.search);
+    const course_id = searchParams.get('course_id');
+    const student_id = searchParams.get('student_id');
+    const amount = searchParams.get('vnp_Amount');
+    const statusPayment = searchParams.get('vnp_TransactionStatus');
+    useEffect(() => {
+      if (user !== null) {
+        setUserId(user.user_id);
+      }
+    }, [user]);
 
-    // fetch data
-    useEffect(()=>{
-      getCourseAll()
-    })
-    //Get All Course
+    useEffect(() => {
+      if (user === null) {
+        getCourseAll()
+      }
+    });
     function getCourseAll(){
       listCourses()
         .then((res)=>{
@@ -95,17 +112,66 @@ export default function ParentPage() {
           setDisplayedCourses(res.data.data.slice(0, 6));
         })
     }
+
+    useEffect(() => {
+      if (userId !== null) {
+        getCourseNotBought(userId);
+      }
+    }, [userId]);
+    const getCourseNotBought = async (userId) => {
+      try {
+        const resCourse = await api.get(`/course/notbought/${userId}`);
+        setCourses(resCourse.data.data);
+        setDisplayedCourses(resCourse.data.data.slice(0, 6));
+      } catch (error) {
+        console.error("Failed to fetch courses", error);
+      }
+    };
+
+    //Payment
+    useEffect(() => {
+      const createEnrollmentPayment = async () => {
+          try {
+              const enrollmentResponse = await api.post('/enrollment/create', {
+                  "course_id":course_id,
+                  "student_id" : student_id
+              });
+              const enrollmentId = enrollmentResponse.data.data.enrollment_id; 
+              console.log(enrollmentId, amount, userId);
+              const paymentResponse = await api.post('/payment/callback', {
+                  "amount":amount,
+                  "enrollment_id":enrollmentId,
+                  "user_id": user.user_id
+              });
+              console.log(enrollmentId, amount, userId);
+          } catch (error) {
+              console.error('Error creating enrollment or payment:', error);
+          }
+      };
+      if (statusPayment === '00') {
+        createEnrollmentPayment();
+        navigate('/')
+        toast.success('Mua thành công <3')
+      }
+    }, [course_id, student_id, amount, statusPayment]);
+
   return (
-    <div className="flex text-[#000] flex-col items-center w-full overflow-x-hidden">
+    <div className="flex text-gray-800 flex-col items-center w-full overflow-x-hidden">
       <div className="bg-gradient-to-r from-mathcha via-white to-mathcha flex flex-col gap-[100px] justify-center items-center w-full h-full">
         <div className="flex items-center justify-center w-full h-full">
           <img src={"/assets/trang chu-02.png"} alt="a" className="w-full h-full object-contain" />
-        </div> 
+        </div>
+            {user !== null && (
+              <Link to={'/my-course'} className="flex text-lg font-bold text-center px-[30px] py-3 border-2 border-mathcha-orange rounded-[68px] hover:text-white duration-1000 hover:bg-[#2D4263] hover:border-white"
+                font="text-white font-normal">
+                  Khóa học đã mua
+              </Link>
+            )} 
         <div className="px-[4%] ">
           <div className="max-w-[1180px] flex flex-col gap-[50px] lg:gap-[123px]">
-            {/* Danh sách lớp học */}
-            <div className=" flex flex-col gap-[50px] max-w-[1180px] justify-center w-full ">
-              <div className=" flex justify-between items-center">
+            {/* Danh sách lớp học */}            
+            <div className=" flex flex-col gap-[50px] max-w-[1180px] justify-center w-full ">                
+              <div className=" flex justify-between items-center">             
                 <div className=" text-[30px] md:text-5xl font-bold leading-[58px] tracking-[0.03em] mb-3" style={{ fontFamily: 'monospace, sans-serif' }}>
                   Danh sách lớp học
                 </div>
