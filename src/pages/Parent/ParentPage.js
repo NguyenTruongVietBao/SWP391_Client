@@ -94,11 +94,6 @@ export default function ParentPage() {
     const student_id = searchParams.get('student_id');
     const amount = searchParams.get('vnp_Amount');
     const statusPayment = searchParams.get('vnp_TransactionStatus');
-    useEffect(() => {
-      if (user !== null) {
-        setUserId(user.user_id);
-      }
-    }, [user]);
 
     useEffect(() => {
       if (user === null) {
@@ -113,6 +108,11 @@ export default function ParentPage() {
         })
     }
 
+    useEffect(() => {
+      if (user !== null) {
+        setUserId(user.user_id);
+      }
+    }, [user]);
     useEffect(() => {
       if (userId !== null) {
         getCourseNotBought(userId);
@@ -136,6 +136,7 @@ export default function ParentPage() {
                   "course_id":course_id,
                   "student_id" : student_id
               });
+              console.log(course_id, student_id);
               const enrollmentId = enrollmentResponse.data.data.enrollment_id; 
               console.log(enrollmentId, amount, userId);
               const paymentResponse = await api.post('/payment/callback', {
@@ -143,15 +144,18 @@ export default function ParentPage() {
                   "enrollment_id":enrollmentId,
                   "user_id": user.user_id
               });
-              console.log(enrollmentId, amount, userId);
+              console.log(paymentResponse.data);
           } catch (error) {
               console.error('Error creating enrollment or payment:', error);
           }
       };
       if (statusPayment === '00') {
+        toast.success('Mua thành công <3')
         createEnrollmentPayment();
         navigate('/')
-        toast.success('Mua thành công <3')
+      }else if (statusPayment === '02') {
+        toast.success('Mua thất bại :<')
+        navigate('/')
       }
     }, [course_id, student_id, amount, statusPayment]);
 

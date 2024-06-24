@@ -53,7 +53,7 @@ export default function StudentPage() {
                 <div key={course.course_id} className="bg-no-repeat bg-blue-100 border-4 border-black rounded-xl h-120 py-3 flex flex-col items-center justify-center gap-5">
                   <img src={course.iamge} alt={`image_course_${course.course_id}`} className="rounded-xl" />
                   <p className="text-5xl text-indigo-900"><strong>{course.title}</strong></p>
-                  <Link to={`/course/${course.course_id}`} className="bg-orange-300 text-xl text-white rounded-full px-8 py-2 border-2 border-black"><strong>Học</strong></Link>
+                  <Link to={`./course/${course.course_id}`} className="bg-orange-300 text-xl text-white rounded-full px-8 py-2 border-2 border-black"><strong>Học</strong></Link>
                 </div>
               ))}
             </div>

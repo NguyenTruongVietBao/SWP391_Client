@@ -1,7 +1,7 @@
 import api from '../../config/axios';
 
 // const REST_API_URL = "http://159.223.39.71:8080/user";
-const REST_API_URL = 'http://localhost:8080/user';
+const REST_API_URL = '/user';
 
 export const listUsers = () => api.get(REST_API_URL+'/get/all');
 

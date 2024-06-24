@@ -3,25 +3,14 @@ import { Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { logout, selectUser } from '../../../redux/features/counterSlice';
 import { Menu, MenuButton, MenuItem, MenuItems, Transition } from '@headlessui/react'
-import {
-  ArchiveBoxXMarkIcon,
-  ChevronDownIcon,
-  PencilIcon,
-  Square2StackIcon,
-  TrashIcon,
-  UserCircleIcon,
-} from '@heroicons/react/16/solid'
 
 export default function Navbar() {
-  
-  const dispatch = useDispatch();
+  const user = useSelector(selectUser);
 
+  const dispatch = useDispatch();
   const handleLogout = () => {
     dispatch(logout())
   }
-
-  const user = useSelector(selectUser);
-  console.log(user);
   
   return (
     <div className="flex flex-col items-center w-full overflow-x-hidden ">

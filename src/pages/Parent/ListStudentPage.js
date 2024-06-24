@@ -20,7 +20,7 @@ export default function ListStudentPage() {
     }, [user.user_id]);
 
     const handleDelete = (studentId) => {
-        api.delete(`http://localhost:8080/student/${studentId}`)
+        api.delete(`/student/${studentId}`)
             .then(() => {
                 // Remove the deleted student from state
                 setStudents(students.filter(student => student.student_id !== studentId));

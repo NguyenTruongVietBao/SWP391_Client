@@ -194,23 +194,18 @@ export default function DetailCourse() {
                                     key={index}
                                     as="div"
                                     className="p-6"
-                                    defaultOpen={true}
+                                    defaultOpen={false}
                                 >
                                     {/* Chapter */}
                                     <DisclosureButton className="group flex w-full items-center justify-between">
                                         <span className="text-2xl font-medium text-black group-data-[hover]:text-black/80">
                                             {chapter.title}
                                         </span>
-                                        <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
+                                        <ChevronDownIcon className="size-5 fill-black/60  group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
                                     </DisclosureButton>
-
-                                    <DisclosurePanel className="mt-2 text-sm/5 text-black/50">
+                                    <DisclosurePanel className="mt-2 text-sm/5 text-black/50 bg-white/25 p-3 rounded-lg">
                                         {chapter.topics.map((topic, topicIndex) => (
-                                            <Disclosure
-                                                key={topicIndex}
-                                                as="div"
-                                                className="px-6 mb-2"
-                                            >
+                                            <Disclosure key={topicIndex} as="div"className="px-6 mb-2" >
                                                 {/* Topic */}
                                                 <DisclosureButton className="group flex w-full items-center justify-between">
                                                     <span className="text-lg font-medium mt-2 text-black group-data-[hover]:text-black/80">
@@ -220,19 +215,15 @@ export default function DetailCourse() {
                                                 </DisclosureButton>
                                                 {/* Lessons */}
                                                 {topic.lessons && topic.lessons.map((lesson, lessonIndex) => (
-                                                    <DisclosurePanel key={lessonIndex} className="flex items-center justify-between gap-5 mt-3 mb-5 ml-6 text-sm/5 text-black/70">
+                                                    <DisclosurePanel key={lessonIndex} className="flex items-center rounded-xl bg-black/5 justify-between gap-5 p-3 mt-3 mb-5 ml-6 text-sm/5">
                                                         <div>
                                                             <span className="text-base">
                                                                 <ul>
-                                                                    <li> - {lesson.title}</li>
                                                                     <li>+ Num of lesson: {lesson.number}</li>
                                                                     <li>+ <a href={lesson.video_url}>Video_URL</a></li>
                                                                     <li>+ <a href={lesson.document}>Document_URL</a></li>
                                                                 </ul>
                                                             </span>
-                                                        </div>
-                                                        <div>
-                                                            <button className='p-2 bg-white w-24'>Học ngay</button>
                                                         </div>
                                                     </DisclosurePanel>
                                                 ))}

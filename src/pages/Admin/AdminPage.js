@@ -57,7 +57,7 @@ export default function AdminPage() {
     };
 
     return (
-        <div className="antialiased w-full min-h-screen text-white relative py-4" style={{ backgroundImage: 'url("/assets/admin-wallpaper.png")' }}>
+        <div className="antialiased w-full  text-white relative py-4" style={{ backgroundImage: 'url("/assets/admin-wallpaper.png")' }}>
             <div className="grid grid-cols-12 mx-auto gap-2 sm:gap-4 md:gap-6 lg:gap-10 xl:gap-14 max-w-7xl my-10 px-2">
                 {/* Menu */}
                 <Menu />
