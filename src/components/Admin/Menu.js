@@ -1,10 +1,11 @@
 import React from 'react'
-import { useDispatch } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import { Link, useNavigate } from 'react-router-dom'
-import { logout } from '../../redux/features/counterSlice';
+import {logout, selectUser} from '../../redux/features/counterSlice';
 
 export default function Menu() {
     const dispatch = useDispatch();
+    const user = useSelector(selectUser);
     const navigate = useNavigate();
     const handleLogout = () => {
         navigate('/login')
@@ -22,7 +23,7 @@ export default function Menu() {
                 <img className="rounded-full w-10 h-10 relative object-cover" src='/assets/admin-avatar.png' alt="a" />
             </div>
             <div>
-                <p className="font-medium group-hover:text-indigo-400 leading-4">Viet Bao</p>
+                <p className="font-medium group-hover:text-indigo-400 leading-4">{user.username}</p>
                 <span className="text-xs text-slate-400">Admin handsome</span>
             </div>                        
         </a>
@@ -41,8 +42,8 @@ export default function Menu() {
                     </div>
                     <Link to={'/admin'}>
                         <div>
-                            <p className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Dashboard</p>
-                            <p className="text-slate-400 text-sm hidden md:block">Manage users</p>
+                            <p className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Bảng điều khiển</p>
+                            <p className="text-slate-400 text-sm hidden md:block">Quản lý người dùng</p>
                         </div>
                     </Link>  
                 </div>
@@ -56,7 +57,7 @@ export default function Menu() {
                         </svg>
                     </div>
                     <div>
-                        <button onClick={handleLogout} className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Logout</button>
+                        <button onClick={handleLogout} className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Đăng xuất</button>
                     </div>
                 </div>
             </span>

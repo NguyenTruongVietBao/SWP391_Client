@@ -22,11 +22,9 @@ export default function Login() {
                 "password": password,
                 "username": username
             });
-            console.log(response.data.data);
             localStorage.setItem("token", response.data.data.token);
             const role = response.data.data.role;
             dispatch(login(response.data.data));
-            toast.success("Login successfully!!!");
             if (role === 'ADMIN') {
                 navigate("/admin");
             } else if (role === 'PARENT') {
@@ -37,8 +35,7 @@ export default function Login() {
                 navigate("/content-manager");
             }
         } catch (e) {
-            console.log(e);
-            setError('Sai tên đăng nhập hoặc mật khẩu');
+            toast.error('Sai tên đăng nhập hoặc mật khẩu');
         }
     }
 

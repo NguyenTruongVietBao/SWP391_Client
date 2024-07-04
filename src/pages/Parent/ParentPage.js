@@ -1,83 +1,67 @@
 import React, { useState, useEffect} from "react";
-import {Link, useLocation, useNavigate, useParams} from 'react-router-dom'
+import {Link, useLocation, useNavigate} from 'react-router-dom'
 import Marquee from "react-fast-marquee";
 import "@fontsource/montserrat";
-import { listCourses, listCoursesNotBought } from "../../services/CourseService/CourseService";
+import { listCourses } from "../../services/CourseService/CourseService";
 import api from "../../config/axios";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
 import { toast } from "react-toastify";
 
-const sellNft = [
-  {
-    img: "/assets/Student/outstanding-student-1.png",
-    title: "Chị A",
-    desc: "Create your collection, Add social links, a description, profile & banner images, and set a secondary sales fee",
-  },
-  {
-    img: "/assets/Student/outstanding-student-2.png",
-    title: "Anh B",
-    desc: "Upload your work, add a title and description, and customize your NFTs with properties, stats",
-  },
-  {
-    img: "/assets/Student/outstanding-student-3.png",
-    title: "Chị C",
-    desc: "Choose between auctions and declining-price listings. You choose how you want to sell your NFTs",
-  },
-];
 const topcreator = [
-  {
-    img: "/assets/nft/creator1.png",
-    name: "Axio Sun",
-    ethe: "80224",
-  },
-  {
-    img: "/assets/nft/creator2.png",
-    name: "Gloria Wolff MD",
-    ethe: "29369",
-  },
-  {
-    img: "/assets/nft/creator3.png",
-    name: "Albert Trantow",
-    ethe: "53808",
-  },
-  {
-    img: "/assets/nft/creator4.png",
-    name: "Alexis Mante",
-    ethe: "20123",
-  },
-  {
-    img: "/assets/nft/creator5.png",
-    name: "Cary Goldner",
-    ethe: "16548",
-  },
+    {
+        img: "/assets/nft/creator1.png",
+        name: "Nguyễn Văn A",
+        star: "80224 sao",
+    },
+    {
+        img: "/assets/nft/creator2.png",
+        name: "Trần Thị B",
+        star: "29369 sao",
+    },
+    {
+        img: "/assets/nft/creator3.png",
+        name: "Lê Văn C",
+        star: "53808 sao",
+    },
+    {
+        img: "/assets/nft/creator4.png",
+        name: "Phạm Thị D",
+        star: "20123 sao",
+    },
+    {
+        img: "/assets/nft/creator5.png",
+        name: "Hoàng Văn E",
+        star: "16548 sao",
+    },
 ];
+
 const topcreator2 = [
-  {
-    img: "/assets/nft/creator6.png",
-    name: "Gregg Prosacco V",
-    ethe: "24507",
-  },
-  {
-    img: "/assets/nft/creator7.png",
-    name: "Angelina Koss",
-    ethe: "91031",
-  },
-  {
-    img: "/assets/nft/creator8.png",
-    name: "Axio Sun",
-    ethe: "80224",
-  },
-  {
-    img: "/assets/nft/creator2.png",
-    name: "Gloria Wolff MD",
-    ethe: "29369",
-  },
-  {
-    img: "/assets/nft/creator3.png",
-    name: "Albert Trantow",
-    ethe: "53808",
-  },
+    {
+        img: "/assets/nft/creator6.png",
+        name: "Nguyễn Thị F",
+        star: "24507 sao",
+    },
+    {
+        img: "/assets/nft/creator7.png",
+        name: "Vũ Văn G",
+        star: "91031 sao",
+    },
+    {
+        img: "/assets/nft/creator8.png",
+        name: "Nguyễn Văn A",
+        star: "80224 sao",
+    },
+    {
+        img: "/assets/nft/creator2.png",
+        name: "Trần Thị B",
+        star: "29369 sao",
+    },
+    {
+        img: "/assets/nft/creator3.png",
+        name: "Lê Văn C",
+        star: "53808 sao",
+    },
 ];
 
 
@@ -96,36 +80,36 @@ export default function ParentPage() {
     const statusPayment = searchParams.get('vnp_TransactionStatus');
 
     useEffect(() => {
-      if (user === null) {
-        getCourseAll()
-      }
+        if (user === null) {
+            getCourseAll()
+        }
     });
     function getCourseAll(){
-      listCourses()
-        .then((res)=>{
-          setCourses(res.data.data)
-          setDisplayedCourses(res.data.data.slice(0, 6));
-        })
+        listCourses()
+            .then((res)=>{
+                setCourses(res.data.data)
+                setDisplayedCourses(res.data.data.slice(0, 6));
+            })
     }
 
     useEffect(() => {
-      if (user !== null) {
-        setUserId(user.user_id);
-      }
+        if (user !== null) {
+            setUserId(user.user_id);
+        }
     }, [user]);
     useEffect(() => {
-      if (userId !== null) {
-        getCourseNotBought(userId);
-      }
+        if (userId !== null) {
+            getCourseNotBought(userId);
+        }
     }, [userId]);
     const getCourseNotBought = async (userId) => {
-      try {
-        const resCourse = await api.get(`/course/notbought/${userId}`);
-        setCourses(resCourse.data.data);
-        setDisplayedCourses(resCourse.data.data.slice(0, 6));
-      } catch (error) {
-        console.error("Failed to fetch courses", error);
-      }
+        try {
+            const resCourse = await api.get(`/course/notbought/${userId}`);
+            setCourses(resCourse.data.data);
+            setDisplayedCourses(resCourse.data.data.slice(0, 6));
+        } catch (error) {
+            console.error("Failed to fetch courses", error);
+        }
     };
 
     //Payment
@@ -137,7 +121,7 @@ export default function ParentPage() {
                   "student_id" : student_id
               });
               console.log(course_id, student_id);
-              const enrollmentId = enrollmentResponse.data.data.enrollment_id; 
+              const enrollmentId = enrollmentResponse.data.data.enrollment_id;
               console.log(enrollmentId, amount, userId);
               const paymentResponse = await api.post('/payment/callback', {
                   "amount":amount,
@@ -150,11 +134,11 @@ export default function ParentPage() {
           }
       };
       if (statusPayment === '00') {
-        toast.success('Mua thành công <3')
+        toast.success('Mua thành công !')
         createEnrollmentPayment();
         navigate('/')
       }else if (statusPayment === '02') {
-        toast.success('Mua thất bại :<')
+        toast.success('Mua thất bại !')
         navigate('/')
       }
     }, [course_id, student_id, amount, statusPayment]);
@@ -166,9 +150,9 @@ export default function ParentPage() {
           <img src={"/assets/trang chu-02.png"} alt="a" className="w-full h-full object-contain" />
         </div>
             {user !== null && (
-              <Link to={'/my-course'} className="flex text-lg font-bold text-center px-[30px] py-3 border-2 border-mathcha-orange rounded-[68px] hover:text-white duration-1000 hover:bg-[#2D4263] hover:border-white"
+              <Link to={'/my-course'} className="flex text-lg font-bold text-center px-[30px] py-3 border-2 bg-mathcha border-mathcha-orange rounded-[68px] hover:text-white duration-1000 hover:bg-mathcha-green hover:border-white"
                 font="text-white font-normal">
-                  Khóa học đã mua
+                  Khóa học bạn đã mua
               </Link>
             )} 
         <div className="px-[4%] ">
@@ -177,55 +161,61 @@ export default function ParentPage() {
             <div className=" flex flex-col gap-[50px] max-w-[1180px] justify-center w-full ">                
               <div className=" flex justify-between items-center">             
                 <div className=" text-[30px] md:text-5xl font-bold leading-[58px] tracking-[0.03em] mb-3" style={{ fontFamily: 'monospace, sans-serif' }}>
-                  Danh sách lớp học
+                  Danh sách các khóa học
                 </div>
                 {!showAll && courses.length > 6 && (
                   <Link to={'/course'} className="flex text-lg font-bold text-center px-[30px] py-3 border-2 border-mathcha-orange rounded-[68px] hover:text-white duration-1000 hover:bg-[#2D4263] hover:border-white"
                     font="text-white font-normal">
                     Xem thêm
                   </Link>
+
                 )}
               </div>
               <div>
                 <div className="items-center justify-center flex flex-wrap gap-[30px] md:gap-[50px] lg:gap-[83px] md:px-0 px-[4%] w-full ">
-                  {displayedCourses.map((course, index) => {
-                    return (
-                      <div
-                        key={index}
-                        className="hover:scale-105 duration-1000 cursor-pointer flex flex-col justify-center items-center md:max-w-[300px] lg:max-w-[338px] w-full py-[4%] lg:py-[3%] max-h-fit xl:h-[410px] border-4 border-mathcha-orange rounded-[28px]"
-                      >
-                        <div className="px-[4%] w-full flex flex-col gap-4">
-                          <img
-                            src={`/assets/Class/${course.image}.png`}
-                            alt="img not found :<"
-                            className="rounded-3xl" 
-                            width={306}
-                            height={264}
-                          />
-                          <div className="w-full flex flex-col gap-4">
-                            <div className="flex flex-col gap-4">
-                              <div className="flex flex-col gap-[3px] items-start justify-start">
-                                <div className="from-neutral-950 text-[28px] font-bold leading-[34px]">
-                                  {course.title}
-                                </div>
+                  {/*{displayedCourses.map((course, index) => {*/}
+                      {displayedCourses.filter(course => course.status).map((course, index) => {
+                          // {users.filter(user => !user.delete).map((user, index) => (
+                          return (
+                              <div
+                                  key={index}
+                                  className="hover:scale-105 duration-1000 cursor-pointer flex flex-col justify-center items-center md:max-w-[300px] lg:max-w-[338px] w-full py-[4%] lg:py-[3%] max-h-fit xl:h-[410px] border-4 border-mathcha-orange rounded-[28px]"
+                              >
+                                  <div className="px-[4%] w-full flex flex-col gap-4">
+                                      <img
+                                          src={course.image}
+                                          alt="img not found"
+                                          className="rounded-3xl"
+                                          width="306"
+                                          height="264"
+                                          style={{objectFit: 'cover', width: '306px', height: '264px'}}
+                                      />
+                                      <div className="w-full flex flex-col gap-4">
+                                          <div className="flex flex-col gap-4">
+                                              <div className="flex flex-col gap-[3px] items-start justify-start">
+                                                  <div
+                                                      className="from-neutral-950 text-[28px] font-bold leading-[34px]">
+                                                      {course.title}
+                                                  </div>
+                                              </div>
+                                              <div className="flex justify-between items-center">
+                                                  <div
+                                                      className="font-montserrat text-xl font-bold leading-[17px] text-red-500 ">
+                                                      {course.discount_price}.000 VNĐ
+                                                  </div>
+                                                  <Link
+                                                      to={`/course/${course.course_id}`}
+                                                      className={"bg-mathcha-orange font-bold text-center border-2 rounded-[68px] p-2 hover:bg-black hover:border-white hover:text-white"}
+                                                  >
+                                                      Mua ngay
+                                                  </Link>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
                               </div>
-                              <div className="flex justify-between items-center">
-                                <div className="font-montserrat text-xl font-bold leading-[17px] text-red-500 ">
-                                  {course.discount_price}.000 VNĐ
-                                </div>
-                                <Link
-                                  to={`/course/${course.course_id}`}                              
-                                  className={"bg-mathcha-orange font-bold text-center border-2 rounded-[68px] p-2 hover:bg-black hover:border-white hover:text-white"}
-                                >
-                                  Mua ngay
-                                 </Link>                                  
-                              </div>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                    );
-                  })}
+                          )
+                      })}
                 </div>              
               </div>
             </div>
@@ -297,7 +287,7 @@ export default function ParentPage() {
                             fill="#ECDBBA"
                           />
                         </svg>
-                        {data.ethe}
+                        {data.star}
                       </div>
                     </div>
                   </div>

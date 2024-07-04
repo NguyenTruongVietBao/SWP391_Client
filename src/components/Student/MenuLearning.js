@@ -1,0 +1,198 @@
+import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react";
+import { ChevronDownIcon } from "@heroicons/react/20/solid";
+import { Link, useNavigate, useParams } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import api from "../../config/axios";
+import {useSelector} from "react-redux";
+import {selectUser} from "../../redux/features/counterSlice";
+
+export const MenuLearning = () => {
+    const [chapters, setChapters] = useState([]);
+    const [topics, setTopics] = useState({});
+    const [lessons, setLessons] = useState({});
+    const [completedTopics, setCompletedTopics] = useState({});
+    const [completedChapters, setCompletedChapters] = useState({});
+    const { courseId } = useParams();
+    const navigate = useNavigate();
+    const user = useSelector(selectUser);
+    const studentId = user.user_id;
+    // get chapters
+    useEffect(() => {
+        const fetchChapters = async () => {
+            const chaptersResponse = await api.get(`/chapter/course/${courseId}`);
+            setChapters(chaptersResponse.data.data);
+        };
+        fetchChapters();
+    }, [courseId]);
+
+    // Fetch topics
+    useEffect(() => {
+        const fetchTopics = async () => {
+            const topicsData = await Promise.all(
+                chapters.map(async (chapter) => {
+                    const topicsResponse = await api.get(`/topic/chapter/${chapter.chapter_id}`);
+                    return { chapterId: chapter.chapter_id, topics: topicsResponse.data.data };
+                })
+            );
+            setTopics(Object.fromEntries(topicsData.map(({ chapterId, topics }) => [chapterId, topics])));
+        };
+
+        if (chapters.length > 0) {
+            fetchTopics();
+        }
+    }, [chapters]);
+
+    // Fetch lessons
+    useEffect(() => {
+        const fetchLessons = async () => {
+            const lessonsData = await Promise.all(
+                Object.entries(topics).map(async ([chapterId, topicsArray]) => {
+                    const topicsWithLessons = await Promise.all(
+                        topicsArray.map(async (topic) => {
+                            const lessonsResponse = await api.get(`/lessons/topic/${topic.topic_id}`);
+                            return { ...topic, lessons: lessonsResponse.data.data };
+                        })
+                    );
+                    return { chapterId, topics: topicsWithLessons };
+                })
+            );
+            setLessons(Object.fromEntries(lessonsData.map(({ chapterId, topics }) => [chapterId, topics])));
+        };
+        if (Object.keys(topics).length > 0) {
+            fetchLessons();
+        }
+    }, [topics]);
+
+    // Fetch completed topics
+    useEffect(() => {
+        const fetchCompletedTopics = async () => {
+            const completedTopicsData = await Promise.all(
+                Object.values(topics).flat().map(async (topic) => {
+                    // Get enrollmentId
+                    const resEnroll = await api.get(`/enrollment/student/${studentId}/course/${courseId}`);
+                    const enrollmentArray = resEnroll.data.data;
+                    const enrollmentId = enrollmentArray[0].enrollment_id;
+                    console.log('enrollmentId',enrollmentId, 'topicId',topic.topic_id)
+
+                    const response = await api.get(`/completeTopic/status/${enrollmentId}/${topic.topic_id}`);
+                    console.log('comnplete topic',response.data.data)
+                    return { topicId: topic.topic_id, isComplete: response.data.data };
+                })
+            );
+            setCompletedTopics(Object.fromEntries(completedTopicsData.map(({ topicId, isComplete }) => [topicId, isComplete])));
+        };
+
+        if (Object.keys(topics).length > 0) {
+            fetchCompletedTopics();
+        }
+    }, [topics]);
+
+    // Fetch completed chapters
+    useEffect(() => {
+        const fetchCompletedChapters = async () => {
+            const completedChaptersData = await Promise.all(
+                chapters.map(async (chapter) => {
+                    const resEnroll = await api.get(`/enrollment/student/${studentId}/course/${courseId}`);
+                    const enrollmentArray = resEnroll.data.data;
+                    const enrollmentId = enrollmentArray[0].enrollment_id;
+                    console.log('enrollmentId',enrollmentId, 'chapter_id',chapter.chapter_id)
+                    const response = await api.get(`/completeChapter/status/${enrollmentId}/${chapter.chapter_id}`);
+                    return { chapterId: chapter.chapter_id, isComplete: response.data.data };
+                })
+            );
+            setCompletedChapters(Object.fromEntries(completedChaptersData.map(({ chapterId, isComplete }) => [chapterId, isComplete])));
+        };
+
+        if (chapters.length > 0) {
+            fetchCompletedChapters();
+        }
+    }, [chapters]);
+
+    // Check if all topics in a chapter are completed
+    const isChapterCompleted = (chapterId) => {
+        const chapterTopics = topics[chapterId];
+        if (!chapterTopics) return false;
+        return chapterTopics.every(topic => completedTopics[topic.topic_id]);
+    };
+
+    // do quiz
+    const handleTakeQuizChapter = async (chapterId) => {
+
+        try {
+            const response = await api.post(`/quiz/chapter/${chapterId}/generate`, {
+                "numberOfQuestions": 2,
+                "timeLimit": 10
+            });
+            console.log(response.data.data)
+            const quizData = response.data.data;
+            navigate(`/learning/course/${courseId}/chapter/${chapterId}/quiz`, {state: {quizData}});
+        } catch (error) {
+            console.error('Failed to create quiz:', error);
+        }
+    };
+    console.log(chapters)
+    console.log(topics)
+    console.log(lessons)
+    return (
+        <div className="mx-auto w-full divide-y divide-black/5 rounded-xl bg-yellow-100 border-4 border-black">
+            {chapters.map((chapter, index) => (
+                <Disclosure key={index} as="div" className="p-3" defaultOpen={false}>
+                    <DisclosureButton className="group flex w-full items-center justify-between p-2 rounded-xl">
+                        <Link to={'./'} className="text-xl font-medium text-black group-hover:text-black/80">
+                            {index + 1}. {chapter.title}
+                        </Link>
+                        <div className="flex gap-3">
+                            {completedChapters[chapter.chapter_id] && (
+                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                     strokeWidth={1.5} stroke="currentColor"
+                                     className="size-5 bg-mathcha-green rounded-full text-white">
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                          d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                </svg>
+                            )}
+                            <ChevronDownIcon
+                                className="size-5 fill-black/60 group-hover:fill-black/50 group-data-[open]:rotate-180"/>
+                        </div>
+                    </DisclosureButton>
+                    <DisclosurePanel className="ml-4 mb-1 text-sm text-black/50 p-1 py-2 rounded-lg bg-white/55">
+                        {lessons[chapter.chapter_id]?.map((topic, topicIndex) => (
+                            <Disclosure key={topicIndex} as="div" className="px-2 my-3">
+                                <DisclosureButton
+                                    className="group flex w-full justify-between items-center"
+                                    onClick={() => {
+                                        if (topic.lessons && topic.lessons.length > 0) {
+                                            const firstLessonId = topic.lessons[0].lesson_id;
+                                            navigate(`/learning/course/${courseId}/topic/${topic.topic_id}/lesson/${firstLessonId}`);
+                                        }
+                                    }}
+                                >
+                                  <span className="text-base font-medium text-black group-hover:text-black/80">
+                                    {topicIndex + 1}. {topic.title}
+                                  </span>
+                                    {completedTopics[topic.topic_id] && (
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             strokeWidth={1.5} stroke="currentColor"
+                                             className="size-5 bg-mathcha-green rounded-full text-white">
+                                            <path strokeLinecap="round" strokeLinejoin="round"
+                                                  d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                        </svg>
+                                    )}
+
+                                </DisclosureButton>
+                            </Disclosure>
+                        ))}
+                        {isChapterCompleted(chapter.chapter_id) && (
+                            <button
+                                onClick={() => handleTakeQuizChapter(chapter.chapter_id)}
+                                className="inline-block px-4 py-2 bg-mathcha-green font-bold text-white rounded-md my-2"
+                            >
+                                Kiểm tra
+                            </button>
+                        )}
+                    </DisclosurePanel>
+
+                </Disclosure>
+            ))}
+        </div>
+    );
+};

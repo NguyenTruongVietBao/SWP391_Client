@@ -29,7 +29,7 @@ export default function Menu() {
         {/* Menu */}
         <div id="menu" className="flex flex-col space-y-2 my-5">
             {/* Dashboard */}
-            <a href='#statistic' className="hover:bg-white/10 transition duration-150 ease-linear rounded-lg py-3 px-2 group">
+            <Link to='/manager' className="hover:bg-white/10 transition duration-150 ease-linear rounded-lg py-3 px-2 group">
                 <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 space-x-2 items-center">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" className="w-6 h-6 group-hover:text-indigo-400">
@@ -37,13 +37,13 @@ export default function Menu() {
                         </svg>
                     </div>
                     <div>
-                        <p className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Dashboard</p>
-                        <p className="text-slate-400 text-sm hidden md:block">Data overview</p>
+                        <p className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Thống kê</p>
+                        <p className="text-slate-400 text-sm hidden md:block">Doanh số bán hàng</p>
                     </div>
                 </div>
-            </a>
+            </Link>
             {/* Course */}
-            <a href='#manage-course' className="hover:bg-white/10 transition duration-150 ease-linear rounded-lg py-3 px-2 group">
+            <Link to={'/manager/course'} className="hover:bg-white/10 transition duration-150 ease-linear rounded-lg py-3 px-2 group">
                 <div className="relative flex flex-col space-y-2 md:flex-row md:space-y-0 space-x-2 items-center">
                     <div>
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
@@ -52,11 +52,11 @@ export default function Menu() {
                         
                     </div>
                     <div>
-                        <p className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Course</p>
-                        <p className="text-slate-400 text-sm hidden md:block">Manage course</p>
+                        <p className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Khóa học</p>
+                        <p className="text-slate-400 text-sm hidden md:block">Quản lý khóa học</p>
                     </div>
                 </div>
-            </a>
+            </Link>
             {/* Logout */}
             <span className="hover:bg-white/10 transition duration-150 ease-linear rounded-lg py-3 px-2 group">
                 <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 space-x-2 items-center">
@@ -66,7 +66,7 @@ export default function Menu() {
                         </svg>
                     </div>
                     <div>
-                        <button onClick={handleLogout}  className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Logout</button>
+                        <button onClick={handleLogout}  className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Đăng xuất</button>
                     </div>
                 </div>
             </span>

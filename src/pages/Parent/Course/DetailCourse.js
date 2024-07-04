@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import './DetailCourse.css'
-import { useParams } from 'react-router-dom';
+import {useNavigate, useParams} from 'react-router-dom';
 import { getCourseById } from '../../../services/CourseService/CourseService';
 import { Button, Dialog, DialogPanel, DialogTitle, Disclosure, DisclosureButton, DisclosurePanel, Transition, TransitionChild } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
@@ -16,12 +16,12 @@ export default function DetailCourse() {
     const { courseId } = useParams();
     const [students, setStudents] = useState([]);
     const user = useSelector(selectUser);
-    const userId = user.user_id;
+    const [userId, setUserId] = useState(null);
     const [isOpenPayment, setIsOpenPayment] = useState(false);
     const [isOpenCreate, setIsOpenCreate] = useState(false);
     const [selectedStudentId, setSelectedStudentId] = useState(null); // New state for selected student ID
     const [errors, setErrors] = useState({});
-
+    const navigate = useNavigate();
     const [formData, setFormData] = useState({
         username: '',
         first_name: '',
@@ -30,7 +30,8 @@ export default function DetailCourse() {
         confirmPassword: '',
         email: '',
         phone: '',
-        address: ''
+        address: '',
+        is_deleted: false
     });
     const handleChange = (e) => {
         const { name, value } = e.target;
@@ -38,13 +39,26 @@ export default function DetailCourse() {
     };
     const validateForm = () => {
         let formErrors = {};
-        if (!formData.username) formErrors.username = 'Tên đăng nhập is required';
+        const minLength = 8;
+        const maxLength = 32;
+        if (!formData.username) {
+            formErrors.username = 'Tên đăng nhập is required';
+        } else if (formData.username.length < minLength || formData.username.length > maxLength) {
+            formErrors.username = `Tên đăng nhập must be between ${minLength} and ${maxLength} characters`;
+        }
         if (!formData.first_name) formErrors.first_name = 'Họ is required';
         if (!formData.last_name) formErrors.last_name = 'Tên is required';
-        if (!formData.password) formErrors.password = 'Mật khẩu is required';
-        if (formData.password !== formData.confirmPassword) formErrors.confirmPassword = 'Mật khẩu does not match';
-        if (!formData.email) formErrors.email = 'Email is required';
-        if (!formData.phone) formErrors.phone = 'Số điện thoại is required';
+        if (!formData.password) {
+            formErrors.password = 'Mật khẩu is required';
+        } else if (formData.password.length < minLength || formData.password.length > maxLength) {
+            formErrors.password = `Mật khẩu must be between ${minLength} and ${maxLength} characters`;
+        }
+
+        if (formData.password !== formData.confirmPassword) {
+            formErrors.confirmPassword = 'Mật khẩu không giống nhau';
+        }
+        // if (!formData.email) formErrors.email = 'Email is required';
+        // if (!formData.phone) formErrors.phone = 'Số điện thoại is required';
         if (!formData.address) formErrors.address = 'Địa chỉ is required';
 
         setErrors(formErrors);
@@ -67,6 +81,11 @@ export default function DetailCourse() {
     function closeCreate() {
         setIsOpenCreate(false);
     }
+    useEffect(() => {
+        if (user !== null) {
+          setUserId(user.user_id);
+        }
+      }, [user]);
 
     // Get course by ID
     useEffect(() => {
@@ -131,20 +150,19 @@ export default function DetailCourse() {
     const handleGetStudentId = (student_id) => {
         setSelectedStudentId(student_id);
     };
-
+    // Create Student
     const handleCreateStudent = async (e) => {
         e.preventDefault();
+        console.log(formData)
         if (validateForm()) {
             try {
-                const response = await api.post('/student/user/'+user.user_id, formData);
+                await api.post(`/student/user/${userId}`, formData);
                 toast.success('Create success')
-                closeCreate();
-                close();
-                
-                // Handle success (e.g., redirect or clear form)
+                window.location.reload();
+                // closeCreate();
+                // close();
             } catch (error) {
                 console.error('There was an error creating the student!', error);
-                // Handle error (e.g., display error message)
             }
         }
     };
@@ -153,7 +171,7 @@ export default function DetailCourse() {
     if (!course) {
         return <div className='flex justify-center my-60'><Loading /></div>; // Show a loading message while course data is being fetched
     }
-
+    console.log(students)
     return (
     <div className="bg-gradient-to-r from-mathcha via-white to-mathcha pb-10">
         <div className="pt-10 mx-auto max-w-7xl">
@@ -170,19 +188,21 @@ export default function DetailCourse() {
                         </h1>
                         <div className="max-w-xl">
                             <p className="mt-6">
-                                <strong> - Mô tả khóa học: </strong> thường tập trung vào
-                                những khái niệm cơ bản và nền tảng nhất, giúp học sinh làm
-                                quen với các số và phép tính đơn giản
+                                <strong className={'mr-1'}> - Mô tả khóa học: </strong> Học sinh sẽ học cách đếm, so sánh, và sắp xếp các số trong phạm vi 100. Ngoài ra, khóa học còn tập trung vào việc phát triển kỹ năng giải quyết vấn đề thông qua các bài toán đố và tình huống thực tế.
                             </p>
                             <p className="my-5">
-                                <strong> - Yêu cầu khóa học: </strong> Chương trình toán lớp 1
-                                thường tập trung vào những khái niệm cơ bản và nền tảng nhất,
-                                giúp học sinh làm quen với các số và phép tính đơn giản
+                                <strong> - Yêu cầu khóa học: </strong>
+                                <ul className={'list-disc'}>
+                                    <li className={'ml-10'}>  Học sinh có khả năng thực hiện các phép tính cơ bản như cộng và trừ trong phạm vi 20.</li>
+                                    <li className={'ml-10'}>Học sinh có khả năng đọc, viết và hiểu các con số từ 1 đến 100.</li>
+                                </ul>
                             </p>
                             <p>
-                                <strong> - Kết quả đạt được: </strong>Chương trình toán lớp 1
-                                thường tập trung vào những khái niệm cơ bản và nền tảng nhất,
-                                giúp học sinh làm quen với các số và phép tính đơn giản
+                                <strong> - Kết quả đạt được: </strong>
+                                <ul className={'list-disc'}>
+                                    <li className={'ml-10'}>Học sinh sẽ phát triển kỹ năng tư duy logic và khả năng giải quyết vấn đề thông qua việc thực hành các bài toán đố.</li>
+                                    <li className={'ml-10'}>Học sinh sẽ có khả năng áp dụng kiến thức toán học vào các tình huống thực tế hàng ngày.</li>
+                                </ul>
                             </p>
                         </div>
                     </div>
@@ -215,13 +235,14 @@ export default function DetailCourse() {
                                                 </DisclosureButton>
                                                 {/* Lessons */}
                                                 {topic.lessons && topic.lessons.map((lesson, lessonIndex) => (
-                                                    <DisclosurePanel key={lessonIndex} className="flex items-center rounded-xl bg-black/5 justify-between gap-5 p-3 mt-3 mb-5 ml-6 text-sm/5">
+                                                    <DisclosurePanel key={lessonIndex} className="flex items-center rounded-xl bg-black/5 justify-between p-3 my-3 ml-6 text-sm/5">
                                                         <div>
-                                                            <span className="text-base">
+                                                            <span className="text-base flex">
+                                                                <span className={'font-medium'}>{lessonIndex+1}. </span>
                                                                 <ul>
-                                                                    <li>+ Num of lesson: {lesson.number}</li>
-                                                                    <li>+ <a href={lesson.video_url}>Video_URL</a></li>
-                                                                    <li>+ <a href={lesson.document}>Document_URL</a></li>
+                                                                    <li className={'ml-2 font-medium'}> {lesson.title}</li>
+                                                                    {/*<li>- <a href={`https://www.youtube.com/embed/${lesson.video_url}`}>Video bài giảng</a></li>*/}
+                                                                    {/*<li>- <a href={lesson.document}>Tài liệu</a></li>*/}
                                                                 </ul>
                                                             </span>
                                                         </div>
@@ -256,7 +277,7 @@ export default function DetailCourse() {
                             className="relative rounded-2xl"
                             width="420"
                             height="237"
-                            src="https://www.youtube.com/embed/LnTPJcUQdNU"
+                            src="https://www.youtube.com/embed/H1mWhKYdbQM"
                             title="WREN EVANS - LOI CHOI không điểm dừng | Full Album Experience (ft. itsnk)"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -293,7 +314,20 @@ export default function DetailCourse() {
                                     </h1>
                                 </div>
                                 <div>
-                                    <button onClick={open} className="button-30">Mua ngay</button>
+                                    {
+                                        user ? (
+                                            <button onClick={open} className="button-30">Mua ngay</button>
+                                        ) : (
+                                            <button
+                                                onClick={() => {
+                                                    toast.error('Bạn cần đăng nhập');
+                                                    navigate('/login');
+                                                }}
+                                                className="button-30">
+                                                Mua ngay
+                                            </button>
+                                        )
+                                    }
                                 </div>
                             </div>
                         </figure>
@@ -313,7 +347,7 @@ export default function DetailCourse() {
                                 Số lượng học viên
                             </dt>
                             <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                                1.500 người
+                                Lên đến 2000 người
                             </dd>
                         </div>
                         <div>
@@ -329,7 +363,7 @@ export default function DetailCourse() {
                                 Thời gian học tập
                             </dt>
                             <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                                13 hrs
+                                Trên 7 giờ
                             </dd>
                         </div>
                     </dl>
@@ -356,25 +390,37 @@ export default function DetailCourse() {
                             <DialogTitle className="text-4xl font-medium text-center text-white">
                                 Chọn học sinh cần học
                             </DialogTitle>
-                            <div className='flex justify-evenly my-10'>
+                            <div className='flex items-center justify-evenly my-10'>
                                 {students.map((student, index) => (
-                                    <label key={student.student_id} className=" rounded-md bg-gray-200 py-2 px-4 text-lg font-medium text-black shadow-md hover:bg-gray-300 w-44">
-                                        <input
-                                            type="radio"
-                                            name="selectedStudent"
-                                            value={student.student_id}
-                                            onChange={() => handleGetStudentId(student.student_id)}
-                                            className="mr-2"
-                                        />
-                                        <div>
-                                            ID: {student.student_id}
+                                    <label
+                                        key={student.student_id}
+                                        className="rounded-md bg-gray-200 py-2 px-2 text-lg font-medium text-black shadow-md hover:bg-gray-300 w-36 flex flex-col items-center justify-center"
+                                    >
+                                        <div className="flex items-center w-full">
+                                            <div className="">
+                                                {index + 1}/
+                                            </div>
+                                            <div className="flex-1 flex justify-center">
+                                                <input
+                                                    type="radio"
+                                                    name="selectedStudent"
+                                                    value={student.student_id}
+                                                    onChange={() => handleGetStudentId(student.student_id)}
+                                                    className="mr-2"
+                                                />
+                                            </div>
                                         </div>
-                                        <div>
-                                            - {student.last_name} {student.first_name}
+                                        <div className="flex items-center justify-center mb-2">
+                                            <img
+                                                src={student.image}
+                                                alt="not found"
+                                                width={80}
+                                                height={70}
+                                                className="border border-black rounded-xl"
+                                                style={{objectFit: 'cover', width: '70px', height: '70px'}}
+                                            />
                                         </div>
-                                        <div>
-                                            - {student.username}
-                                        </div>
+                                        <div>Bé: {student.last_name}</div>
                                     </label>
                                 ))}
                             </div>
@@ -385,21 +431,21 @@ export default function DetailCourse() {
                                 >
                                     Mua ngay
                                 </Button>
-                            </div>    
+                            </div>
                         </>
                         ) : (
                             <>
-                            <DialogTitle className="text-4xl font-medium text-center text-white">
-                                Bạn chưa có tài khoản cho con ?
-                            </DialogTitle>
-                            <div className="flex justify-center my-10">
-                                <Button
-                                    className="gap-2 rounded-md bg-gray-50 py-3 px-4 text-xl font-semibold text-mathcha-green shadow-inner shadow-white/10 focus:outline-none hover:bg-gray-600 focus:bg-gray-700 focus:outline-1 focus:outline-white"
-                                    onClick={openCreate}
-                                >
-                                    Đăng ký tại đây
-                                </Button>
-                            </div>    
+                                <DialogTitle className="text-4xl font-medium text-center text-white">
+                                    Bạn chưa có tài khoản cho con ?
+                                </DialogTitle>
+                                <div className="flex justify-center my-10">
+                                    <Button
+                                        className="gap-2 rounded-md bg-gray-50 py-3 px-4 text-xl font-semibold text-mathcha-green shadow-inner shadow-white/10 focus:outline-none hover:bg-gray-600 focus:bg-gray-700 focus:outline-1 focus:outline-white"
+                                        onClick={openCreate}
+                                    >
+                                        Đăng ký tại đây
+                                    </Button>
+                                </div>
                             </>
                         )}
                         
@@ -414,7 +460,7 @@ export default function DetailCourse() {
             <Dialog as="div" className="relative z-10 focus:outline-none" onClose={closeCreate}>
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                     <div className="flex min-h-full items-center justify-center p-4">
-                        <Transition.Child
+                        <TransitionChild
                             enter="ease-out duration-300"
                             enterFrom="opacity-0 transform scale-95"
                             enterTo="opacity-100 transform scale-100"
@@ -422,11 +468,11 @@ export default function DetailCourse() {
                             leaveFrom="opacity-100 transform scale-100"
                             leaveTo="opacity-0 transform scale-95"
                         >
-                            <Dialog.Panel className="w-full max-w-xl h-full rounded-xl py-6 bg-black/65 backdrop-blur-3xl">
+                            <DialogPanel className="w-full max-w-xl h-full rounded-xl py-6 bg-black/65 backdrop-blur-3xl">
                                 <div className="flex items-center justify-center">
                                     <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-lg">
                                         <h1 className="text-4xl font-semibold text-center text-gray-500">Đăng ký tài khoản</h1>
-                                        <form onSubmit={handleCreateStudent}>
+                                        <form>
                                             <div className="mb-2 mt-4">
                                                 <label htmlFor="username" className="block mb-2 text-sm text-gray-600 ">Tên đăng nhập</label>
                                                 <input
@@ -496,32 +542,6 @@ export default function DetailCourse() {
                                                     {errors.confirmPassword && <p className="text-red-500 text-sm">{errors.confirmPassword}</p>}
                                                 </div>
                                             </div>
-                                            <div className="mb-2">
-                                                <label htmlFor="email" className="block mb-2 text-sm text-gray-600">Email</label>
-                                                <input
-                                                    type="email"
-                                                    id="email"
-                                                    name="email"
-                                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                                                    value={formData.email}
-                                                    onChange={handleChange}
-                                                    required
-                                                />
-                                                {errors.email && <p className="text-red-500 text-sm">{errors.email}</p>}
-                                            </div>
-                                            <div className="mb-2">
-                                                <label htmlFor="phone" className="block mb-2 text-sm text-gray-600 ">Số điện thoại</label>
-                                                <input
-                                                    type="number"
-                                                    id="phone"
-                                                    name="phone"
-                                                    className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
-                                                    value={formData.phone}
-                                                    onChange={handleChange}
-                                                    required
-                                                />
-                                                {errors.phone && <p className="text-red-500 text-sm">{errors.phone}</p>}
-                                            </div>
                                             <div className="mb-6">
                                                 <label htmlFor="address" className="block mb-2 text-sm text-gray-600 ">Địa chỉ</label>
                                                 <input
@@ -531,18 +551,17 @@ export default function DetailCourse() {
                                                     className="w-full px-4 py-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-cyan-500"
                                                     value={formData.address}
                                                     onChange={handleChange}
-                                                    required
                                                 />
                                                 {errors.address && <p className="text-red-500 text-sm">{errors.address}</p>}
                                             </div>
-                                            <button type="submit" className="w-32 bg-gradient-to-r from-cyan-400 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mb-2">
+                                            <button onClick={handleCreateStudent} type="submit" className="w-32 bg-gradient-to-r from-cyan-400 to-cyan-600 text-white py-2 rounded-lg mx-auto block focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 mb-2">
                                                 Đăng ký
                                             </button>
-                                        </form>
+                                        </form>    
                                     </div>
                                 </div>
-                            </Dialog.Panel>
-                        </Transition.Child>
+                            </DialogPanel>
+                        </TransitionChild>
                     </div>
                 </div>
             </Dialog>

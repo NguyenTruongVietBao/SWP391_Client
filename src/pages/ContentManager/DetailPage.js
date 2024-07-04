@@ -9,46 +9,52 @@ import Loading from '../../components/Loading/Loading';
 import api from '../../config/axios';
 
 export default function DetailPage() {
-   const [course, setCourse] = useState(null)
-   const [chapters, setChapters] = useState([]);
-   const {courseId} = useParams();
+    const [course, setCourse] = useState(null);
+    const [chapters, setChapters] = useState([]);
+    const { courseId } = useParams();
 
-  useEffect(()=>{
-    getCourseById(courseId)
-      .then((res)=>{setCourse(res.data.data)})
-      .catch (console.log("error"))
-  }, [courseId])
+    useEffect(() => {
+        const fetchCourse = async () => {
+            try {
+                const res = await getCourseById(courseId);
+                setCourse(res.data.data);
+            } catch (error) {
+                console.error("Error fetching course:", error);
+            }
+        };
+        fetchCourse();
+    }, [courseId]);
 
-  useEffect(() => {
-    const fetchChaptersTopicsAndLessons = async () => {
-        const chaptersResponse = await api.get(`/chapter/course/${courseId}`);
-        const chaptersData = chaptersResponse.data.data;
-        
-        const chaptersWithTopicsAndLessons = await Promise.all(chaptersData.map(async (chapter) => {
-          const topicsResponse = await api.get(`/topic/chapter/${chapter.chapter_id}`);
-          const topicsData = topicsResponse.data.data;
+    useEffect(() => {
+        const fetchChaptersTopicsAndLessons = async () => {
+            try {
+                const chaptersResponse = await api.get(`/chapter/course/${courseId}`);
+                const chaptersData = chaptersResponse.data.data;
+                // Create an array of promises for fetching topics and lessons
+                const chaptersWithTopicsAndLessonsPromises = chaptersData.map(async (chapter) => {
+                    const topicsResponse = await api.get(`/topic/chapter/${chapter.chapter_id}`);
+                    const topicsData = topicsResponse.data.data;
+                    const topicsWithLessonsPromises = topicsData.map(async (topic) => {
+                        const lessonsResponse = await api.get(`/lessons/topic/${topic.topic_id}`);
+                        return { ...topic, lessons: lessonsResponse.data.data };
+                    });
+                    const topicsWithLessons = await Promise.all(topicsWithLessonsPromises);
+                    return { ...chapter, topics: topicsWithLessons };
+                });
+                const chaptersWithTopicsAndLessons = await Promise.all(chaptersWithTopicsAndLessonsPromises);
+                setChapters(chaptersWithTopicsAndLessons);
+            } catch (error) {
+                console.error('Error fetching chapters, topics, and lessons:', error);
+            }
+        };
 
-          const topicsWithLessons = await Promise.all(topicsData.map(async (topic) => {
-            const lessonsResponse = await api.get(`/lessons/topic/${topic.topic_id}`);
-            return { ...topic, lessons: lessonsResponse.data.data };
-          }));
+        fetchChaptersTopicsAndLessons();
+    }, [courseId]);
 
-          return { ...chapter
-            , topics: topicsWithLessons 
-          };
-        }));
-        
-        setChapters(chaptersWithTopicsAndLessons);
-    };
-    fetchChaptersTopicsAndLessons();
-  }, [courseId]);
+    if (!course) {
+        return <div className='flex flex-col items-center justify-center h-screen'><Loading /></div>;
+    }
 
-  if (!course) {
-    return <div className='flex flex-col items-center justify-center h-screen'><Loading/></div>;
-  }
-  if (!chapters) {
-    return <div className='flex flex-col items-center justify-center h-screen'><Loading/></div>;
-}
   return (
      <div className="antialiased bg-orange-50 w-full min-h-screen text-black relative py-4">
         <div className="grid grid-cols-12 mx-auto gap-2 sm:gap-4 md:gap-6 lg:gap-10 xl:gap-14 max-w-7xl my-10 px-2">
@@ -60,7 +66,14 @@ export default function DetailPage() {
                     <div className="container py-6 mx-auto">
                         {/* Top */}
                         <div className="lg:w-4/5 mx-auto flex flex-wrap">
-                            <img alt="a" className="lg:w-1/2 w-full h-fit object-center rounded border border-gray-200" src={`/assets/Class/${course.image}.png`} />
+                            <img
+                                src={course.image}
+                                alt="img not found"
+                                className="rounded-3xl"
+                                width="306"
+                                height="306"
+                                style={{ objectFit: 'cover', width: '306px', height: '306px' }}
+                            />
                             <div className="lg:w-1/2 w-full lg:pl-10 lg:mt-0">
                                 <h1 className="text-gray-900 text-4xl title-font font-medium mb-3">{course.title}</h1>
                                 <div className="flex mb-4">
@@ -81,8 +94,7 @@ export default function DetailPage() {
                                     <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
                                     <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
                                     </svg>
-                                </span>
-                                
+                                </span>                               
                                 </div>
                                 <p className="leading-relaxed">{course.description}</p>
                                 <div className="flex mt-10">
@@ -91,7 +103,7 @@ export default function DetailPage() {
                             </div>
                         </div>
                         {/* Bot */}
-                        <div className='w-4/5 mx-auto'>
+                        <div className='w-4/5 mx-auto mt-10'>
                             {chapters.map((chapter, index) => (
                                 <Disclosure
                                     key={index}
@@ -128,9 +140,8 @@ export default function DetailPage() {
                                                 <span className="text-base">
                                                     <ul>
                                                     <li> - {lesson.title}</li>
-                                                    <li>+ Num of lesson: {lesson.number}</li>
-                                                    <li>+ <a href={lesson.video_url}>Video_URL</a></li>
-                                                    <li>+ <a href={lesson.document}>Document_URL</a></li>
+                                                    <li>+ <a href={`https://www.youtube.com/embed/${lesson.video_url}`}>Video bài giảng</a></li>
+                                                    <li>+ <a href={lesson.document}>Tài liệu</a></li>
                                                     </ul>
                                                 </span>
                                                 </div>

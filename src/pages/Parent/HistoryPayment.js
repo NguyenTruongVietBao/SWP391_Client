@@ -31,13 +31,13 @@ export default function HistoryPayment() {
                     {/* Manage Course */}
                     <div id="manage-course">
                         <div className='flex items-center justify-between'>
-                            <h1 className="font-bold py-4 uppercase">Danh sách học sinh</h1>
+                            <h1 className="font-bold text-xl py-4 uppercase">Lịch sử giao dịch</h1>
                         </div>
                         <div className="overflow-x-scroll">
                             <table className="w-full whitespace-nowrap">
                                 <thead className="bg-gradient-to-br from-black/80 via-black/60 to-black/70 text-white/90">
                                     <tr>
-                                        <th className="text-left py-3 px-2 rounded-l-lg">Mua cho bé</th>
+                                        <th className="text-left py-3 px-2 rounded-l-lg">Mua cho</th>
                                         <th className="text-center py-3 px-2">Khóa học</th>
                                         <th className="text-center py-3 px-2">Số tiền</th>
                                         <th className="text-center py-3 px-2">Thời gian</th>
@@ -48,8 +48,8 @@ export default function HistoryPayment() {
                                 <tbody>
                                     {buyCourse.map((data, index) => (
                                         <tr key={index} className="border-b border-gray-700">
-                                            <td className="py-3 px-2 text-left font-bold">{data.payment_id}</td>
-                                            <td className="py-3 px-2 text-center">{data.payment_method}</td>
+                                            <td className="py-3 px-2 text-left font-bold">{data.student.last_name} {data.student.first_name}</td>
+                                            <td className="py-3 px-2 text-center font-bold">{data.course.title}</td>
                                             <td className="py-3 px-2 text-center">{data.total_money} VNĐ</td>
                                             <td className="py-3 px-2 text-center">{data.payment_date}</td>
                                             <td className="py-3 px-2 text-center">{data.payment_method}</td>

@@ -18,6 +18,7 @@ import ListStudentPage from '../pages/Parent/ListStudentPage';
 import CreateStudent from '../pages/Parent/CreateStudent';
 import HistoryPayment from '../pages/Parent/HistoryPayment';
 import ListCourseBought from '../pages/Parent/Course/ListCourseBought';
+import TestUpImg from '../config/TestUpImg';
 export default function ParentRouter() {
   return (
     <>
@@ -34,6 +35,7 @@ export default function ParentRouter() {
           <Route path="/profile/students/create" element={<CreateStudent/>}></Route> 
           <Route path="/profile/history" element={<HistoryPayment/>}></Route> 
           <Route path="my-course" element={<ListCourseBought/>}></Route>  
+          <Route path="upload-image" element={<TestUpImg/>}></Route>  
           {/* <Route path="/login" element={<Login/>}></Route>  */}
           {/* <Route path="/register" element={<Register/>}></Route>  */}
           <Route path="course" element={<ListCourse/>}></Route> 

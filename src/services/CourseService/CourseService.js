@@ -5,7 +5,7 @@ const REST_API_COURSE = '/course';
 
 export const listCourses = () => api.get(REST_API_COURSE + '/get');
 
-export const listCoursesNotBought = (user_id) => api.get(REST_API_COURSE + '/notbought/'+user_id);
+export const listCoursesNotBought = (user_id) => api.get('/course/notbought/'+user_id);
 
 export const createCourse = (course) => api.post(REST_API_COURSE,course)
 

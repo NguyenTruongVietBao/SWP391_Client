@@ -46,7 +46,6 @@ export default function Profile() {
             setFormErrors(errors);
             return;
         }
-
         try {
             await api.put(`/user/`+user.user_id, updatedUser);
             toast.success('User updated successfully!');
@@ -54,7 +53,7 @@ export default function Profile() {
             console.error('Error updating user:', err);
             setError('Error updating user data. Please try again later.');
         }
-        console.log(updatedUser);
+        console.log(updatedUser, user.user_id);
 
     };
     //loading
@@ -69,41 +68,41 @@ export default function Profile() {
                 <div className="flex items-center justify-center" >
                     <div className="mx-auto w-full max-w-[550px]">
                         <div className="text-6xl font-bold text-center mb-10 text-black">
-                            Update {user.last_name}
+                            Cập nhật: {user.last_name}
                         </div>
                         <form onSubmit={handleUpdateUser}>
-                            <div className="flex justify-between">
+                            <div className="flex justify-between mb-5">
                                 <div>
-                                    <label htmlFor="first_name" className="mb-3 block text-base font-medium text-white">
-                                        First Name
+                                    <label htmlFor="first_name" className=" block text-base font-medium text-gray-800">
+                                        Họ
                                     </label>
                                     <input
                                         type="text"
                                         name="first_name"
                                         id="first_name"
-                                        placeholder="First Name"
+                                        placeholder="Họ"
                                         defaultValue={user.first_name}
                                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     />
                                     {formErrors.first_name && <span className="text-red-500">{formErrors.first_name}</span>}
                                 </div>
                                 <div>
-                                    <label htmlFor="last_name" className="mb-3 block text-base font-medium text-white">
-                                        Last Name
+                                    <label htmlFor="last_name" className=" block text-base font-medium text-gray-800">
+                                        Tên
                                     </label>
                                     <input
                                         type="text"
                                         name="last_name"
                                         id="last_name"
-                                        placeholder="Last Name"
+                                        placeholder="Tên"
                                         defaultValue={user.last_name}
                                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     />
                                     {formErrors.last_name && <span className="text-red-500">{formErrors.last_name}</span>}
                                 </div>
                             </div>
-                            <div>
-                                <label htmlFor="email" className="mb-3 block text-base font-medium text-white">
+                            <div className=' mb-5'>
+                                <label htmlFor="email" className=" block text-base font-medium text-gray-800">
                                     Email
                                 </label>
                                 <input
@@ -116,29 +115,29 @@ export default function Profile() {
                                 />
                                 {formErrors.email && <span className="text-red-500">{formErrors.email}</span>}
                             </div>
-                            <div>
-                                <label htmlFor="phone" className="mb-3 block text-base font-medium text-white">
-                                    Phone
+                            <div className=' mb-5'>
+                                <label htmlFor="phone" className=" block text-base font-medium text-gray-800">
+                                    Số điện thoại
                                 </label>
                                 <input
                                     type="tel"
                                     name="phone"
                                     id="phone"
-                                    placeholder="0912312312"
+                                    placeholder="Số điện thoại"
                                     defaultValue={user.phone}
                                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                 />
                                 {formErrors.phone && <span className="text-red-500">{formErrors.phone}</span>}
                             </div>
                             <div className='mb-5'>
-                                <label htmlFor="address" className="mb-3 block text-base font-medium text-white">
-                                    Address
+                                <label htmlFor="address" className=" block text-base font-medium text-gray-800">
+                                    Địa chỉ
                                 </label>
                                 <input
                                     type="text"
                                     name="address"
                                     id="address"
-                                    placeholder="Enter your address"
+                                    placeholder="Địa chỉ"
                                     defaultValue={user.address}
                                     className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                 />
@@ -146,7 +145,7 @@ export default function Profile() {
                             </div>
                             <div>
                                 <button className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">
-                                    Submit
+                                    Cập nhật
                                 </button>
                             </div>
                         </form>

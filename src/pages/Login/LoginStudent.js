@@ -3,7 +3,6 @@ import { useDispatch } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
 import api from "../../config/axios";
 import { login } from "../../redux/features/counterSlice";
-import { toast } from "react-toastify";
 
 export default function LoginStudent() {
   const dispatch = useDispatch();
@@ -23,7 +22,6 @@ export default function LoginStudent() {
       localStorage.setItem("token", response.data.data.token);
       const role = response.data.data.role; //get role
       dispatch(login(response.data.data));
-      toast.success("Login successfully!!!");
       if (role === "STUDENT") {
         navigate("/learning");
       }
@@ -32,7 +30,7 @@ export default function LoginStudent() {
       setError('Incorrect username or password');
     }
   };
-
+  console.log(username, password)
   return (
     <header
       className=" bg-cover h-screen"
