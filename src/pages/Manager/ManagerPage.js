@@ -51,12 +51,12 @@ export default function ManagerPage() {
         const fetchTop3CoursesWithRevenue = async () => {
             try {
                 // Step 1: Fetch all courses
-                const coursesResponse = await api.get('http://localhost:8080/course/get');
+                const coursesResponse = await api.get('/course/get');
                 const courses = coursesResponse.data.data;
 
                 // Step 2: Fetch revenue for each course
                 const revenuePromises = courses.map(async (course) => {
-                    const revenueResponse = await api.get(`http://localhost:8080/chart/revenue/course/${course.course_id}`);
+                    const revenueResponse = await api.get(`/chart/revenue/course/${course.course_id}`);
                     return {
                         ...course,
                         revenue: revenueResponse.data.data,
@@ -79,7 +79,7 @@ export default function ManagerPage() {
 
 
                 // Step 1: Fetch all users
-                const usersResponse = await api.get('http://localhost:8080/user/get/all');
+                const usersResponse = await api.get('/user/get/all');
                 const users = usersResponse.data.data;
                 const allUsers = usersResponse.data.data;
 
@@ -88,7 +88,7 @@ export default function ManagerPage() {
 
                 // Step 3: Fetch total revenue for each user
                 const revenuePromises2 = parentUsers.map(async (user) => {
-                    const revenueResponse2 = await api.get(`http://localhost:8080/chart/revenue/user/${user.user_id}`);
+                    const revenueResponse2 = await api.get(`/chart/revenue/user/${user.user_id}`);
                     return {
                         ...user,
                         revenue: revenueResponse2.data.data,

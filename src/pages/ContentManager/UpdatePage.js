@@ -424,7 +424,7 @@ export default function UpdatePage() {
                 </div>
               </div>
               <button className={'bg-mathcha-orange mt-6 ml-2 py-1 px-3 rounded-xl font-medium text-base text-black hover:bg-black hover:text-white'} onClick={() => {
-                downloadTemplate('http://localhost:3000/assets/QuizTemplate.xlsx')
+                downloadTemplate('/assets/QuizTemplate.xlsx')
               }}>Download template question
               </button>
             </div>
