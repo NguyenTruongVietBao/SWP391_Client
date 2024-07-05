@@ -14,7 +14,7 @@ export default function LoginStudent() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post("/api/login/student", {
+      const response = await api.post("api/login/student", {
         password: password,
         username: username,
       });

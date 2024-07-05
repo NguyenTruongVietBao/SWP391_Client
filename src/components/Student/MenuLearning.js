@@ -16,7 +16,8 @@ export const MenuLearning = () => {
     const navigate = useNavigate();
     const user = useSelector(selectUser);
     const studentId = user.user_id;
-    // get chapters
+
+    // Fetch chapters
     useEffect(() => {
         const fetchChapters = async () => {
             const chaptersResponse = await api.get(`/chapter/course/${courseId}`);
@@ -68,14 +69,10 @@ export const MenuLearning = () => {
         const fetchCompletedTopics = async () => {
             const completedTopicsData = await Promise.all(
                 Object.values(topics).flat().map(async (topic) => {
-                    // Get enrollmentId
                     const resEnroll = await api.get(`/enrollment/student/${studentId}/course/${courseId}`);
                     const enrollmentArray = resEnroll.data.data;
                     const enrollmentId = enrollmentArray[0].enrollment_id;
-                    console.log('enrollmentId',enrollmentId, 'topicId',topic.topic_id)
-
                     const response = await api.get(`/completeTopic/status/${enrollmentId}/${topic.topic_id}`);
-                    console.log('comnplete topic',response.data.data)
                     return { topicId: topic.topic_id, isComplete: response.data.data };
                 })
             );
@@ -95,7 +92,6 @@ export const MenuLearning = () => {
                     const resEnroll = await api.get(`/enrollment/student/${studentId}/course/${courseId}`);
                     const enrollmentArray = resEnroll.data.data;
                     const enrollmentId = enrollmentArray[0].enrollment_id;
-                    console.log('enrollmentId',enrollmentId, 'chapter_id',chapter.chapter_id)
                     const response = await api.get(`/completeChapter/status/${enrollmentId}/${chapter.chapter_id}`);
                     return { chapterId: chapter.chapter_id, isComplete: response.data.data };
                 })
@@ -115,29 +111,44 @@ export const MenuLearning = () => {
         return chapterTopics.every(topic => completedTopics[topic.topic_id]);
     };
 
-    // do quiz
-    const handleTakeQuizChapter = async (chapterId) => {
+    // Check if all chapters in the course are completed
+    const isCourseCompleted = () => {
+        return chapters.every(chapter => completedChapters[chapter.chapter_id]);
+    };
 
+    // Do Quiz Chapter
+    const handleTakeQuizChapter = async (chapterId) => {
         try {
             const response = await api.post(`/quiz/chapter/${chapterId}/generate`, {
                 "numberOfQuestions": 2,
                 "timeLimit": 10
             });
-            console.log(response.data.data)
             const quizData = response.data.data;
-            navigate(`/learning/course/${courseId}/chapter/${chapterId}/quiz`, {state: {quizData}});
+            navigate(`/learning/course/${courseId}/chapter/${chapterId}/quiz`, { state: { quizData } });
         } catch (error) {
             console.error('Failed to create quiz:', error);
         }
     };
-    console.log(chapters)
-    console.log(topics)
-    console.log(lessons)
+
+    // Do Quiz Course
+    const handleTakeQuizCourse = async () => {
+        try {
+            const response = await api.post(`/quiz/course/${courseId}/generate`, {
+                "numberOfQuestions": 10,
+                "timeLimit": 30
+            });
+            const quizData = response.data.data;
+            navigate(`/learning/course/${courseId}/quiz`, { state: { quizData } });
+        } catch (error) {
+            console.error('Failed to create course quiz:', error);
+        }
+    };
+
     return (
         <div className="mx-auto w-full divide-y divide-black/5 rounded-xl bg-yellow-100 border-4 border-black">
             {chapters.map((chapter, index) => (
                 <Disclosure key={index} as="div" className="p-3" defaultOpen={false}>
-                    <DisclosureButton className="group flex w-full items-center justify-between p-2 rounded-xl">
+                    <Disclosure.Button className="group flex w-full items-center justify-between p-2 rounded-xl">
                         <Link to={'./'} className="text-xl font-medium text-black group-hover:text-black/80">
                             {index + 1}. {chapter.title}
                         </Link>
@@ -153,11 +164,11 @@ export const MenuLearning = () => {
                             <ChevronDownIcon
                                 className="size-5 fill-black/60 group-hover:fill-black/50 group-data-[open]:rotate-180"/>
                         </div>
-                    </DisclosureButton>
-                    <DisclosurePanel className="ml-4 mb-1 text-sm text-black/50 p-1 py-2 rounded-lg bg-white/55">
+                    </Disclosure.Button>
+                    <Disclosure.Panel className="ml-4 mb-1 text-sm text-black/50 p-1 py-2 rounded-lg bg-white/55">
                         {lessons[chapter.chapter_id]?.map((topic, topicIndex) => (
                             <Disclosure key={topicIndex} as="div" className="px-2 my-3">
-                                <DisclosureButton
+                                <Disclosure.Button
                                     className="group flex w-full justify-between items-center"
                                     onClick={() => {
                                         if (topic.lessons && topic.lessons.length > 0) {
@@ -178,7 +189,7 @@ export const MenuLearning = () => {
                                         </svg>
                                     )}
 
-                                </DisclosureButton>
+                                </Disclosure.Button>
                             </Disclosure>
                         ))}
                         {isChapterCompleted(chapter.chapter_id) && (
@@ -189,10 +200,19 @@ export const MenuLearning = () => {
                                 Kiểm tra
                             </button>
                         )}
-                    </DisclosurePanel>
-
+                    </Disclosure.Panel>
                 </Disclosure>
             ))}
+            {isCourseCompleted() && (
+                <div className="p-3">
+                    <button
+                        onClick={handleTakeQuizCourse}
+                        className="w-full px-4 py-2 bg-mathcha-green font-bold text-white rounded-md"
+                    >
+                        Kiểm tra Course
+                    </button>
+                </div>
+            )}
         </div>
     );
 };

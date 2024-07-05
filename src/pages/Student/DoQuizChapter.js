@@ -50,7 +50,7 @@ const DoQuizChapter = () => {
             });
             setScore(newScore);
             console.log('newScore',score)
-            if(newScore >= 1){
+            if(newScore >= 0){
                 const res = await api.post(`/completeChapter/create/${enrollmentId}/${chapterId}`);
                 console.log('create topic data',res.data.data)
                 toast.success('Hoàn thành topic');

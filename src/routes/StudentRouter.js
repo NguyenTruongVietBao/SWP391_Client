@@ -8,6 +8,7 @@ import {LessonLearningPage} from "../pages/Student/LessonLearningPage";
 import DoQuizTopic from "../pages/Student/DoQuizTopic";
 import DoQuizChapter from "../pages/Student/DoQuizChapter";
 import QuizPage from "../pages/Student/QuizPage";
+import DoQuizCourse from "../pages/Student/DoQuizCourse";
 
 function StudentRouter() {
   return (
@@ -21,8 +22,8 @@ function StudentRouter() {
           <Route path="/course/:courseId/topic/:topicId/lesson/:lessonId" element={<LessonLearningPage/>}></Route>
 
           {/*quiz*/}
-          <Route path="/course/:courseId/quiz/topic/:topicId" element={<DoQuizTopic/>}></Route>
           <Route path="/course/:courseId/chapter/:chapterId/quiz" element={<DoQuizChapter/>}></Route>
+          <Route path="/course/:courseId/quiz" element={<DoQuizCourse/>}></Route>
           <Route path="/course/:courseId/topic/:topicId/quiz" element={<QuizPage/>} />
       </Routes>
   )

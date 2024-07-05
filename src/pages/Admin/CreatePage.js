@@ -15,12 +15,17 @@ export default function CreatePage() {
         if (!data.last_name) errors.last_name = 'Last Name is required';
         if (!data.username) errors.username = 'Username is required';
         if (!data.password) errors.password = 'Password is required';
+        if (!data.confirm_password) {
+            errors.confirm_password = 'Confirm Password is required';
+        } else if (data.password !== data.confirm_password) {
+            errors.confirm_password = 'Passwords do not match';
+        }
         if (!data.email) {
             errors.email = 'Email is required';
         } else if (!/\S+@\S+\.\S+/.test(data.email)) {
             errors.email = 'Email address is invalid';
         }
-        if (!data.phone) errors.phone = 'Phone is required';   
+        if (!data.phone) errors.phone = 'Phone is required';
         if (!data.address) errors.address = 'Address is required';
         if (!data.role) errors.role = 'Role is required';
         return errors;
@@ -34,6 +39,7 @@ export default function CreatePage() {
             last_name: e.target.last_name.value,
             username: e.target.username.value,
             password: e.target.password.value,
+            confirm_password: e.target.confirm_password.value,
             email: e.target.email.value,
             phone: e.target.phone.value,
             address: e.target.address.value,
@@ -49,7 +55,7 @@ export default function CreatePage() {
 
         try {
             await api.post('/user/create', newUser);
-            toast.success('User updated successfully!');
+            toast.success('User added successfully!');
             navigate('/admin');
         } catch (err) {
             console.log(newUser);
@@ -67,19 +73,35 @@ export default function CreatePage() {
                 {/* Menu */}
                 <Menu />
                 {/* Content */}
-                <div id="content" className="bg-white/10 col-span-9 rounded-lg p-6">
+                <div id="content" className="bg-white/10 col-span-9 rounded-lg p-5">
                     <div
                         className="bg-stone-600 flex items-center justify-center p-12"
                         style={{ backgroundImage: 'url("/assets/admin-wallpaper.png")' }}
                     >
                         <div className="mx-auto w-full max-w-[550px]">
-                            <div className="text-6xl font-bold text-center mb-10">
+                            <div className="text-6xl font-bold text-center mb-7">
                                 Add User
                             </div>
                             <form onSubmit={handleAddUser}>
+                                <div className={'mb-4'}>
+                                    <label htmlFor="username"
+                                           className="mb-3 block text-base font-medium text-white">
+                                        Username
+                                    </label>
+                                    <input
+                                        type="text"
+                                        name="username"
+                                        id="username"
+                                        placeholder="Username"
+                                        className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                    />
+                                    {formErrors.username &&
+                                        <span className="text-red-500">{formErrors.username}</span>}
+                                </div>
                                 <div className="flex justify-between mb-5">
                                     <div>
-                                        <label htmlFor="first_name" className="mb-3 block text-base font-medium text-white">
+                                        <label htmlFor="first_name"
+                                               className="mb-3 block text-base font-medium text-white">
                                             First Name
                                         </label>
                                         <input
@@ -89,10 +111,12 @@ export default function CreatePage() {
                                             placeholder="First Name"
                                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                         />
-                                        {formErrors.first_name && <span className="text-red-500">{formErrors.first_name}</span>}
+                                        {formErrors.first_name &&
+                                            <span className="text-red-500">{formErrors.first_name}</span>}
                                     </div>
                                     <div>
-                                        <label htmlFor="last_name" className="mb-3 block text-base font-medium text-white">
+                                        <label htmlFor="last_name"
+                                               className="mb-3 block text-base font-medium text-white">
                                             Last Name
                                         </label>
                                         <input
@@ -102,25 +126,14 @@ export default function CreatePage() {
                                             placeholder="Last Name"
                                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                         />
-                                        {formErrors.last_name && <span className="text-red-500">{formErrors.last_name}</span>}
+                                        {formErrors.last_name &&
+                                            <span className="text-red-500">{formErrors.last_name}</span>}
                                     </div>
                                 </div>
                                 <div className="flex justify-between mb-5">
                                     <div>
-                                        <label htmlFor="username" className="mb-3 block text-base font-medium text-white">
-                                            Username
-                                        </label>
-                                        <input
-                                            type="text"
-                                            name="username"
-                                            id="username"
-                                            placeholder="Username"
-                                            className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
-                                        />
-                                        {formErrors.username && <span className="text-red-500">{formErrors.username}</span>}
-                                    </div>
-                                    <div>
-                                        <label htmlFor="password" className="mb-3 block text-base font-medium text-white">
+                                        <label htmlFor="password"
+                                               className="mb-3 block text-base font-medium text-white">
                                             Password
                                         </label>
                                         <input
@@ -130,10 +143,26 @@ export default function CreatePage() {
                                             placeholder="Password"
                                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                         />
-                                        {formErrors.password && <span className="text-red-500">{formErrors.password}</span>}
+                                        {formErrors.password &&
+                                            <span className="text-red-500">{formErrors.password}</span>}
+                                    </div>
+                                    <div>
+                                        <label htmlFor="confirm_password"
+                                               className="mb-3 block text-base font-medium text-white">
+                                            Confirm Password
+                                        </label>
+                                        <input
+                                            type="password"
+                                            name="confirm_password"
+                                            id="confirm_password"
+                                            placeholder="Confirm Password"
+                                            className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                        />
+                                        {formErrors.confirm_password &&
+                                            <span className="text-red-500">{formErrors.confirm_password}</span>}
                                     </div>
                                 </div>
-                                <div className="mb-5">
+                                <div className="mb-4">
                                     <label htmlFor="email" className="mb-3 block text-base font-medium text-white">
                                         Email
                                     </label>
@@ -146,7 +175,7 @@ export default function CreatePage() {
                                     />
                                     {formErrors.email && <span className="text-red-500">{formErrors.email}</span>}
                                 </div>
-                                <div className="mb-5">
+                                <div className="mb-4">
                                     <label htmlFor="phone" className="mb-3 block text-base font-medium text-white">
                                         Phone
                                     </label>
@@ -158,7 +187,7 @@ export default function CreatePage() {
                                     />
                                     {formErrors.phone && <span className="text-red-500">{formErrors.phone}</span>}
                                 </div>
-                                <div className="mb-5">
+                                <div className="mb-4">
                                     <label htmlFor="address" className="mb-3 block text-base font-medium text-white">
                                         Address
                                     </label>
@@ -171,12 +200,12 @@ export default function CreatePage() {
                                     />
                                     {formErrors.address && <span className="text-red-500">{formErrors.address}</span>}
                                 </div>
-                                <div className="mb-5">
+                                <div className="mb-4">
                                     <label htmlFor="role" className="mb-3 block text-base font-medium text-white">
                                         Role
                                     </label>
                                     <div className="flex justify-between mb-5 items-center">
-                                        {["CONTENT_MANAGER", "MANAGER", "PARENT", "STUDENT"].map((role, index) => (
+                                        {["CONTENT_MANAGER", "MANAGER", "PARENT"].map((role, index) => (
                                             <div key={index} className="flex">
                                                 <input
                                                     type="radio"
@@ -197,7 +226,8 @@ export default function CreatePage() {
                                     {formErrors.role && <span className="text-red-500">{formErrors.role}</span>}
                                 </div>
                                 <div>
-                                    <button className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">
+                                    <button
+                                        className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">
                                         Submit
                                     </button>
                                     {error && <div className="text-red-500 mt-2">{error}</div>}

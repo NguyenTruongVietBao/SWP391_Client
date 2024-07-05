@@ -114,7 +114,6 @@ export default function Register() {
                         ) : (
                             <></>
                         )}
-
                       </div>
                       <form onSubmit={handleSubmit(onSubmit)}>
                         <div className='flex justify-evenly gap-10'>

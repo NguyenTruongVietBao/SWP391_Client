@@ -50,7 +50,7 @@ const QuizPage = () => {
             });
             setScore(newScore);
             console.log('newScore',score)
-            if(newScore >= 1){
+            if(newScore >= 0){
                 const res = await api.post(`/completeTopic/create/${enrollmentId}/${topicId}`);
                 console.log('create topic data',res.data.data)
                 toast.success('Hoàn thành topic');
