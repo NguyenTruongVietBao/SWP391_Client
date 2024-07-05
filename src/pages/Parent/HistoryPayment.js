@@ -14,6 +14,7 @@ export default function HistoryPayment() {
     const [buyCourse, setBuyCourse] = useState([]);
 
     useEffect(() => {
+        // Parent xem khóa đó mua cho ai
         api.get(`/payment/user/${user.user_id}`)
           .then((res)=>{
                 setBuyCourse(res.data.data)

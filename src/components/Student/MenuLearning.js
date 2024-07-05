@@ -78,7 +78,6 @@ export const MenuLearning = () => {
             );
             setCompletedTopics(Object.fromEntries(completedTopicsData.map(({ topicId, isComplete }) => [topicId, isComplete])));
         };
-
         if (Object.keys(topics).length > 0) {
             fetchCompletedTopics();
         }

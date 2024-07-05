@@ -1,4 +1,4 @@
-import {Link, useParams} from "react-router-dom";
+import {Link, useNavigate, useParams} from "react-router-dom";
 import React, {useEffect, useState} from "react";
 import api from "../../config/axios";
 import {getCourseById} from "../../services/CourseService/CourseService";
@@ -12,7 +12,7 @@ export const CourseDetailPage = () => {
     const {courseId} = useParams();
     const [chapters, setChapters] = useState([]);
     const [course, setCourse] = useState({});
-
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchCourse = async () => {
             try {
@@ -53,10 +53,12 @@ export const CourseDetailPage = () => {
     const handleAccept = async () => {
         await api.put(`/course/${courseId}`, {...course, status: true})
         toast.success('Khóa học đã công khai !')
+        navigate('/manager/course')
     };
     const handleReject = async () => {
         await api.put(`/course/${courseId}`, {...course, status: false})
         toast.error('Khóa học đã bị từ chối !')
+        navigate('/manager/course')
     };
 
     if (!course) {
@@ -80,46 +82,18 @@ export const CourseDetailPage = () => {
                                     style={{objectFit: 'cover', width: '306px', height: '306px'}}
                                 />
                                 <div className="lg:w-1/2 w-full lg:pl-10 lg:mt-0">
-                                    <h1 className="text-gray-900 text-4xl title-font font-medium mb-3">{course.title}</h1>
-                                    <div className="flex mb-4">
-                                <span className="flex items-center">
-                                    <b className='mr-2'>Level: </b>
-                                    <svg fill="currentColor" stroke="currentColor" strokeLinecap="round"
-                                         strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 text-red-500"
-                                         viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                    </svg>
-                                    <svg fill="currentColor" stroke="currentColor" strokeLinecap="round"
-                                         strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 text-red-500"
-                                         viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                    </svg>
-                                    <svg fill="currentColor" stroke="currentColor" strokeLinecap="round"
-                                         strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 text-red-500"
-                                         viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                    </svg>
-                                    <svg fill="currentColor" stroke="currentColor" strokeLinecap="round"
-                                         strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 text-red-500"
-                                         viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                    </svg>
-                                    <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round"
-                                         strokeWidth={2} className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                    <path
-                                        d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/>
-                                    </svg>
-                                </span>
-                                    </div>
-                                    <p className="leading-relaxed">{course.description}</p>
-                                    <div className="flex mt-10">
-                                        <button
+                                    <h1 className="text-gray-900 text-4xl title-font font-bold mb-5">{course.title}</h1>
+                                    <p className="leading-relaxed">
+                                        <strong>Mô tả: </strong>
+                                        {course.description}
+                                    </p>
+                                    <div className="flex justify-between mt-10">
+                                        <span
+                                            className="flex justify-start text-2xl line-through font-bold py-2 px-4 focus:outline-none hover:bg-red-00 rounded">$ {course.original_price}.000
+                                        </span>
+                                        <span
                                             className="flex justify-start text-2xl font-bold text-white bg-red-600 border-0 py-2 px-4 focus:outline-none hover:bg-red-00 rounded">$ {course.discount_price}.000
-                                        </button>
+                                        </span>
                                     </div>
                                 </div>
                             </div>
@@ -151,10 +125,10 @@ export const CourseDetailPage = () => {
                                                     {/* Topic */}
                                                     <DisclosureButton
                                                         className="group flex w-full items-center justify-between">
-                                            <span
-                                                className="text-lg font-medium mt-2 text-black group-data-[hover]:text-black/80">
-                                            {topicIndex + 1}. {topic.title}
-                                            </span>
+                                                        <span
+                                                            className="text-lg font-medium mt-2 text-black group-data-[hover]:text-black/80">
+                                                        {topicIndex + 1}. {topic.title}
+                                                        </span>
                                                         <ChevronDownIcon
                                                             className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180"/>
                                                     </DisclosureButton>
@@ -166,7 +140,6 @@ export const CourseDetailPage = () => {
                                                 <span className="text-base">
                                                     <ul>
                                                     <li> - {lesson.title}</li>
-                                                    <li>+ Num of lesson: {lesson.number}</li>
                                                     <li>+ <a href={lesson.video_url}>Video_URL</a></li>
                                                     <li>+ <a href={lesson.document}>Document_URL</a></li>
                                                     </ul>
@@ -182,9 +155,9 @@ export const CourseDetailPage = () => {
                                     </Disclosure>
                                 ))}
                             </div>
-                            <div>
-                                <button onClick={handleAccept}>Công khai</button>
-                                <button onClick={handleReject}>Không công khai</button>
+                            <div className={'mt-10 mr-2 flex justify-end items-center gap-5'}>
+                                <button onClick={handleAccept} className={'border-2 border-black rounded-xl py-2 px-4 bg-mathcha-green text-lg font-medium text-white'}>Công khai</button>
+                                <button onClick={handleReject} className={'border-2 border-black rounded-xl py-2 px-4 bg-red-500 text-lg font-medium text-white'}>Không công khai</button>
                             </div>
                         </div>
                     </section>

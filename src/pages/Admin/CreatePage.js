@@ -9,12 +9,21 @@ export default function CreatePage() {
     const [error, setError] = useState(null);
     const navigate = useNavigate();
 
+    const phoneRegExp = /^09\d{8}$/;
     const validateForm = (data) => {
         const errors = {};
         if (!data.first_name) errors.first_name = 'First Name is required';
         if (!data.last_name) errors.last_name = 'Last Name is required';
-        if (!data.username) errors.username = 'Username is required';
-        if (!data.password) errors.password = 'Password is required';
+        if (!data.username) {
+            errors.username = 'Username is required';
+        } else if (data.username.length < 8 || data.username.length > 32) {
+            errors.username = 'Username must be between 8 and 32 characters';
+        }
+        if (!data.password) {
+            errors.password = 'Password is required';
+        } else if (data.password.length < 8 || data.password.length > 32) {
+            errors.password = 'Password must be between 8 and 32 characters';
+        }
         if (!data.confirm_password) {
             errors.confirm_password = 'Confirm Password is required';
         } else if (data.password !== data.confirm_password) {
@@ -25,7 +34,11 @@ export default function CreatePage() {
         } else if (!/\S+@\S+\.\S+/.test(data.email)) {
             errors.email = 'Email address is invalid';
         }
-        if (!data.phone) errors.phone = 'Phone is required';
+        if (!data.phone) {
+            errors.phone = 'Phone is required';
+        } else if (!/^09\d{8}$/.test(data.phone)) {
+            errors.phone = 'Số điện thoại bắt đầu bằng 09 và 10 chữ số';
+        }
         if (!data.address) errors.address = 'Address is required';
         if (!data.role) errors.role = 'Role is required';
         return errors;
@@ -60,7 +73,7 @@ export default function CreatePage() {
         } catch (err) {
             console.log(newUser);
             console.error('Error adding user:', err);
-            setError('Error adding user data. Please try again later.');
+            toast.error('Tên đăng nhập, email hoặc số điện thoại bị trùng');
         }
     };
 
@@ -79,20 +92,21 @@ export default function CreatePage() {
                         style={{ backgroundImage: 'url("/assets/admin-wallpaper.png")' }}
                     >
                         <div className="mx-auto w-full max-w-[550px]">
-                            <div className="text-6xl font-bold text-center mb-7">
-                                Add User
+                            <div className="text-6xl font-bold text-center mb-12">
+                                Tạo người dùng
                             </div>
                             <form onSubmit={handleAddUser}>
                                 <div className={'mb-4'}>
                                     <label htmlFor="username"
-                                           className="mb-3 block text-base font-medium text-white">
-                                        Username
+                                           className="mb-1 block text-base font-medium text-white">
+                                        Tên đăng nhập
                                     </label>
                                     <input
+                                        required
                                         type="text"
                                         name="username"
                                         id="username"
-                                        placeholder="Username"
+                                        placeholder="Tên đăng nhập"
                                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     />
                                     {formErrors.username &&
@@ -101,14 +115,15 @@ export default function CreatePage() {
                                 <div className="flex justify-between mb-5">
                                     <div>
                                         <label htmlFor="first_name"
-                                               className="mb-3 block text-base font-medium text-white">
-                                            First Name
+                                               className="mb-1 block text-base font-medium text-white">
+                                            Họ
                                         </label>
                                         <input
+                                            required
                                             type="text"
                                             name="first_name"
                                             id="first_name"
-                                            placeholder="First Name"
+                                            placeholder="Họ"
                                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                         />
                                         {formErrors.first_name &&
@@ -116,14 +131,15 @@ export default function CreatePage() {
                                     </div>
                                     <div>
                                         <label htmlFor="last_name"
-                                               className="mb-3 block text-base font-medium text-white">
-                                            Last Name
+                                               className="mb-1 block text-base font-medium text-white">
+                                            Tên
                                         </label>
                                         <input
+                                            required
                                             type="text"
                                             name="last_name"
                                             id="last_name"
-                                            placeholder="Last Name"
+                                            placeholder="Tên"
                                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                         />
                                         {formErrors.last_name &&
@@ -133,14 +149,15 @@ export default function CreatePage() {
                                 <div className="flex justify-between mb-5">
                                     <div>
                                         <label htmlFor="password"
-                                               className="mb-3 block text-base font-medium text-white">
-                                            Password
+                                               className="mb-1 block text-base font-medium text-white">
+                                            Mật khẩu
                                         </label>
                                         <input
+                                            required
                                             type="password"
                                             name="password"
                                             id="password"
-                                            placeholder="Password"
+                                            placeholder="Mật khẩu"
                                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                         />
                                         {formErrors.password &&
@@ -148,14 +165,15 @@ export default function CreatePage() {
                                     </div>
                                     <div>
                                         <label htmlFor="confirm_password"
-                                               className="mb-3 block text-base font-medium text-white">
-                                            Confirm Password
+                                               className="mb-1 block text-base font-medium text-white">
+                                            Xác nhận mật khẩu
                                         </label>
                                         <input
+                                            required
                                             type="password"
                                             name="confirm_password"
                                             id="confirm_password"
-                                            placeholder="Confirm Password"
+                                            placeholder="Xác nhận mật khẩu"
                                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                         />
                                         {formErrors.confirm_password &&
@@ -163,10 +181,10 @@ export default function CreatePage() {
                                     </div>
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="email" className="mb-3 block text-base font-medium text-white">
+                                    <label htmlFor="email" className="mb-1 block text-base font-medium text-white">
                                         Email
                                     </label>
-                                    <input
+                                    <input required
                                         type="email"
                                         name="email"
                                         id="email"
@@ -176,38 +194,39 @@ export default function CreatePage() {
                                     {formErrors.email && <span className="text-red-500">{formErrors.email}</span>}
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="phone" className="mb-3 block text-base font-medium text-white">
-                                        Phone
+                                    <label htmlFor="phone" className="mb-1 block text-base font-medium text-white">
+                                        Số điện thoại
                                     </label>
-                                    <input
+                                    <input required
                                         name="phone"
                                         id="phone"
-                                        placeholder="123-456-7890"
+                                        placeholder="09********"
                                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     />
                                     {formErrors.phone && <span className="text-red-500">{formErrors.phone}</span>}
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="address" className="mb-3 block text-base font-medium text-white">
-                                        Address
+                                    <label htmlFor="address" className="mb-1 block text-base font-medium text-white">
+                                        Địa chỉ
                                     </label>
-                                    <input
+                                    <input required
                                         type="text"
                                         name="address"
                                         id="address"
-                                        placeholder="Enter your address"
+                                        placeholder="Địa chỉ"
                                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     />
                                     {formErrors.address && <span className="text-red-500">{formErrors.address}</span>}
                                 </div>
                                 <div className="mb-4">
-                                    <label htmlFor="role" className="mb-3 block text-base font-medium text-white">
-                                        Role
+                                    <label htmlFor="role" className="mb-1 block text-base font-medium text-white">
+                                        Vai trò
                                     </label>
                                     <div className="flex justify-between mb-5 items-center">
                                         {["CONTENT_MANAGER", "MANAGER", "PARENT"].map((role, index) => (
                                             <div key={index} className="flex">
                                                 <input
+                                                    required
                                                     type="radio"
                                                     id={`role-${index}`}
                                                     name="role"
@@ -230,7 +249,6 @@ export default function CreatePage() {
                                         className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">
                                         Submit
                                     </button>
-                                    {error && <div className="text-red-500 mt-2">{error}</div>}
                                 </div>
                             </form>
                         </div>

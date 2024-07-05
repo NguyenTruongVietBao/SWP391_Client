@@ -9,13 +9,30 @@ function CoursePage(props) {
     const coursesPerPage = 8;
 
     useEffect(() => {
-        const fetchCourse = async () => {
-            const response = await api.get(`/course/get`);
-            setCourses(response.data.data);
-        };
-        fetchCourse();
-    });
+        const fetchCoursesWithPayments = async () => {
+            try {
+                const courseResponse = await api.get('/course/get');
+                const coursesData = courseResponse.data.data;
 
+                const coursesWithPayments = await Promise.all(
+                    coursesData.map(async (course) => {
+                        // Đếm số khóa học đã bán
+                        const paymentResponse = await api.get(`/payment/course/${course.course_id}`);
+                        return {
+                            ...course,
+                            paymentCount: paymentResponse.data.data.length, // Assuming the API returns an array of payments
+                        };
+                    })
+                );
+
+                setCourses(coursesWithPayments);
+            } catch (error) {
+                console.error("Error fetching courses or payments:", error);
+            }
+        };
+
+        fetchCoursesWithPayments();
+    }, []);
 
     // Pagination logic
     const indexOfLastCourse = currentPage * coursesPerPage;
@@ -40,11 +57,12 @@ function CoursePage(props) {
                                 <thead className="bg-gradient-to-br from-black/80 via-black/50 to-black/70">
                                 <tr>
                                     <th className="text-center py-3 px-2 rounded-l-lg">Thông tin</th>
-                                    <th className="text-left py-3 pr-2">Chapter</th>
-                                    <th className="text-left py-3 px-2">Topic</th>
-                                    <th className="text-left py-3 px-2">Lesson</th>
+                                    {/*<th className="text-left py-3 pr-2">Chapter</th>*/}
+                                    {/*<th className="text-left py-3 px-2">Topic</th>*/}
+                                    {/*<th className="text-left py-3 px-2">Lesson</th>*/}
                                     <th className="text-left py-3 px-2">Giá gốc</th>
                                     <th className="text-left py-3 px-2">Khuyến mãi</th>
+                                    <th className="text-left py-3 px-2">Đã bán</th>
                                     <th className="text-center py-3 px-2 rounded-r-lg">Công khai</th>
                                 </tr>
                                 </thead>
@@ -65,11 +83,12 @@ function CoursePage(props) {
                                                 </div>
                                             </Link>
                                         </td>
-                                        <td className="py-3 pr-2">10</td>
-                                        <td className="py-3 px-2">20</td>
-                                        <td className="py-3 px-2">40</td>
-                                        <td className="py-3 px-2">200</td>
-                                        <td className="py-3 px-2">100</td>
+                                        {/*<td className="py-3 pr-2">10</td>*/}
+                                        {/*<td className="py-3 px-2">20</td>*/}
+                                        {/*<td className="py-3 px-2">40</td>*/}
+                                        <td className="py-3 px-2">{data.original_price}.000 VNĐ</td>
+                                        <td className="py-3 px-2">{data.discount_price}.000 VNĐ</td>
+                                        <td className="py-3 px-2">{data.paymentCount} khóa</td>
                                         <td className="py-3 px-2">
                                             <div className="flex items-center justify-center space-x-3 ">
                                                 {data.status === null ? (
@@ -100,11 +119,11 @@ function CoursePage(props) {
                                 </tbody>
                             </table>
                         </div>
-                        <div className="pagination">
-                            {Array.from({ length: totalPages }, (_, index) => (
+                        <div className="pagination flex justify-center mt-4">
+                            {Array.from({length: totalPages}, (_, index) => (
                                 <button
                                     key={index}
-                                    className={`px-4 py-2 mx-1 ${index + 1 === currentPage ? 'bg-blue-500 text-white' : 'bg-gray-200 text-black'}`}
+                                    className={`px-4 py-2 mx-1 ${index + 1 === currentPage ? 'bg-mathcha-orange rounded-lg text-black font-bold' : 'bg-gray-200 text-gray-800 hover:bg-gray-300 hover:text-gray-900 focus:outline-none focus:bg-gray-300 focus:text-gray-900'}`}
                                     onClick={() => handlePageChange(index + 1)}
                                 >
                                     {index + 1}

@@ -264,7 +264,7 @@ export default function ParentPage() {
                 return (
                   <div
                     key={index}
-                    className="max-w-fit flex items-center gap-[22px]"
+                    className="max-w-fit flex items-center gap-[22px] mr-10"
                   >
                     <div>
                       <img src={data.img} alt="img" />
@@ -301,12 +301,12 @@ export default function ParentPage() {
                 return (
                   <div
                     key={index}
-                    className="max-w-fit flex items-center gap-[22px]"
+                    className="max-w-fit flex items-center gap-5 mr-10"
                   >
                     <div>
-                      <img src={data.img} alt="imgaes" />
+                      <img src={data.img} alt="imgaes"/>
                     </div>
-                    <div className="text-start flex flex-col gap-2.5">
+                    <div className="text-start flex flex-col gap-2">
                       <div className="whitespace-nowrap font-Cormorant text-2xl leading-[29px] tracking-[0.03em] font-semibold">
                         {data.name}
                       </div>
@@ -324,7 +324,7 @@ export default function ParentPage() {
                             fill="#ECDBBA"
                           />
                         </svg>
-                        {data.ethe}
+                        {data.star}
                       </div>
                     </div>
                   </div>
@@ -335,39 +335,42 @@ export default function ParentPage() {
         </div>
 
         {/* Liên hệ  */}
-        <div className="flex flex-col items-center justify-center p-12 backdrop-blur-sm bg-mathcha-green/30  rounded-2xl mb-10">
-          <div className="text-5xl font-Cormorant leading-[58px] font-bold mb-5">            
-            Đăng ký tư vấn
+          <div className="flex flex-col items-center justify-center p-6 md:p-12 backdrop-blur-sm bg-mathcha-green/30 rounded-2xl mb-10">
+              <div className="text-3xl md:text-5xl font-Cormorant font-bold leading-tight mb-5 text-center">
+                  Đăng ký tư vấn
+              </div>
+              <div className="w-full md:w-128">
+                  <form action="https://formbold.com/s/FORM_ID" method="POST">
+                      <div className="mb-5">
+                          <label htmlFor="name" className="mb-2 block text-base font-medium text-[#07074D]">
+                              Họ và tên
+                          </label>
+                          <input type="text" name="name" id="name" placeholder="Họ và tên"
+                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-4 md:px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+                      </div>
+                      <div className="mb-5">
+                          <label htmlFor="phone" className="mb-2 block text-base font-medium text-[#07074D]">
+                              Số điện thoại
+                          </label>
+                          <input type="tel" name="phone" id="phone" placeholder="Số điện thoại"
+                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-4 md:px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+                      </div>
+                      <div className="mb-5">
+                          <label htmlFor="message" className="mb-2 block text-base font-medium text-[#07074D]">
+                              Thắc mắc
+                          </label>
+                          <textarea rows={4} name="message" id="message" placeholder="Thắc mắc"
+                                    className="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-4 md:px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
+                                    defaultValue={""}/>
+                      </div>
+                      <div className="text-center">
+                          <button type="submit" className="hover:shadow-form rounded-md bg-mathcha-orange py-3 px-6 md:px-8 text-base font-semibold outline-none">
+                              Gửi
+                          </button>
+                      </div>
+                  </form>
+              </div>
           </div>
-          <div className="w-128 mx-auto">
-            <form action="https://formbold.com/s/FORM_ID" method="POST">
-              <div className="mb-5 w-full">
-                <label htmlFor="name" className="mb-3 block text-base font-medium text-[#07074D]">
-                  Họ và tên
-                </label>
-                <input type="text" name="name" id="name" placeholder="Họ và tên" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
-              </div>
-              <div className="mb-5">
-                <label htmlFor="email" className="mb-3 block text-base font-medium text-[#07074D]">
-                  Số điện thoại
-                </label>
-                <input type="email" name="email" id="email" placeholder="Số điện thoại" className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" />
-              </div>
-              <div className="mb-5">
-                <label htmlFor="message" className="mb-3 block text-base font-medium text-[#07074D]">
-                  Thắc mắc
-                </label>
-                <textarea rows={4} name="message" id="message" placeholder="Thắc mắc" className="w-full resize-none rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md" defaultValue={""} />
-              </div>
-              <div>
-                <button className="hover:shadow-form rounded-md bg-mathcha-orange py-3 px-8 text-base font-semibold  outline-none">
-                  Gửi
-                </button>
-              </div>
-            </form>
-          </div>
-        </div>
-
       </div>
     </div>
   );

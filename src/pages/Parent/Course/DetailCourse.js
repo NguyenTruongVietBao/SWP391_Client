@@ -81,6 +81,7 @@ export default function DetailCourse() {
     function closeCreate() {
         setIsOpenCreate(false);
     }
+
     useEffect(() => {
         if (user !== null) {
           setUserId(user.user_id);
@@ -98,7 +99,7 @@ export default function DetailCourse() {
     useEffect(() => {
         const getStudentByParentId = async (userId) => {
             try {
-                const response = await api.get(`/user/student/${userId}`);
+                const response = await api.get(`user/student/${userId}`);
                 return response;
             } catch (err) {
                 throw err;
@@ -112,15 +113,15 @@ export default function DetailCourse() {
     // Get chapter topic lesson by parent ID
     useEffect(() => {
         const fetchChaptersTopicsAndLessons = async () => {
-            const chaptersResponse = await api.get(`/chapter/course/${courseId}`);
+            const chaptersResponse = await api.get(`chapter/course/${courseId}`);
             const chaptersData = chaptersResponse.data.data;
-
+            console.log('chaptersData',chaptersData)
             const chaptersWithTopicsAndLessons = await Promise.all(chaptersData.map(async (chapter) => {
-                const topicsResponse = await api.get(`/topic/chapter/${chapter.chapter_id}`);
+                const topicsResponse = await api.get(`topic/chapter/${chapter.chapter_id}`);
                 const topicsData = topicsResponse.data.data;
-
+                console.log('topicsData',topicsData)
                 const topicsWithLessons = await Promise.all(topicsData.map(async (topic) => {
-                    const lessonsResponse = await api.get(`/lessons/topic/${topic.topic_id}`);
+                    const lessonsResponse = await api.get(`lessons/topic/${topic.topic_id}`);
                     return { ...topic, lessons: lessonsResponse.data.data };
                 }));
 
@@ -157,7 +158,7 @@ export default function DetailCourse() {
         if (validateForm()) {
             try {
                 await api.post(`/student/user/${userId}`, formData);
-                toast.success('Create success')
+                toast.success('Tạo học sinh thành công')
                 window.location.reload();
                 // closeCreate();
                 // close();

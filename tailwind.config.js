@@ -21,8 +21,10 @@ module.exports={
           'admin-wallpaper': "url('/assets/admin-wallpaper.png')"
         },
         fontFamily: { 
-          "mathcha-font": ['Exo 2', 'sans-serif'] 
-        } 
+          "mathcha-font-1": ['Exo 2', 'sans-serif'] ,
+            "mathcha-font-2": ['Plus Jakarta Sans', 'sans-serif'] ,
+            "mathcha-font-3": ['Pacifico', 'cursive'] ,
+        }
       },
     },
     plugins: [],

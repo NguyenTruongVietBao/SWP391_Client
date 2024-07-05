@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import {Link } from 'react-router-dom'
+import {Link, useParams} from 'react-router-dom'
 import Menu from '../../components/Student/Menu';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/features/counterSlice';
@@ -9,9 +9,8 @@ export default function StudentPage() {
     const user = useSelector(selectUser);
     const studentId = user.user_id;
     const [courses, setCourses] = useState([]);
-    const [chapters, setChapters] = useState({});
-    const [topics, setTopics] = useState({});
     const [searchTerm, setSearchTerm] = useState('');
+    const {enrollmentId} = useParams();
 
     useEffect(() => {
         api.get(`/student/${studentId}/courses`)
@@ -21,27 +20,6 @@ export default function StudentPage() {
             .catch(error => console.error('Error fetching courses:', error));
     }, [studentId]);
 
-    // useEffect(() => {
-    //     if (courses.length > 0) {
-    //         courses.forEach(course => {
-    //             api.get(`/chapter/course/${course.course_id}`)
-    //                 .then((res) => {
-    //                     const courseChapters = res.data.data;
-    //                     setChapters(prev => ({ ...prev, [course.course_id]: courseChapters }));
-    //                     if (courseChapters.length > 0) {
-    //                         const firstChapterId = courseChapters[0].chapter_id;
-    //                         api.get(`/topic/chapter/${firstChapterId}`)
-    //                             .then((res) => {
-    //                                 const chapterTopics = res.data.data;
-    //                                 setTopics(prev => ({ ...prev, [firstChapterId]: chapterTopics }));
-    //                             })
-    //                             .catch(error => console.error('Error fetching topics:', error));
-    //                     }
-    //                 })
-    //                 .catch(error => console.error('Error fetching chapters:', error));
-    //         });
-    //     }
-    // }, [courses]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
@@ -101,7 +79,6 @@ export default function StudentPage() {
                                     style={{objectFit: 'cover', width: '306px', height: '264px'}}
                                 />
                                 <p className="text-5xl text-indigo-900"><strong>{course.title}</strong></p>
-                                {/*<Link to={`./course/${course.course_id}/topic/${topics[chapters[course.course_id]?.[0]?.chapter_id]?.[0]?.topic_id}`}*/}
                                 <Link to={`./course/${course.course_id}`}
                                       className="bg-orange-300 text-xl text-white rounded-full px-8 py-2 border-2 border-black"><strong>Học</strong></Link>
                             </div>

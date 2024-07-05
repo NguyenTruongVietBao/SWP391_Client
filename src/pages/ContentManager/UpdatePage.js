@@ -38,48 +38,47 @@ export default function UpdatePage() {
       .catch(console.error);
   }, [courseId]);
 
-  // Get All list Chapter Topic Lesson
+  // Fetch chapters and topics on mount and when courseId changes
   useEffect(() => {
-    const fetchChaptersTopicsAndLessons = async () => {
-      const chaptersResponse = await api.get(`/chapter/course/${courseId}`);
-      const chaptersData = chaptersResponse.data.data;
+    const fetchChaptersAndTopics = async () => {
+      try {
+        const chaptersResponse = await api.get(`/chapter/course/${courseId}`);
+        const chaptersData = chaptersResponse.data.data;
 
-      const chaptersWithTopicsAndLessons = await Promise.all(chaptersData.map(async (chapter) => {
-        const topicsResponse = await api.get(`/topic/chapter/${chapter.chapter_id}`);
-        const topicsData = topicsResponse.data.data;
+        const chaptersWithTopics = await Promise.all(chaptersData.map(async (chapter) => {
+          const topicsResponse = await api.get(`/topic/chapter/${chapter.chapter_id}`);
+          const topicsData = topicsResponse.data.data;
 
-        const topicsWithLessons = await Promise.all(topicsData.map(async (topic) => {
-          const lessonsResponse = await api.get(`/lessons/topic/${topic.topic_id}`);
-          return { ...topic, lessons: lessonsResponse.data.data || [] };
+          const topicsWithLessons = await Promise.all(topicsData.map(async (topic) => {
+            const lessonsResponse = await api.get(`/lessons/topic/${topic.topic_id}`);
+            return { ...topic, lessons: lessonsResponse.data.data || [] };
+          }));
+
+          return { ...chapter, topics: topicsWithLessons || [] };
         }));
-        return { ...chapter, topics: topicsWithLessons || [] };
-      }));
 
-      setChapters(chaptersWithTopicsAndLessons);
+        setChapters(chaptersWithTopics);
+      } catch (error) {
+        console.error('Error fetching chapters and topics:', error);
+      }
     };
-    fetchChaptersTopicsAndLessons();
+    fetchChaptersAndTopics();
   }, [courseId]);
 
-  //Create Chapter
   const handleAddChapter = async () => {
-    setChapters((prev) => [
-      ...chapters,
-      {
-        title: newChapterTitle,
-        number: 1,
-        chapter_id: prev.length + 1,
-        topics: []
-      }
-    ]);
-    setNewChapterTitle("");
-    toast.success("Thêm chapter thành công !")
-    await api.post(`/chapter/${courseId}`, { title: newChapterTitle, number: 1 });
-
+    try {
+      const response = await api.post(`/chapter/${courseId}`, { title: newChapterTitle, number: 1 });
+      const newChapter = response.data.data;
+      setChapters((prevChapters) => [...prevChapters, { ...newChapter, topics: [] }]);
+      setNewChapterTitle("");
+      toast.success("Thêm chapter thành công !");
+    } catch (error) {
+      console.error('Error adding chapter:', error);
+      toast.error("Có lỗi xảy ra khi thêm chapter");
+    }
   };
 
-  //Create Topic
   const handleAddTopic = async (chapterId, title) => {
-    // Optimistically update the UI before the request is complete
     const newTopic = { title, number: 1, lessons: [] };
     const updatedChapters = chapters.map(chapter => {
       if (chapter.chapter_id === chapterId) {
@@ -89,11 +88,9 @@ export default function UpdatePage() {
     });
     setChapters(updatedChapters);
 
-    // Make the API request
     try {
       const response = await api.post(`/topic/chapter/${chapterId}`, { title, number: 1 });
-      // Update the topic with the response data
-      const finalChapters = updatedChapters.map(chapter => {
+      const updatedTopics = updatedChapters.map(chapter => {
         if (chapter.chapter_id === chapterId) {
           return {
             ...chapter,
@@ -104,29 +101,20 @@ export default function UpdatePage() {
         }
         return chapter;
       });
-      setChapters(finalChapters);
+      setChapters(updatedTopics);
       toast.success("Thêm topic thành công !");
     } catch (error) {
-      // Handle error, rollback optimistic update if necessary
-      console.error(error);
+      console.error('Error adding topic:', error);
       toast.error("Có lỗi xảy ra khi thêm topic");
-      // Optionally, rollback the optimistic update
-      const rolledBackChapters = chapters.map(chapter => {
-        if (chapter.chapter_id === chapterId) {
-          return { ...chapter, topics: chapter.topics.filter(topic => topic.title !== title) };
-        }
-        return chapter;
-        console.log(chapter)
-      });
-      setChapters(rolledBackChapters);
+      // Rollback the optimistic update if necessary
+      setChapters(updatedChapters);
     }
   };
 
-  //Create Lesson
   const handleAddLesson = async (topicId, lessonData) => {
-    const response = await api.post(`/lessons/${topicId}`, lessonData);
-    const updatedChapters = chapters.map(chapter => {
-      return {
+    try {
+      const response = await api.post(`/lessons/${topicId}`, lessonData);
+      const updatedChapters = chapters.map(chapter => ({
         ...chapter,
         topics: chapter.topics.map(topic => {
           if (topic.topic_id === topicId) {
@@ -134,10 +122,15 @@ export default function UpdatePage() {
           }
           return topic;
         })
-      };
-    });
-    setChapters(updatedChapters);
-    toast.success("Thêm lesson thành công !")
+      }));
+      setChapters(updatedChapters);
+      toast.success("Thêm lesson thành công !");
+    } catch (error) {
+      console.error('Error adding lesson:', error);
+      toast.error("Có lỗi xảy ra khi thêm lesson");
+      // Optionally, rollback the optimistic update
+      // setChapters(updatedChapters);
+    }
   };
 
   //Handle Save 
@@ -279,7 +272,7 @@ export default function UpdatePage() {
                         key={index}
                         as="div"
                         className="p-6"
-                        defaultOpen={true}
+                        defaultOpen={false}
                     >
                       {/* Chapter */}
                       <DisclosureButton className="group flex w-full items-center justify-between">
