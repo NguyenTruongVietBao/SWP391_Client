@@ -350,6 +350,13 @@ export default function ParentPage() {
                       </div>
                       <div className="mb-5">
                           <label htmlFor="phone" className="mb-2 block text-base font-medium text-[#07074D]">
+                              Email
+                          </label>
+                          <input type="email" name="phone" id="phone" placeholder="Số điện thoại"
+                                 className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-4 md:px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"/>
+                      </div>
+                      <div className="mb-5">
+                          <label htmlFor="phone" className="mb-2 block text-base font-medium text-[#07074D]">
                               Số điện thoại
                           </label>
                           <input type="tel" name="phone" id="phone" placeholder="Số điện thoại"
@@ -364,7 +371,8 @@ export default function ParentPage() {
                                     defaultValue={""}/>
                       </div>
                       <div className="text-center">
-                          <button type="submit" className="hover:shadow-form rounded-md bg-mathcha-orange py-3 px-6 md:px-8 text-base font-semibold outline-none">
+                          <button type="submit"
+                                  className="hover:shadow-form rounded-md bg-mathcha-orange py-3 px-6 md:px-8 text-base font-semibold outline-none">
                               Gửi
                           </button>
                       </div>

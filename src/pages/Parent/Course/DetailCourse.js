@@ -371,6 +371,7 @@ export default function DetailCourse() {
                 </div>
             </div>
         </div>
+        
         {/* Form chọn học sinh */}
         <Transition appear show={isOpenPayment}>
             <Dialog as="div" className="relative z-10 focus:outline-none" onClose={close}>

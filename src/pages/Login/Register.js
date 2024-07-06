@@ -81,6 +81,8 @@ export default function Register() {
     newUser.image = imgUrl;
     newUser.is_deleted = false;
     try {
+      console.log(newUser)
+
       await api.post('/api/register', newUser);
       toast.success('Đăng ký thành công!');
       navigate('/login');

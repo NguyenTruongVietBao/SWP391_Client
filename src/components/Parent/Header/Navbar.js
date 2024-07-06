@@ -50,8 +50,15 @@ export default function Navbar() {
                 </Link>
                   :  
                   <Menu>
-                    <MenuButton>
-                      <img src='./assets/admin-avatar.png' alt='a' className='rounded-full w-10'/>
+                    <MenuButton className={'flex items-center gap-2 p-1 px-2 bg-mathcha-green/20 rounded-xl hover:bg-mathcha-green/40'}>
+                        {
+                            user.image ? (
+                                <img src={user.image} width={200} height={200} alt='a' className='border-2 border-black rounded-full w-9 h-9'/>
+                            ) : (
+                                <img src='./assets/admin-avatar.png' width={200} height={200} alt='a' className='border-2 border-black rounded-full w-9 h-9'/>
+                            )
+                        }
+                        <strong>{user.last_name}</strong>
                     </MenuButton>
                     <Transition
                       enter="transition ease-out duration-75"

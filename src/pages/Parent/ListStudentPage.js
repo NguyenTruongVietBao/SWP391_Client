@@ -53,12 +53,12 @@ export default function ListStudentPage() {
                     <div id="manage-course">
                         <div className='flex items-center justify-between'>
                             <h1 className="font-bold py-4 uppercase">Danh sách học sinh</h1>
-                            <Button className="p-1 inline-flex items-center gap-2 rounded-md bg-gradient-to-br from-black/60 via-black/80 to-black/60 py-1.5.6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white">
+                            <Button className="px-3 py-1 inline-flex items-center gap-2 rounded-md bg-gradient-to-br from-black/60 via-black/80 to-black/60 py-1.5.6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[open]:bg-gray-700 data-[focus]:outline-1 data-[focus]:outline-white">
                                 <Link to={'./create'} className='flex'>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6 mr-2">
                                         <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v6m3-3H9m12 0a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
                                     </svg>
-                                    Tạo học sinh
+                                    Tạo học sinh mới
                                 </Link>
                             </Button>
                         </div>
@@ -71,7 +71,7 @@ export default function ListStudentPage() {
                                         <th className="text-center py-3 px-2">Tên</th>
                                         <th className="text-center py-3 px-2">Email</th>
                                         <th className="text-center py-3 px-2">Số điện thoại</th>
-                                        <th className="text-center py-3 px-2 rounded-r-lg"></th>
+                                        <th className="text-center py-3 px-2 rounded-r-lg">Thao tác</th>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -84,8 +84,8 @@ export default function ListStudentPage() {
                                             </td>
                                             <td className="py-3 px-2 text-center font-bold"><span>{data.last_name} </span></td>
                                             <td className="py-3 px-2 text-center font-bold">{data.first_name}</td>
-                                            <td className="py-3 px-2 text-center">20</td>
-                                            <td className="py-3 px-2 text-center">40</td>
+                                            <td className="py-3 px-2 text-center">{data.email}</td>
+                                            <td className="py-3 px-2 text-center">{data.phone}</td>
                                             <td className="py-3 px-2 text-center">
                                                 <div className="inline-flex items-center space-x-3">
                                                     <Link to={`./update/${data.student_id}`} title="Edit" className="hover:text-white">
