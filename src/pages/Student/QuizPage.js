@@ -19,7 +19,6 @@ const QuizPage = () => {
     const [enrollmentId, setEnrollmentId] = useState(null);
     const [retake, setRetake] = useState(false);
     const [timeLeft, setTimeLeft] = useState(quizData.timeLimit * 60); // assuming timeLimit is in minutes
-
     const studentId = user.user_id;
     const timerRef = useRef(null);
 
@@ -33,9 +32,11 @@ const QuizPage = () => {
         const fetchEnrollmentId = async () => {
             try {
                 const resEnroll = await api.get(`/enrollment/student/${studentId}/course/${courseId}`);
+                const responseTopic = await api.get(`/topic/${topicId}`);
                 const enrollmentArray = resEnroll.data.data;
                 const fetchedEnrollmentId = enrollmentArray[0]?.enrollment_id;
                 setEnrollmentId(fetchedEnrollmentId);
+                setTopic(responseTopic.data.data);
             } catch (error) {
                 console.error('Error fetching enrollment ID:', error);
             }

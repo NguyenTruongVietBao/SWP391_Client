@@ -20,11 +20,9 @@ export default function StudentPage() {
             .catch(error => console.error('Error fetching courses:', error));
     }, [studentId]);
 
-
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
-
     const filteredCourses = courses.filter(course =>
         course.title.toLowerCase().includes(searchTerm.toLowerCase())
     );

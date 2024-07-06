@@ -11,6 +11,7 @@ export const LessonLearningPage = () => {
     const [lesson, setLesson] = useState({});
     const user = useSelector(selectUser);
     const studentId = user.user_id;
+    const [enrollmentId, setEnrollmentId] = useState(null);
 
     useEffect(() => {
         const fetchLesson = async () => {
@@ -26,13 +27,23 @@ export const LessonLearningPage = () => {
         }
     }, [lessonId]);
 
+    useEffect(() => {
+        const fetchEnrollmentId = async () => {
+            try {
+                const resEnroll = await api.get(`/enrollment/student/${studentId}/course/${courseId}`);
+                const enrollmentArray = resEnroll.data.data;
+                const fetchedEnrollmentId = enrollmentArray[0]?.enrollment_id;
+                setEnrollmentId(fetchedEnrollmentId);
+            } catch (error) {
+                console.error('Error fetching enrollment ID:', error);
+            }
+        };
+        fetchEnrollmentId();
+    }, [studentId, courseId]);
 
-    const handleFinishLesson = async () => {
+    const handleFinishLesson =  () => {
         try {
-            const resEnroll = await api.get(`/enrollment/student/${studentId}/course/${courseId}`)
-            const enrollmentArray = resEnroll.data.data;
-            const enrollmentId = enrollmentArray[0].enrollment_id;
-            await api.post(`/completeLesson/create/${enrollmentId}/${lessonId}`);
+            api.post(`/completeLesson/create/${enrollmentId}/${lessonId}`);
             toast.success('Học thành công');
             // window.location.reload();
         } catch (error) {

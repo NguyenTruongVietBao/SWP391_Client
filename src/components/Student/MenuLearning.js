@@ -16,6 +16,21 @@ export const MenuLearning = () => {
     const navigate = useNavigate();
     const user = useSelector(selectUser);
     const studentId = user.user_id;
+    const [enrollmentId, setEnrollmentId] = useState(null);
+
+    useEffect(() => {
+        const fetchEnrollmentId = async () => {
+            try {
+                const resEnroll = await api.get(`/enrollment/student/${studentId}/course/${courseId}`);
+                const enrollmentArray = resEnroll.data.data;
+                const fetchedEnrollmentId = enrollmentArray[0]?.enrollment_id;
+                setEnrollmentId(fetchedEnrollmentId);
+            } catch (error) {
+                console.error('Error fetching enrollment ID:', error);
+            }
+        };
+        fetchEnrollmentId();
+    }, [studentId, courseId]);
 
     // Fetch chapters
     useEffect(() => {
@@ -69,9 +84,6 @@ export const MenuLearning = () => {
         const fetchCompletedTopics = async () => {
             const completedTopicsData = await Promise.all(
                 Object.values(topics).flat().map(async (topic) => {
-                    const resEnroll = await api.get(`/enrollment/student/${studentId}/course/${courseId}`);
-                    const enrollmentArray = resEnroll.data.data;
-                    const enrollmentId = enrollmentArray[0].enrollment_id;
                     const response = await api.get(`/completeTopic/status/${enrollmentId}/${topic.topic_id}`);
                     return { topicId: topic.topic_id, isComplete: response.data.data };
                 })
@@ -88,9 +100,6 @@ export const MenuLearning = () => {
         const fetchCompletedChapters = async () => {
             const completedChaptersData = await Promise.all(
                 chapters.map(async (chapter) => {
-                    const resEnroll = await api.get(`/enrollment/student/${studentId}/course/${courseId}`);
-                    const enrollmentArray = resEnroll.data.data;
-                    const enrollmentId = enrollmentArray[0].enrollment_id;
                     const response = await api.get(`/completeChapter/status/${enrollmentId}/${chapter.chapter_id}`);
                     return { chapterId: chapter.chapter_id, isComplete: response.data.data };
                 })
@@ -119,8 +128,8 @@ export const MenuLearning = () => {
     const handleTakeQuizChapter = async (chapterId) => {
         try {
             const response = await api.post(`/quiz/chapter/${chapterId}/generate`, {
-                "numberOfQuestions": 2,
-                "timeLimit": 10
+                "numberOfQuestions": 10,
+                "timeLimit": 15
             });
             const quizData = response.data.data;
             navigate(`/learning/course/${courseId}/chapter/${chapterId}/quiz`, { state: { quizData } });
@@ -134,7 +143,7 @@ export const MenuLearning = () => {
         try {
             const response = await api.post(`/quiz/course/${courseId}/generate`, {
                 "numberOfQuestions": 10,
-                "timeLimit": 30
+                "timeLimit": 15
             });
             const quizData = response.data.data;
             navigate(`/learning/course/${courseId}/quiz`, { state: { quizData } });

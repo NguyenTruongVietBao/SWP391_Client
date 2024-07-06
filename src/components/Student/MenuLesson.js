@@ -53,8 +53,8 @@ const MenuLesson = () => {
     const handleTakeQuizTopic = async () => {
         try {
             const response = await api.post(`/quiz/topic/${topicId}/generate`, {
-                "numberOfQuestions": 2,
-                "timeLimit": 10
+                "numberOfQuestions": 10,
+                "timeLimit": 15
             });
             console.log(response.data.data)
             const quizData = response.data.data;
