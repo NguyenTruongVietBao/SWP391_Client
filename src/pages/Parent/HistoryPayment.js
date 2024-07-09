@@ -1,12 +1,8 @@
 import React, { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
 import Menu from '../../components/Parent/Body/Menu';
-import { Button } from '@headlessui/react';
 import { selectUser } from '../../redux/features/counterSlice';
 import { useSelector } from 'react-redux';
-import { getStudentsByParentId, deleteStudentById } from '../../services/UserService/UserService'; // Assuming you have a delete function in UserService
 import api from '../../config/axios';
-import { toast } from 'react-toastify';
 
 
 export default function HistoryPayment() {
@@ -16,11 +12,23 @@ export default function HistoryPayment() {
     useEffect(() => {
         // Parent xem khóa đó mua cho ai
         api.get(`/payment/user/${user.user_id}`)
-          .then((res)=>{
-                setBuyCourse(res.data.data)
-          })
-          .catch(error => console.error('Error fetching courses:', error));
-      }, [user.user_id]);
+            .then((res) => {
+                setBuyCourse(res.data.data);
+            })
+            .catch(error => console.error('Error fetching courses:', error));
+    }, [user.user_id]);
+
+    const formatDate = (dateString) => {
+        if (dateString.length !== 14) {
+            return 'Invalid date';
+        }
+
+        const year = dateString.substring(0, 4);
+        const month = dateString.substring(4, 6);
+        const day = dateString.substring(6, 8);
+
+        return `${day}/${month}/${year}`;
+    };
 
     return (
         <div className="antialiased bg-gradient-to-r from-mathcha via-white to-mathcha w-full min-h-screen text-black relative py-4">
@@ -37,31 +45,31 @@ export default function HistoryPayment() {
                         <div className="overflow-x-scroll">
                             <table className="w-full whitespace-nowrap">
                                 <thead className="bg-gradient-to-br from-black/80 via-black/60 to-black/70 text-white/90">
-                                    <tr>
-                                        <th className="text-left py-3 px-2 rounded-l-lg">Mua cho</th>
-                                        <th className="text-center py-3 px-2">Khóa học</th>
-                                        <th className="text-center py-3 px-2">Số tiền</th>
-                                        <th className="text-center py-3 px-2">Thời gian</th>
-                                        <th className="text-center py-3 px-2">Phương thức</th>
-                                        <th className="text-center py-3 px-2 rounded-r-lg"></th>
-                                    </tr>
+                                <tr>
+                                    <th className="text-left py-3 px-2 rounded-l-lg">Mua cho</th>
+                                    <th className="text-center py-3 px-2">Khóa học</th>
+                                    <th className="text-center py-3 px-2">Số tiền</th>
+                                    <th className="text-center py-3 px-2">Thời gian</th>
+                                    <th className="text-center py-3 px-2">Phương thức</th>
+                                    <th className="text-center py-3 px-2 rounded-r-lg"></th>
+                                </tr>
                                 </thead>
                                 <tbody>
-                                    {buyCourse.map((data, index) => (
-                                        <tr key={index} className="border-b border-gray-700">
-                                            <td className="py-3 px-2 text-left font-bold">{data.student.last_name} {data.student.first_name}</td>
-                                            <td className="py-3 px-2 text-center font-bold">{data.course.title}</td>
-                                            <td className="py-3 px-2 text-center">{data.total_money} VNĐ</td>
-                                            <td className="py-3 px-2 text-center">{data.payment_date}</td>
-                                            <td className="py-3 px-2 text-center">{data.payment_method}</td>
-                                        </tr>
-                                    ))}
+                                {buyCourse.map((data, index) => (
+                                    <tr key={index} className="border-b border-gray-700">
+                                        <td className="py-3 px-2 text-left font-bold">{data.student.last_name} {data.student.first_name}</td>
+                                        <td className="py-3 px-2 text-center font-bold">{data.course.title}</td>
+                                        <td className="py-3 px-2 text-center">{data.total_money} VNĐ</td>
+                                        <td className="py-3 px-2 text-center">{formatDate(data.payment_date)}</td>
+                                        <td className="py-3 px-2 text-center">{data.payment_method}</td>
+                                    </tr>
+                                ))}
                                 </tbody>
                             </table>
                         </div>
                     </div>
                 </div>
-            </div>           
+            </div>
         </div>
     );
 }

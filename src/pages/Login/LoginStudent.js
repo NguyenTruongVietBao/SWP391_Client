@@ -27,7 +27,7 @@ export default function LoginStudent() {
       }
     } catch (e) {
       console.log(e);
-      setError('Incorrect username or password');
+      setError('Sai tên đăng nhập hoặc mật khẩu');
     }
   };
   console.log(username, password)

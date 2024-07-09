@@ -24,16 +24,16 @@ export default function Navbar() {
             </div>
             {/* MENU */}
             <div className="hidden sm:text-lg text-2xl text-[#2D4263] font-normal md:flex md:flex-row items-center sm:gap-2.5 md:gap-[50px]">
-              <Link to={'/about'}>
+              <Link to={'/'}>
                 <div className='font-bold'>Trung tâm</div>
               </Link>
-              <Link to={'/discount'}>
+              <Link to={'/'}>
                 <div className='font-bold'>Ưu đãi</div>
               </Link>
               <Link to={'/contact'}>
                 <div className='font-bold'>Liên hệ</div>
               </Link>
-              <Link to={'/qanda'}>
+              <Link to={'/'}>
                 <div className='font-bold'>Hỏi đáp</div>
               </Link>
             {/* LOGIN */}

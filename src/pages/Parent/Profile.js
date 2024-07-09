@@ -103,7 +103,7 @@ export default function Profile() {
                         <div className={'flex justify-center gap-16'}>
                             <div className="flex flex-col items-center space-y-4 p-4 border border-gray-200 rounded-lg shadow-md max-w-md mx-auto bg-white">
                                 <label className="block text-sm font-medium text-gray-700">
-                                    Tải ảnh đại diện
+                                   Cập nhật đại diện
                                 </label>
                                 <div className="flex w-full items-center justify-center bg-grey-lighter">
                                     <label

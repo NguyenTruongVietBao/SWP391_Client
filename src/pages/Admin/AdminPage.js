@@ -4,10 +4,8 @@ import { Button, Dialog, DialogPanel, DialogTitle, Transition, TransitionChild }
 import { Link } from 'react-router-dom';
 import Menu from '../../components/Admin/Menu';
 import { toast } from 'react-toastify';
-import api from '../../config/axios';
 import {useDispatch, useSelector} from 'react-redux';
 import {logout, selectUser} from '../../redux/features/counterSlice';
-//Confirm to delete
 
 export default function AdminPage() {
     const [users, setUsers] = useState([]);
@@ -73,7 +71,7 @@ export default function AdminPage() {
 
     return (
         <div
-            className="antialiased w-full h-screen text-slate-100 relative py-4"
+            className="antialiased w-full min-h-screen text-slate-100 relative py-4"
             style={{backgroundImage: 'url("/assets/admin-wallpaper.png")'}}
         >
             <div className="grid grid-cols-12 mx-auto gap-2 sm:gap-4 md:gap-6 lg:gap-10 xl:gap-14 max-w-7xl my-10 px-2">

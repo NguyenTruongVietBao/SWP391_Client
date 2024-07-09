@@ -78,8 +78,8 @@ export default function ContentManagerPage() {
                                             </div>
                                         </td>
                                         <td className="py-3 px-2 text-center font-bold"><span>{data.title}</span></td>
-                                        <td className="py-3 px-2 text-center">100.000 VNĐ</td>
-                                        <td className="py-3 px-2 text-center">100.000 VNĐ</td>
+                                        <td className="py-3 px-2 text-center">{data.original_price}.000 VNĐ</td>
+                                        <td className="py-3 px-2 text-center">{data.discount_price}.000 VNĐ</td>
                                         <td className="py-3 px-2 text-center">
                                                 <span className={'p-2 rounded-xl ' + (data.status === null ? 'bg-yellow-500' : data.status ? 'bg-mathcha-green' : 'bg-red-500') + ' text-white'}>
                                                     {data.status === null ? 'Đang chờ duyệt' : data.status ? 'Đã chấp thuận' : 'Đã từ chối'}

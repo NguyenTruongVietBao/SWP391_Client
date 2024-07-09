@@ -97,13 +97,19 @@ export default function DetailPage() {
                                 </span>                               
                                 </div>
                                 <p className="leading-relaxed">{course.description}</p>
-                                <div className="flex mt-10">
-                                    <button className="flex justify-start text-2xl font-bold text-white bg-red-600 border-0 py-2 px-4 focus:outline-none hover:bg-red-00 rounded">$ {course.discount_price}.000</button>
+                                <div className="flex justify-between mt-10">
+                                    <h1 className="flex justify-start text-2xl font-medium line-through text-black border-0 py-2 focus:outline-none hover:bg-red-00 rounded">
+                                        {course.original_price}.000
+                                    </h1>
+                                    <button
+                                        className="flex justify-start text-2xl font-bold text-white bg-red-600 border-0 py-2 px-4 focus:outline-none hover:bg-red-00 rounded">$ {course.discount_price}.000
+                                    </button>
                                 </div>
                             </div>
                         </div>
+
                         {/* Bot */}
-                        <div className='w-4/5 mx-auto mt-10'>
+                        <div className='w-4/5 mx-auto'>
                             {chapters.map((chapter, index) => (
                                 <Disclosure
                                     key={index}
@@ -114,7 +120,7 @@ export default function DetailPage() {
                                     {/* Chapter */}
                                     <DisclosureButton className="group flex w-full items-center justify-between">
                                     <span className="text-2xl font-medium text-black group-data-[hover]:text-black/80">
-                                        {chapter.title}
+                                        {index+1}. {chapter.title}
                                     </span>
                                     <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
                                     </DisclosureButton>
@@ -135,17 +141,15 @@ export default function DetailPage() {
                                         </DisclosureButton>
                                         {/* Lessons */}
                                         {topic.lessons && topic.lessons.map((lesson, lessonIndex) => (                           
-                                            <DisclosurePanel key={lessonIndex} className="flex items-center justify-between gap-5 mt-3 mb-5 ml-6 text-sm/5 text-black/70">
+                                            <DisclosurePanel key={lessonIndex} className="flex items-center justify-between mb-3 ml-6 text-sm/5 text-black/70">
                                                 <div>
-                                                <span className="text-base">
-                                                    <ul>
-                                                    <li> - {lesson.title}</li>
-                                                    <li>+ <a href={`https://www.youtube.com/embed/${lesson.video_url}`}>Video bài giảng</a></li>
-                                                    <li>+ <a href={lesson.document}>Tài liệu</a></li>
-                                                    </ul>
-                                                </span>
-                                                </div>
-                                                <div>
+                                                    <span className="text-base">
+                                                        <ul>
+                                                            <li className={'font-medium'}> - {lesson.title}</li>
+                                                            <li className={'ml-3'}>+ <a href={`https://www.youtube.com/embed/${lesson.video_url}`}>Video bài giảng</a></li>
+                                                            <li className={'ml-3'}>+ <a href={lesson.document}>Tài liệu</a></li>
+                                                        </ul>
+                                                    </span>
                                                 </div>
                                             </DisclosurePanel>
                                             ))}
