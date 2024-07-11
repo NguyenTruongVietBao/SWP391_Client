@@ -90,7 +90,7 @@ export default function Menu() {
                     </div>
                     <Link to={'/profile/history'}>
                         <div>
-                            <p className="font-bold text-base text-black lg:text-lg text-gray-900leading-4 group-hover:text-mathcha-orange">Lịch sử giao dịch</p>
+                            <p className="font-bold text-base text-black lg:text-lg text-gray-900leading-4 group-hover:text-mathcha-orange">Lịch sử mua hàng</p>
                         </div>
                     </Link>  
                 </div>

@@ -148,6 +148,15 @@ export default function UpdatePage() {
     setEditValues({ ...editValues, [field]: e.target.value });
   };
 
+  const downloadTemplate = (url) => {
+    const fileName = url.split('/').pop()
+    const aTag = document.createElement('a');
+    aTag.href = url
+    aTag.setAttribute('download', fileName);
+    document.body.appendChild(aTag);
+    aTag.click();
+  }
+
   // Loading
   if (!course) {
     return <div className='flex flex-col items-center justify-center h-screen'><Loading /></div>;
@@ -173,6 +182,10 @@ export default function UpdatePage() {
                       style={{objectFit: 'cover', width: '306px', height: '306px'}}
                   />
                   <div className="lg:w-1/2 w-full">
+                    {/*<div className={'flex justify-between '}>*/}
+                    {/*  <span></span>*/}
+                    {/*  <span className={'py-2 px-4 rounded-xl bg-blue-500 font-medium text-lg text-white'}>Quiz </span>*/}
+                    {/*</div>*/}
                     <span>Tên khóa học: </span>
                     {isEditing.title ? (
                         <div>
@@ -253,47 +266,45 @@ export default function UpdatePage() {
                   </div>
                 </div>
                 {/* Bot */}
-
-                <div className='w-4/5 mx-auto mt-5 bg-white/55 rounded-lg'>
+                <div className='w-4/5 mx-auto'>
                   {chapters.map((chapter, index) => (
                       <Disclosure
                           key={index}
                           as="div"
-                          className="p-6 "
+                          className="p-6"
                           defaultOpen={false}
                       >
                         {/* Chapter */}
-                        <DisclosureButton className="group flex w-full items-center justify-between bg-black/10 rounded-lg">
-                          <span className="ml-1 text-2xl font-medium text-black group-hover:text-black/80">
-                            {index+1}. {chapter.title}
-                          </span>
-                          <ChevronDownIcon className="size-5 fill-black/60 group-hover:fill-black/50 group-data-[open]:rotate-180"/>
+                        <DisclosureButton className="group flex w-full items-center justify-between">
+                      <span className="text-2xl font-medium text-black group-hover:text-black/80">
+                        {chapter.title}
+                      </span>
+                          <ChevronDownIcon
+                              className="size-5 fill-black/60 group-hover:fill-black/50 group-data-[open]:rotate-180"/>
                         </DisclosureButton>
                         <DisclosurePanel className="mt-2 text-sm/5 text-black/50">
                           {(chapter.topics || []).map((topic, topicIndex) => (
                               <Disclosure
                                   key={topicIndex}
                                   as="div"
-                                  className="px-6 py-1 mb-2 rounded-lg"
+                                  className="px-6 mb-2"
                               >
                                 {/* Topic */}
                                 <DisclosureButton className="group flex w-full items-center justify-between">
-                                  <div className={'flex items-center my-2'}>
-                                    <span className="text-xl font-medium text-black group-hover:text-black/80">
-                                      {topicIndex + 1}. {topic.title}
-                                    </span>
-                                      <span>
-                                          <Link
-                                              className={'flex gap-1 bg-mathcha-orange ml-4 py-1 px-3 rounded-xl font-medium text-base text-black hover:bg-black hover:text-white'}
-                                              to={`/content-manager/update-quiz/${topic.topic_id}`}>
-                                          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                               strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                  <div className={'flex items-center mt-2'}>
+                                  <span className="text-lg font-medium text-black group-hover:text-black/80">
+                                    {topicIndex + 1}. {topic.title}
+                                  </span>
+                                      <Link
+                                          className={'flex items-center bg-mathcha-orange ml-4 py-1 px-3 rounded-xl font-medium text-base text-black hover:bg-black hover:text-white'}
+                                          to={`/content-manager/update-quiz/${topic.topic_id}`}>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             strokeWidth={1.5} stroke="currentColor" className="size-6">
                                             <path strokeLinecap="round" strokeLinejoin="round"
                                                   d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"/>
                                           </svg>
-                                          Câu hỏi
-                                        </Link>
-                                      </span>
+                                        Nhập câu hỏi
+                                      </Link>
                                   </div>
                                   <ChevronDownIcon
                                       className="size-5 fill-black/60 group-hover:fill-black/50  group-data-[open]:rotate-180"/>
@@ -303,11 +314,11 @@ export default function UpdatePage() {
                                     <DisclosurePanel key={lessonIndex}
                                                      className="flex items-center justify-between gap-5 mt-3 mb-5 ml-6 text-sm/5 text-black/70">
                                       <div>
-                                <span className="text-base flex">
+                                <span className="text-base">
                                   <ul>
                                     <li> - {lesson.title}</li>
-                                    <li>+ <a href={lesson.video_url}>Video URL</a></li>
-                                    <li>+ <a href={lesson.document}>Tài liệu URL</a></li>
+                                    <li className={'ml-3'}>+ <a href={lesson.video_url}>Video_URL</a></li>
+                                    <li className={'ml-3'}>+ <a href={lesson.document}>Document_URL</a></li>
                                   </ul>
                                 </span>
                                       </div>
@@ -320,7 +331,7 @@ export default function UpdatePage() {
                                   <div className={'flex justify-between'}>
                                     <input
                                         type="text"
-                                        placeholder="Tiêu đề"
+                                        placeholder="Tiêu đề bài học"
                                         value={newLesson[topic.topic_id]?.title || ''}
                                         onChange={(e) => setNewLesson({
                                           ...newLesson,
@@ -330,7 +341,7 @@ export default function UpdatePage() {
                                     />
                                     <input
                                         type="text"
-                                        placeholder="Video URL"
+                                        placeholder="Link video"
                                         value={newLesson[topic.topic_id]?.video_url || ''}
                                         onChange={(e) => setNewLesson({
                                           ...newLesson,
@@ -340,7 +351,7 @@ export default function UpdatePage() {
                                     />
                                     <input
                                         type="text"
-                                        placeholder="Tài liệu URL"
+                                        placeholder="Link tài liệu"
                                         value={newLesson[topic.topic_id]?.document || ''}
                                         onChange={(e) => setNewLesson({
                                           ...newLesson,
@@ -351,7 +362,7 @@ export default function UpdatePage() {
                                   </div>
                                   <button onClick={() => handleAddLesson(topic.topic_id, newLesson[topic.topic_id])}
                                           className="bg-green-500 text-white p-2 rounded">
-                                    Thêm bài giảng
+                                    Tạo bài học
                                   </button>
                                 </div>
                               </Disclosure>
@@ -360,7 +371,7 @@ export default function UpdatePage() {
                           <div className="flex flex-col mt-4">
                             <input
                                 type="text"
-                                placeholder="Chủ đề mới"
+                                placeholder="Topic Title"
                                 value={newTopicTitle[chapter.chapter_id] || ''}
                                 onChange={(e) => setNewTopicTitle({
                                   ...newTopicTitle,
@@ -369,8 +380,8 @@ export default function UpdatePage() {
                                 className="mb-2 p-2 border border-gray-300 rounded"
                             />
                             <button onClick={() => handleAddTopic(chapter.chapter_id, newTopicTitle[chapter.chapter_id])}
-                                    className="text-base bg-blue-500 text-white p-2 rounded">
-                              Thêm chủ đề
+                                    className="bg-blue-500 text-white p-2 rounded">
+                              Tạo chủ đề
                             </button>
                           </div>
                         </DisclosurePanel>
@@ -380,13 +391,13 @@ export default function UpdatePage() {
                   <div className="flex flex-col mt-4">
                     <input
                         type="text"
-                        placeholder="Chương mới"
+                        placeholder="Chapter Title"
                         value={newChapterTitle}
                         onChange={(e) => setNewChapterTitle(e.target.value)}
                         className="mb-2 p-2 border border-gray-300 rounded"
                     />
-                    <button onClick={handleAddChapter} className="bg-red-500 text-white text-lg p-2 rounded">
-                      Thêm chương
+                    <button onClick={handleAddChapter} className="bg-red-500 text-white p-2 rounded">
+                      Tạo chương
                     </button>
                   </div>
                 </div>

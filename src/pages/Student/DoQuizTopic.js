@@ -42,6 +42,7 @@ function DoQuizTopic(props) {
             });
             setScore(score);
             setSubmitted(true);
+
         } else {
             alert("Please answer all questions before submitting.");
         }
@@ -98,7 +99,7 @@ function DoQuizTopic(props) {
                         onClick={handleRedo}
                         className="mt-4 px-4 py-2 bg-green-500 text-white font-semibold rounded hover:bg-green-600 transition"
                     >
-                        Redo Quiz
+                        Làm lại
                     </button>
                 </div>
             )}

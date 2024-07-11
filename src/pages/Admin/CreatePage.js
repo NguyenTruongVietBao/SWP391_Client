@@ -6,10 +6,8 @@ import { useNavigate } from 'react-router-dom';
 
 export default function CreatePage() {
     const [formErrors, setFormErrors] = useState({});
-    const [error, setError] = useState(null);
     const navigate = useNavigate();
 
-    const phoneRegExp = /^09\d{8}$/;
     const validateForm = (data) => {
         const errors = {};
         if (!data.first_name) errors.first_name = 'First Name is required';
@@ -68,7 +66,7 @@ export default function CreatePage() {
 
         try {
             await api.post('/user/create', newUser);
-            toast.success('User added successfully!');
+            toast.success('Tạo người dùng thành công');
             navigate('/admin');
         } catch (err) {
             console.log(newUser);
@@ -126,8 +124,7 @@ export default function CreatePage() {
                                             placeholder="Họ"
                                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                         />
-                                        {formErrors.first_name &&
-                                            <span className="text-red-500">{formErrors.first_name}</span>}
+                                        {formErrors.first_name && <span className="text-red-500">{formErrors.first_name}</span>}
                                     </div>
                                     <div>
                                         <label htmlFor="last_name"
@@ -247,7 +244,7 @@ export default function CreatePage() {
                                 <div>
                                     <button
                                         className="hover:shadow-form rounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">
-                                        Submit
+                                        Tạo mới
                                     </button>
                                 </div>
                             </form>

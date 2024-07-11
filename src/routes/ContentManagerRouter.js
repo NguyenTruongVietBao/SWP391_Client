@@ -7,6 +7,7 @@ import CreatePage from '../pages/ContentManager/CreatePage'
 import ProfilePage from '../pages/ContentManager/ProfilePage'
 import UpdatePage from '../pages/ContentManager/UpdatePage'
 import UpdateQuizPage from "../pages/ContentManager/UpdateQuizPage";
+import UpdatePage2 from "../pages/ContentManager/UpdatePage2";
 
 export default function ContentManagerRouter() {
   return (
@@ -15,6 +16,7 @@ export default function ContentManagerRouter() {
           <Route path='/' element={<ContentManagerPage/>}></Route>
           <Route path='create' element={<CreatePage/>}></Route>
           <Route path='update/:courseId' element={<UpdatePage/>}></Route>
+          <Route path='update2/:courseId' element={<UpdatePage2/>}></Route>
           <Route path='review' element={<ReviewPage/>}></Route>
           <Route path='profile' element={<ProfilePage/>}></Route>
           <Route path='detail/:courseId' element={<DetailPage/>}></Route>

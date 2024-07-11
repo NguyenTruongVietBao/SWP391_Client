@@ -14,7 +14,8 @@ module.exports={
         },
         width: {
           '128': '32rem',
-          '156': '40rem'
+          '156': '40rem',
+          '170': '50rem',
         },
         backgroundImage: {
           'login-wallpaper': "url('/assets/wallpaper-login.png')",
@@ -22,8 +23,9 @@ module.exports={
         },
         fontFamily: { 
           "mathcha-font-1": ['Exo 2', 'sans-serif'] ,
-            "mathcha-font-2": ['Plus Jakarta Sans', 'sans-serif'] ,
-            "mathcha-font-3": ['Pacifico', 'cursive'] ,
+          "mathcha-font-2": ['Plus Jakarta Sans', 'sans-serif'] ,
+          "mathcha-font-3": ['Pacifico', 'cursive'] ,
+          "mathcha-font-4": ['Kanit', 'sans-serif'] ,
         }
       },
     },

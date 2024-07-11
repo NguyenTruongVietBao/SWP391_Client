@@ -4,13 +4,12 @@ import { listCourses } from '../../services/CourseService/CourseService'
 import {Link} from 'react-router-dom'
 import Menu from '../../components/ContentManager/Menu';
 import Loading from '../../components/Loading/Loading';
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../redux/features/counterSlice';
 
 export default function ContentManagerPage() {
     const [courses, setCourses] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
     const coursesPerPage = 8;
+    const [filter, setFilter] = useState('all'); // New state for filter
 
     useEffect(() => {
         getCourseAll();
@@ -19,6 +18,14 @@ export default function ContentManagerPage() {
     function getCourseAll() {
         listCourses()
             .then((res) => {
+                // Filter courses based on the selected filter
+
+                const filteredCourses = courses.filter(course => {
+                    if (filter === 'all') return true;
+                    if (filter === 'approved') return course.status === true;
+                    if (filter === 'pending') return course.status === null;
+                    if (filter === 'rejected') return course.status === false;
+                });
                 setCourses(res.data.data);
             })
             .catch((error) => {
@@ -26,6 +33,7 @@ export default function ContentManagerPage() {
             });
     }
 
+    console.log('courses', courses);
     if (!courses) {
         return <div className='flex flex-col items-center justify-center h-screen'><Loading /></div>;
     }
@@ -33,7 +41,7 @@ export default function ContentManagerPage() {
     // Pagination logic
     const indexOfLastCourse = currentPage * coursesPerPage;
     const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-    const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
+    const currentCourses = courses.filter(course => course.status === true || course.status === false || course.status === null).slice(indexOfFirstCourse, indexOfLastCourse);
     const totalPages = Math.ceil(courses.length / coursesPerPage);
 
     const handlePageChange = (pageNumber) => {
@@ -81,7 +89,8 @@ export default function ContentManagerPage() {
                                         <td className="py-3 px-2 text-center">{data.original_price}.000 VNĐ</td>
                                         <td className="py-3 px-2 text-center">{data.discount_price}.000 VNĐ</td>
                                         <td className="py-3 px-2 text-center">
-                                                <span className={'p-2 rounded-xl ' + (data.status === null ? 'bg-yellow-500' : data.status ? 'bg-mathcha-green' : 'bg-red-500') + ' text-white'}>
+                                                <span
+                                                    className={'p-2 rounded-xl ' + (data.status === null ? 'bg-yellow-500' : data.status ? 'bg-mathcha-green' : 'bg-red-500') + ' text-white'}>
                                                     {data.status === null ? 'Đang chờ duyệt' : data.status ? 'Đã chấp thuận' : 'Đã từ chối'}
                                                 </span>
                                         </td>

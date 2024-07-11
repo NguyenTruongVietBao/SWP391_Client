@@ -12,7 +12,6 @@ import {imageDb} from "../../config/firebase";
 import { v4 } from "uuid";
 
 export default function Register() {
-
   const [img, setImg] = useState('');
   const [imgUrl, setImgUrl] = useState('');
 
@@ -103,7 +102,7 @@ export default function Register() {
                 <div className="w-full max-w-4xl mt-6">
                   <div className="card bg-white/10 p-12 backdrop-blur-3xl shadow-2xl rounded-lg px-4 py-4 mb-6">
                     <div className="flex items-center justify-center mt-2 mb-8">
-                      <h2 className="text-5xl font-bold tracking-wide font-mathcha-font-2">Đăng ký tài khoản</h2>
+                      <h2 className="text-5xl ml-5 font-bold tracking-wide font-mathcha-font-2">Đăng ký tài khoản</h2>
                     </div>
                     <div className="register-form flex justify-between">
                       <div className="flex flex-col items-center space-y-4 p-4 border border-gray-200 rounded-lg shadow-md max-w-md mx-auto bg-white">
@@ -241,7 +240,7 @@ export default function Register() {
                             </div>
                             <div className="flex items-center justify-between">
                               <button type="submit"
-                                      className="transition duration-200 bg-gray-800 hover:bg-blue-600 focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white text-xl w-full py-4 rounded-lg shadow-sm hover:shadow-md font-semibold text-center inline-block">
+                                      className="transition duration-200 bg-gray-800 hover:bg-mathcha-orange focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white text-xl w-full py-4 rounded-lg shadow-sm hover:shadow-md font-semibold text-center inline-block">
                                 <span className="inline-block mr-2">Đăng ký</span>
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                      stroke="currentColor" className="w-4 h-4 inline-block">

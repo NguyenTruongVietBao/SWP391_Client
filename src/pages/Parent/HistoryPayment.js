@@ -14,6 +14,7 @@ export default function HistoryPayment() {
         api.get(`/payment/user/${user.user_id}`)
             .then((res) => {
                 setBuyCourse(res.data.data);
+                console.log(res.data.data)
             })
             .catch(error => console.error('Error fetching courses:', error));
     }, [user.user_id]);
@@ -40,7 +41,7 @@ export default function HistoryPayment() {
                     {/* Manage Course */}
                     <div id="manage-course">
                         <div className='flex items-center justify-between'>
-                            <h1 className="font-bold text-xl py-4 uppercase">Lịch sử giao dịch</h1>
+                            <h1 className="font-bold text-xl py-4 uppercase">Lịch sử mua hàng</h1>
                         </div>
                         <div className="overflow-x-scroll">
                             <table className="w-full whitespace-nowrap">
@@ -51,17 +52,19 @@ export default function HistoryPayment() {
                                     <th className="text-center py-3 px-2">Số tiền</th>
                                     <th className="text-center py-3 px-2">Thời gian</th>
                                     <th className="text-center py-3 px-2">Phương thức</th>
+                                    <th className="text-center py-3 px-2">Mã đơn hàng</th>
                                     <th className="text-center py-3 px-2 rounded-r-lg"></th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 {buyCourse.map((data, index) => (
                                     <tr key={index} className="border-b border-gray-700">
-                                        <td className="py-3 px-2 text-left font-bold">{data.student.last_name} {data.student.first_name}</td>
+                                        <td className="py-3 px-2 text-left font-bold">{data.student.first_name} {data.student.last_name} </td>
                                         <td className="py-3 px-2 text-center font-bold">{data.course.title}</td>
                                         <td className="py-3 px-2 text-center">{data.total_money} VNĐ</td>
                                         <td className="py-3 px-2 text-center">{formatDate(data.payment_date)}</td>
                                         <td className="py-3 px-2 text-center">{data.payment_method}</td>
+                                        <td className="py-3 px-2 text-center">{data.orderId}</td>
                                     </tr>
                                 ))}
                                 </tbody>

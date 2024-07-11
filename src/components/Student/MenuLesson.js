@@ -63,7 +63,7 @@ const MenuLesson = () => {
             console.error('Failed to create quiz:', error);
         }
     };
-    console.log(lessons)
+
     return (
         <div>
             <div className="mx-auto w-full divide-y divide-black/5 rounded-xl bg-yellow-100 border-4 border-black">

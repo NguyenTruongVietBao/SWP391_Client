@@ -109,12 +109,12 @@ export default function DetailPage() {
                         </div>
 
                         {/* Bot */}
-                        <div className='w-4/5 mx-auto'>
+                        <div className='w-4/5 mx-auto mt-10'>
                             {chapters.map((chapter, index) => (
                                 <Disclosure
                                     key={index}
                                     as="div"
-                                    className="p-6"
+                                    className="p-4"
                                     defaultOpen={true}
                                 >
                                     {/* Chapter */}
@@ -141,7 +141,7 @@ export default function DetailPage() {
                                         </DisclosureButton>
                                         {/* Lessons */}
                                         {topic.lessons && topic.lessons.map((lesson, lessonIndex) => (                           
-                                            <DisclosurePanel key={lessonIndex} className="flex items-center justify-between mb-3 ml-6 text-sm/5 text-black/70">
+                                            <DisclosurePanel key={lessonIndex} className="flex items-center justify-between mb-3 mt-1 ml-6 text-sm/5 text-black/70">
                                                 <div>
                                                     <span className="text-base">
                                                         <ul>

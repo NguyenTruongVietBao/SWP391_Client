@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from 'react'
-import { listCourses } from '../../../services/CourseService/CourseService';
 import { selectUser } from '../../../redux/features/counterSlice';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import api from '../../../config/axios';
 
 export default function ListCourseBought() {
@@ -24,7 +22,7 @@ export default function ListCourseBought() {
       <div className="flex text-[#000] flex-col items-center w-full overflow-x-hidden">
         <div className="bg-gradient-to-r from-mathcha via-white to-mathcha flex flex-col gap-[100px] justify-center items-center w-full h-full">
           <div className="max-w-[1180px] flex flex-col gap-[50px] lg:gap-[123px]">
-          <div className=" flex flex-col gap-[50px] max-w-[1180px] justify-center w-full ">
+          <div className=" flex gap-[50px] max-w-[1180px] justify-center w-full ">
                 <div className=" flex justify-between items-center mt-24">
                   <div className=" text-[30px] md:text-5xl font-bold leading-[58px] tracking-[0.03em] mb-3" style={{ fontFamily: 'monospace, sans-serif' }}>
                     Danh sách khóa học đã mua

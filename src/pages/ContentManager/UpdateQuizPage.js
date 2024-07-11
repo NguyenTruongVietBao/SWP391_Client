@@ -132,6 +132,7 @@ function UpdateQuizPage() {
         document.body.appendChild(aTag);
         aTag.click();
     }
+
     const importFile = async (topicId) => {
         setLoadingTopic(topicId);
         // Create a file input element programmatically
@@ -164,6 +165,22 @@ function UpdateQuizPage() {
 
         // Trigger the file input dialog
         fileInput.click();
+    };
+
+    const exportToExcel = async (topicId) => {
+        try {
+            const response = await api.get(`/questions/export/${topicId}`, { responseType: 'blob' });
+            const url = window.URL.createObjectURL(new Blob([response.data]));
+            const link = document.createElement('a');
+            link.href = url;
+            link.setAttribute('download', `Question_Topic-${topicId}.xlsx`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        } catch (error) {
+            console.error('Error exporting file:', error);
+            toast.error("Error occurred while exporting file");
+        }
     };
     return (
         <div className="antialiased bg-orange-50 w-full min-h-screen text-black relative py-4">
@@ -385,18 +402,19 @@ function UpdateQuizPage() {
                                               d="m9 13.5 3 3m0 0 3-3m-3 3v-6m1.06-4.19-2.12-2.12a1.5 1.5 0 0 0-1.061-.44H4.5A2.25 2.25 0 0 0 2.25 6v12a2.25 2.25 0 0 0 2.25 2.25h15A2.25 2.25 0 0 0 21.75 18V9a2.25 2.25 0 0 0-2.25-2.25h-5.379a1.5 1.5 0 0 1-1.06-.44Z"/>
                                     </svg>
 
-                                    {loadingTopic === topicId ? "Importing..." : "Import from Excel"}
+                                    {loadingTopic === topicId ? "Importing..." : "Nhập từ Excel"}
                                 </button>
-                                <Link
+                                <button
                                     className={'flex gap-1 bg-mathcha-orange ml-4 py-1 px-3 rounded-xl font-medium text-base text-black hover:bg-black hover:text-white'}
-                                    to={`/content-manager/update-quiz/${topic.topic_id}`}>
+                                    onClick={() => exportToExcel(topicId)}>
                                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                          strokeWidth={1.5} stroke="currentColor" className="size-6">
                                         <path strokeLinecap="round" strokeLinejoin="round"
                                               d="M3 16.5v2.25A2.25 2.25 0 0 0 5.25 21h13.5A2.25 2.25 0 0 0 21 18.75V16.5m-13.5-9L12 3m0 0 4.5 4.5M12 3v13.5"/>
                                     </svg>
-                                    Export to Excel
-                                </Link>
+                                    Xuất ra Excel
+                                </button>
+
                             </div>
                         </div>
                     </section>

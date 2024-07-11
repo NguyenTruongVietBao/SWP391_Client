@@ -79,13 +79,16 @@ export default function ListStudentPage() {
                                         <tr key={index} className="border-b border-gray-700">
                                             <td className="py-3 font-bold">
                                                 <div className="inline-flex items-center">
-                                                    <span><img className="rounded-lg w-16 h-auto"
-                                                               src={`/assets/Class/${data.image}.png`} alt="a"/></span>
+                                                    <span>
+                                                        <img className="rounded-lg w-16 h-auto" src={`/assets/Class/${data.image}.png`} alt="a"/>
+                                                    </span>
                                                 </div>
                                             </td>
                                             <td className="py-3 px-2 text-center font-bold">
-                                                <span>{data.last_name} </span></td>
-                                            <td className="py-3 px-2 text-center font-bold">{data.first_name}</td>
+                                                <span>{data.first_name} </span></td>
+                                            <td className="py-3 px-2 text-center font-bold">
+                                                {data.last_name}
+                                            </td>
                                             <td className="py-3 px-2 text-center">
                                                 {data.email ? data.email : 'Chưa có'}
                                             </td>

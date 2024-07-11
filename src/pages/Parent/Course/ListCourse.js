@@ -62,7 +62,7 @@ export default function ListCourse() {
 
     return (
         <div className="flex text-[#000] flex-col items-center w-full overflow-x-hidden">
-            <div className="bg-gradient-to-r from-mathcha via-white to-mathcha flex flex-col gap-[100px] justify-center items-center w-full h-full">
+            <div className="bg-gradient-to-r from-mathcha via-white to-mathcha flex flex-col gap-[100px] justify-center items-center w-full min-h-screen">
                 <div className="max-w-[1180px] flex flex-col gap-[50px] lg:gap-[123px]">
                     <div className="flex flex-col gap-[50px] max-w-[1180px] justify-center w-full">
                         <div className="flex justify-center items-center">

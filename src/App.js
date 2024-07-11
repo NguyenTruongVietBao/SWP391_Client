@@ -7,7 +7,6 @@ import { Navigate,Route, Routes } from "react-router-dom";
 // import Error404 from "./components/Error404/Error404";
 import { useSelector } from "react-redux";
 import { selectUser } from "./redux/features/counterSlice";
-import { toast } from "react-toastify";
 import Login from "./pages/Login/Login";
 import LoginStudent from "./pages/Login/LoginStudent";
 import Register from "./pages/Login/Register";
