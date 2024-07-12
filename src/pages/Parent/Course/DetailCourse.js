@@ -22,6 +22,7 @@ export default function DetailCourse() {
     const [selectedStudentId, setSelectedStudentId] = useState(null); // New state for selected student ID
     const [errors, setErrors] = useState({});
     const navigate = useNavigate();
+    const [numPayments, setNumPayments] = useState(0);
     const [formData, setFormData] = useState({
         username: '',
         first_name: '',
@@ -33,6 +34,20 @@ export default function DetailCourse() {
         address: '',
         is_deleted: false
     });
+    useEffect(() => {
+        const fetchPayments = async () => {
+            try {
+                const response = await api.get(`http://localhost:8080/payment/course/${courseId}`);
+                const payments = response.data.data;
+                setNumPayments(payments.length);
+            } catch (error) {
+                console.error('Error fetching payments:', error);
+            }
+        };
+
+        fetchPayments();
+    }, [courseId]);
+
     const handleChange = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
@@ -124,7 +139,6 @@ export default function DetailCourse() {
                     const lessonsResponse = await api.get(`lessons/topic/${topic.topic_id}`);
                     return { ...topic, lessons: lessonsResponse.data.data };
                 }));
-
                 return { ...chapter, topics: topicsWithLessons };
             }));
 
@@ -278,7 +292,7 @@ export default function DetailCourse() {
                             className="relative rounded-2xl"
                             width="420"
                             height="237"
-                            src="https://www.youtube.com/embed/H1mWhKYdbQM"
+                            src="https://www.youtube.com/embed/gxOkoMHIgC8"
                             title="WREN EVANS - LOI CHOI không điểm dừng | Full Album Experience (ft. itsnk)"
                             frameborder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
@@ -348,7 +362,7 @@ export default function DetailCourse() {
                                 Số lượng học viên
                             </dt>
                             <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                                Lên đến 2000 người
+                                Lên đến {numPayments} người
                             </dd>
                         </div>
                         <div>
@@ -361,10 +375,10 @@ export default function DetailCourse() {
                         </div>
                         <div>
                             <dt className="text-sm font-semibold leading-6 text-gray-600">
-                                Thời gian học tập
+                                Khóa học đã bán
                             </dt>
                             <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                                Trên 7 giờ
+                                {numPayments} khóa học
                             </dd>
                         </div>
                     </dl>

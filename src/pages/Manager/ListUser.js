@@ -1,7 +1,25 @@
 import React, {useEffect, useState} from 'react'
 import Menu from '../../components/Manager/Menu'
 import api from "../../config/axios";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    Title,
+    BarElement,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import {Bar} from "react-chartjs-2";
 
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    Title,
+    BarElement,
+    Tooltip,
+    Legend
+);
 export default function ListUser(props) {
     const [users, setUsers] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
@@ -77,6 +95,32 @@ export default function ListUser(props) {
         setSelectedUser(null);
     };
 
+    // chartData
+    const chartData = {
+        labels: users.filter(course => course.revenue > 0).map(course => course.last_name ),
+        datasets: [
+            {
+                label: 'Đã chi',
+                data: users.filter(course => course.revenue > 0).map(course => course.revenue),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            }
+        ]
+    };
+
+    const chartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Doanh thu các khóa học',
+            }
+        },
+    };
     return (
         <div className="antialiased bg-black w-full min-h-screen text-slate-300 relative py-4">
             <div className="grid grid-cols-12 mx-auto gap-2 sm:gap-4 md:gap-6 lg:gap-10 xl:gap-14 max-w-7xl my-10 px-2">
@@ -109,9 +153,58 @@ export default function ListUser(props) {
                             ))}
                         </div>
                         {/* Total */}
-                        <div className="mt-4">
-                            <p className="text-xl font-bold">Số lượng người dùng đã mua: {buyUsersCount}</p>
-                            <p className="text-xl font-bold">Tổng thu nhập: {formatCurrency(totalRevenue)}</p>
+                        <div id="stats" className="flex gap-16 mt-10">
+                            <div className="bg-black/60 to-white/5 p-6 rounded-lg">
+                                <div className="flex flex-row space-x-4 items-center">
+                                    <div id="stats-1">
+
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 text-white">
+                                            <path strokeLinecap="round" strokeLinejoin="round"
+                                                  d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/>
+                                        </svg>
+
+                                    </div>
+                                    <div className={'px-2'}>
+                                        <p className="text-indigo-300 text-sm font-medium uppercase leading-4">Tổng số
+                                            khách hàng</p>
+                                        <p className="text-white font-bold text-2xl inline-flex items-center space-x-2">
+                                            <span>+{buyUsersCount}</span>
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                     strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                                          d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/>
+                                                </svg>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="bg-black/60 p-6 rounded-lg w-80 max-w-full">
+                                <div className="flex flex-row space-x-4 items-center">
+                                    <div id="stats-1">
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             strokeWidth="1.5" stroke="currentColor" className="w-10 h-10 text-white">
+                                            <path strokeLinecap="round" strokeLinejoin="round"
+                                                  d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                        </svg>
+                                    </div>
+                                    <div>
+                                        <p className="text-teal-300 text-sm font-medium uppercase w-full leading-4">Số tiền đã chi</p>
+                                        <p className="text-white font-bold text-2xl inline-flex items-center space-x-2">
+                                            <span>{formatCurrency(totalRevenue)}</span>
+                                            <span>
+                                                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                     strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                                          d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/>
+                                                </svg>
+                                            </span>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
                         </div>
                         {/* Table */}
                         <div className="overflow-x-scroll mt-10">
@@ -137,7 +230,11 @@ export default function ListUser(props) {
                                         <td className="py-3 px-2">{user.paymentCount} khóa học</td>
                                         <td className="py-3 px-2">{user.revenue === null ? "0 VNĐ" : `${formatCurrency(user.revenue)}`}</td>
                                         <td className="py-3 px-2 text-center">
-                                            <button onClick={() => handleDialogOpen(user)}>Xem chi tiết</button>
+                                            <button onClick={() => handleDialogOpen(user)}
+                                                className={'bg-amber-100 py-1 px-2 text-black rounded-xl font-medium hover:bg-mathcha-orange'}
+                                            >
+                                                Xem chi tiết
+                                            </button>
                                         </td>
                                     </tr>
                                 ))}
@@ -157,6 +254,7 @@ export default function ListUser(props) {
                             ))}
                         </div>
                     </div>
+                    <Bar data={chartData} options={chartOptions} />
                 </div>
             </div>
 

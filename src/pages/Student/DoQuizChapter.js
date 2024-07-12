@@ -131,7 +131,7 @@ const DoQuizChapter = () => {
                                     <path strokeLinecap="round" strokeLinejoin="round"
                                           d="M9 15 3 9m0 0 6-6M3 9h12a6 6 0 0 1 0 12h-3"/>
                                 </svg>
-                                Quay lại bài học
+                                Quay lại khóa học
                             </Link>
                         </div>
                     </div>
@@ -173,7 +173,7 @@ const DoQuizChapter = () => {
                             ) : (
                                 <>
                                     <div className="text-xl font-semibold mt-4 text-center">
-                                        Your score: {score} / {quizData.questions.length}
+                                        Điểm của bạn: {score} / {quizData.questions.length}
                                     </div>
                                     {score < 5 && (
                                         <div className="text-center mt-4">

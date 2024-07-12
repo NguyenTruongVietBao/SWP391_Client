@@ -45,7 +45,8 @@ export const LessonLearningPage = () => {
         try {
             api.post(`/completeLesson/create/${enrollmentId}/${lessonId}`);
             toast.success('Học thành công');
-            // window.location.reload();
+            window.location.reload();
+
         } catch (error) {
             console.error('Failed to finish lesson:', error);
             toast.error('Có lỗi xảy ra khi hoàn thành khóa học');

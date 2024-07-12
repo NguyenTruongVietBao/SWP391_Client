@@ -78,7 +78,15 @@ export default function ParentPage() {
     const student_id = searchParams.get('student_id');
     const amount = searchParams.get('vnp_Amount');
     const statusPayment = searchParams.get('vnp_TransactionStatus');
+    const [selectedCourse, setSelectedCourse] = useState(null);
 
+    const handleImageClick = (course) => {
+        setSelectedCourse(course);
+    };
+
+    const handleClosePopup = () => {
+        setSelectedCourse(null);
+    };
     useEffect(() => {
         if (user === null) {
             getCourseAll()
@@ -91,7 +99,6 @@ export default function ParentPage() {
                 setDisplayedCourses(res.data.data.slice(0, 6));
             })
     }
-
     useEffect(() => {
         if (user !== null) {
             setUserId(user.user_id);
@@ -142,7 +149,8 @@ export default function ParentPage() {
         navigate('/')
       }
     }, [course_id, student_id, amount, statusPayment]);
-
+    console.log(courses)
+    console.log(displayedCourses)
   return (
     <div className="flex text-gray-800 flex-col items-center w-full overflow-x-hidden">
       <div className="bg-gradient-to-r from-mathcha via-white to-mathcha flex flex-col gap-[100px] justify-center items-center w-full h-full">
@@ -168,61 +176,88 @@ export default function ParentPage() {
                     font="text-white font-normal">
                     Xem thêm
                   </Link>
-
                 )}
               </div>
               <div>
                 <div className="items-center justify-center flex flex-wrap gap-[30px] md:gap-[50px] lg:gap-[83px] md:px-0 px-[4%] w-full ">
                   {/*{displayedCourses.map((course, index) => {*/}
-                      {displayedCourses.filter(course => course.status).map((course, index) => {
-                          // {users.filter(user => !user.delete).map((user, index) => (
-                          return (
-                              <div
-                                  key={index}
-                                  className="hover:scale-105 duration-1000 cursor-pointer flex flex-col justify-center items-center md:max-w-[300px] lg:max-w-[338px] w-full py-[4%] lg:py-[3%] max-h-fit xl:h-[410px] border-4 border-mathcha-orange rounded-[28px]"
-                              >
-                                  <div className="px-[4%] w-full flex flex-col gap-4">
-                                      <img
-                                          src={course.image}
-                                          alt="img not found"
-                                          className="rounded-3xl"
-                                          width="306"
-                                          height="264"
-                                          style={{objectFit: 'cover', width: '306px', height: '264px'}}
-                                      />
-                                      <div className="w-full flex flex-col gap-4">
-                                          <div className="flex flex-col gap-4">
-                                              <div className="flex flex-col gap-[3px] items-start justify-start">
-                                                  <div
-                                                      className="from-neutral-950 text-[28px] font-bold leading-[34px]">
-                                                      {course.title}
-                                                  </div>
-                                              </div>
-                                              <div className="flex justify-between items-center">
-                                                  <div
-                                                      className="font-montserrat text-xl font-bold leading-[17px] text-red-500 ">
-                                                      {course.discount_price}.000 VNĐ
-                                                  </div>
-                                                  <Link
-                                                      to={`/course/${course.course_id}`}
-                                                      className={"bg-mathcha-orange font-bold text-center border-2 rounded-[68px] p-2 hover:bg-black hover:border-white hover:text-white"}
-                                                  >
-                                                      Mua ngay
-                                                  </Link>
-                                              </div>
-                                          </div>
-                                      </div>
-                                  </div>
-                              </div>
-                          )
-                      })}
-                </div>              
+                    {displayedCourses.filter(course => course.status).map((course, index) => (
+                        <div
+                            key={index}
+                            className="hover:scale-105 duration-1000 cursor-pointer flex flex-col justify-center items-center md:max-w-[300px] lg:max-w-[338px] w-full py-[4%] lg:py-[3%] max-h-fit xl:h-[450px] border-4 border-mathcha-orange rounded-[28px]"
+                        >
+                            <div className="px-[4%] w-full flex flex-col gap-4">
+                                <img
+                                    src={course.image}
+                                    alt="img not found"
+                                    className="rounded-3xl"
+                                    width="306"
+                                    height="264"
+                                    style={{objectFit: 'cover', width: '306px', height: '264px'}}
+                                    onClick={() => handleImageClick(course)}
+                                />
+                                <div className="w-full flex flex-col gap-4">
+                                    <div className="flex flex-col gap-4">
+                                        <div className="flex gap-[3px] items-center justify-between">
+                                            <div className="font-montserrat-950 text-3xl text-cyan-600 font-bold leading-[34px]">
+                                                {course.title}
+                                            </div>
+                                            <div className="from-neutral-950 text-lg font-medium leading-[34px] bg-blue-200 rounded-xl px-1">
+                                                {course.category_id === 1 ? 'Lớp 1' :
+                                                    course.category_id === 2 ? 'Lớp 2' :
+                                                        course.category_id === 3 ? 'Lớp 3' :
+                                                            course.category_id === 4 ? 'Lớp 4' :
+                                                                course.category_id === 5 ? 'Lớp 5' :
+                                                                    'Unknown Category'}
+                                            </div>
+                                        </div>
+                                        <div className="flex justify-between items-center my-2">
+                                            <div
+                                                className="line-through font-montserrat text-lg font-medium leading-[17px]">
+                                                {course.original_price}.000 VNĐ
+                                            </div>
+                                            <div
+                                                className="font-montserrat text-2xl font-bold leading-[17px] text-red-500 ">
+                                                {course.discount_price}.000 VNĐ
+                                            </div>
+                                        </div>
+                                        <Link
+                                            to={`/course/${course.course_id}`}
+                                            className={"bg-mathcha-orange font-bold text-center border-2 rounded-[68px] p-2 hover:bg-black hover:border-white hover:text-white"}
+                                        >
+                                            Mua ngay
+                                        </Link>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                    {selectedCourse && (
+                        <div className="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center">
+                            <div className="bg-white p-6 rounded-lg max-w-lg w-full flex flex-col items-center">
+                                <button onClick={handleClosePopup} className="text-black text-right w-full text-4xl">
+                                    &times;
+                                </button>
+                                <h2 className="text-4xl text-cyan-600 font-bold">{selectedCourse.title}</h2>
+                                <img
+                                    src={selectedCourse.image}
+                                    alt="img not found"
+                                    className="rounded-3xl my-5"
+                                    width="306"
+                                    height="264"
+                                    style={{objectFit: 'cover', width: '306px', height: '264px'}}
+                                />
+                                <p><strong>Mô tả: </strong>{selectedCourse.description}</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
               </div>
             </div>
-            {/* Học sinh tiêu biểu */}
-            <div className="items-center w-full flex flex-col gap-9 bg-mathcha rounded-3xl py-3">
-            {/* <div className="items-center max-w-full flex flex-col gap-9 bg-gradient-to-r from-mathcha  via-white  to-mathcha rounded-3xl"> */}
-              <h1 className="text-5xl font-bold">Chương trình giảng dạy</h1>
+              {/* Học sinh tiêu biểu */}
+              <div className="items-center w-full flex flex-col gap-9 bg-mathcha rounded-3xl py-3">
+                  {/* <div className="items-center max-w-full flex flex-col gap-9 bg-gradient-to-r from-mathcha  via-white  to-mathcha rounded-3xl"> */}
+                  <h1 className="text-5xl font-bold">Chương trình giảng dạy</h1>
               <div className="flex items-center justify-between gap-10">
                   <div className="text-center w-1/4">
                     <img src="./assets/uom mam.png" alt="a" width={300}/>

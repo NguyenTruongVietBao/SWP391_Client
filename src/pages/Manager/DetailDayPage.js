@@ -3,6 +3,25 @@ import api from "../../config/axios";
 import Menu from "../../components/Manager/Menu";
 import {useLocation} from "react-router-dom";
 import {Button, Dialog, DialogPanel, DialogTitle} from '@headlessui/react'
+import {
+    Chart as ChartJS,
+    BarElement,
+    CategoryScale,
+    LinearScale,
+    Title,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import {Bar} from "react-chartjs-2";
+
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    Title,
+    Tooltip,
+    BarElement,
+    Legend
+);
 
 export default function DetailDayPage() {
     const [numUser, setNumUser] = useState(0);
@@ -79,6 +98,35 @@ export default function DetailDayPage() {
     const handleViewDetailsClick = (userId) => {
         fetchUserPaymentDetails(userId, dateDetail);
         open();
+    };
+    // Chart data
+    const chartData = {
+        labels: dataUser.users.map(user => user.last_name),
+        datasets: [
+            {
+                label: 'Doanh thu',
+                data: dataUser.users.map(user => {
+                    const userPaymentsForDate = user.payments.filter(payment => payment.payment_date.startsWith(date.replace(/-/g, '')));
+                    return userPaymentsForDate.reduce((sum, payment) => sum + payment.total_money, 0);
+                }),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            },
+        ],
+    };
+
+    const chartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Doanh thu theo khách hàng',
+            },
+        },
     };
     return (
         <div className="antialiased bg-black w-full min-h-screen text-slate-300 relative py-4">
@@ -198,9 +246,11 @@ export default function DetailDayPage() {
                                 </tbody>
                             </table>
                         </div>
+                        <Bar data={chartData} options={chartOptions} />
                     </div>
                 </div>
             </div>
+
             <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={close}>
                 <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
                     <div className="flex min-h-full items-center justify-center p-4">
@@ -209,16 +259,19 @@ export default function DetailDayPage() {
                             className="max-w-[1180px] rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
                         >
                             <DialogTitle as="h3" className="text-3xl font-medium text-center text-white">
-                                Khách hàng:
+                                Lịch sử
                             </DialogTitle>
                             <table className="w-full whitespace-nowrap mt-2">
-                                <thead className="text-white/90 bg-gradient-to-br from-black/80 via-black/50 to-black/70">
-                                    <tr>
-                                        <th className="text-center p-3 rounded-l-lg">Khóa học</th>
-                                        <th className="text-left p-3">Mua cho</th>
-                                        <th className="text-left p-3">Số tiền</th>
-                                        <th className="text-center p-3 rounded-r-lg">Thời gian</th>
-                                    </tr>
+                                <thead
+                                    className="text-white/90 bg-gradient-to-br from-black/80 via-black/50 to-black/70">
+                                <tr>
+                                    <th className="text-center p-3 rounded-l-lg">Khóa học</th>
+                                    <th className="text-left p-3">Lớp</th>
+                                    <th className="text-left p-3">Mua cho</th>
+                                    <th className="text-left p-3">Số tiền</th>
+                                    <th className="text-left p-3">Mã GD</th>
+                                    <th className="text-center p-3 rounded-r-lg">Thời gian</th>
+                                </tr>
                                 </thead>
                                 <tbody className={'text-white/80'}>
                                 {userPaymentDetails.map((data) => (
@@ -226,11 +279,12 @@ export default function DetailDayPage() {
                                         <td className="py-3 pl-2 font-bold flex items-center">
                                             <img src={data.course.image} alt={'detail course'}
                                                  className={'w-16 rounded-lg h-auto'}/>
-                                            <td className="p-3">{data.course.title}</td>
+                                            <span className="p-3"> {data.course.title}</span>
                                         </td>
-
+                                        <td className="p-3">{data.course.category.category_name}</td>
                                         <td className="p-3">{data.student.username}</td>
                                         <td className="p-3">{data.total_money} VNĐ</td>
+                                        <td className="p-3">{data.orderId}</td>
                                         <td className="p-3">{formatDate(data.payment_date)}</td>
                                     </tr>
                                 ))}

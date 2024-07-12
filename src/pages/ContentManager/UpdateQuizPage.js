@@ -151,7 +151,7 @@ function UpdateQuizPage() {
                             "Content-Type": "multipart/form-data"
                         }
                     });
-                    toast.success("File imported successfully!");
+                    toast.success("Nhập dữ liệu thành công!");
                     getAllQuestion(topicId);
                 } catch (error) {
                     console.error('Error uploading file:', error);

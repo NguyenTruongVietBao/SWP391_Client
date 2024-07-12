@@ -1,8 +1,26 @@
 import React, {useEffect, useState} from 'react';
 import api from "../../config/axios";
 import Menu from "../../components/Manager/Menu";
-import {Link, useLocation} from "react-router-dom";
-
+import {useLocation} from "react-router-dom";
+import {Button, Dialog, DialogPanel, DialogTitle} from "@headlessui/react";
+import {
+    Chart as ChartJS,
+    CategoryScale,
+    LinearScale,
+    Title,
+    BarElement,
+    Tooltip,
+    Legend,
+} from 'chart.js';
+import {Bar} from "react-chartjs-2";
+ChartJS.register(
+    CategoryScale,
+    LinearScale,
+    BarElement,
+    Title,
+    Tooltip,
+    Legend
+);
 export default function DetailMonthPage() {
     const [month, setMonth] = useState('');
     const [monthlyRevenue, setMonthlyRevenue] = useState(0);
@@ -10,15 +28,32 @@ export default function DetailMonthPage() {
     const [dataUser, setDataUser] = useState({ users: [], revenue: [] });
     const location = useLocation();
     const { navigateMonth } = location.state;
+    const [userPaymentDetails, setUserPaymentDetails] = useState([]);
+    const [isOpen, setIsOpen] = useState(false)
+    const [dateDetail, setDateDetail] = useState('');
+
+    const formatDate = (navigateDay) => {
+        const year = navigateDay.substring(0, 4);
+        const month = navigateDay.substring(4, 6);
+        const day = navigateDay.substring(6, 8);
+        return `${year}-${month}-${day}`;   //   yyyy-MM-dd
+    };
 
     const formatMonth = (navigateDay) => {
         const year = navigateDay.substring(0, 4);
         const month = navigateDay.substring(4, 6);
         return `${year}-${month}`;
     };
+    function open() {
+        setIsOpen(true)
+    }
 
+    function close() {
+        setIsOpen(false)
+    }
     useEffect(() => {
         setMonth(formatMonth(navigateMonth));
+        setDateDetail(navigateMonth);
         fetchMonthlyRevenue(navigateMonth);
     }, []);
 
@@ -41,11 +76,54 @@ export default function DetailMonthPage() {
             setMonthlyRevenue(response.data.data.totalRevenue);
             setNumUserMonth(response.data.data.revenue.length);
             setDataUser({ users: response.data.data.users, revenue: response.data.data.revenue });
+            setDateDetail(formattedMonth)
         } catch (error) {
             console.error('Error fetching daily revenue:', error);
         }
     };
+    const fetchUserPaymentDetails = async (userId, paymentDate) => {
+        try {
+            const response = await api.get(`/payment/user/${userId}/month/${paymentDate}`);
+            setUserPaymentDetails(response.data.data);
+            console.log(userPaymentDetails)
+        } catch (error) {
+            console.error('Error fetching user payment details:', error);
+        }
+    };
+    const handleViewDetailsClick = (userId) => {
+        fetchUserPaymentDetails(userId, dateDetail);
+        open();
+    };
+    // Chart data
+    const chartData = {
+        labels: dataUser.users.map(user => user.last_name),
+        datasets: [
+            {
+                label: 'Doanh thu',
+                data: dataUser.users.map(user => {
+                    const userPaymentsForDate = user.payments.filter(payment => payment.payment_date.startsWith(month.replace(/-/g, '')));
+                    return userPaymentsForDate.reduce((sum, payment) => sum + payment.total_money, 0);
+                }),
+                backgroundColor: 'rgba(75, 192, 192, 0.6)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            },
+        ],
+    };
 
+    const chartOptions = {
+        responsive: true,
+        plugins: {
+            legend: {
+                position: 'top',
+            },
+            title: {
+                display: true,
+                text: 'Doanh thu theo khách hàng',
+            },
+        },
+    };
+    console.log('userPaymentDetails',userPaymentDetails)
     return (
         <div className="antialiased bg-black w-full min-h-screen text-slate-300 relative py-4">
             <div className="grid grid-cols-12 mx-auto gap-2 sm:gap-4 md:gap-6 lg:gap-10 xl:gap-14 max-w-7xl my-10 px-2">
@@ -153,10 +231,12 @@ export default function DetailMonthPage() {
                                             <td className="py-3 pl-4 font-bold">{numOfCourses} khóa học</td>
                                             <td className="py-3 pl-4">{totalRevenue} VNĐ</td>
                                             <td className="py-3">
-                                                <Link to={'/'}
-                                                      className={'text-white p-2 bg-mathcha-orange rounded-lg hover:bg-mathcha-green'}>
+                                                <Button
+                                                    onClick={() => handleViewDetailsClick(user.user_id)}
+                                                    className="text-white p-2 bg-mathcha-green font-bold rounded-lg hover:bg-mathcha-green"
+                                                >
                                                     Xem chi tiết
-                                                </Link>
+                                                </Button>
                                             </td>
                                         </tr>
                                     );
@@ -165,8 +245,59 @@ export default function DetailMonthPage() {
                             </table>
                         </div>
                     </div>
+                    <Bar data={chartData} options={chartOptions} />
                 </div>
             </div>
+            <Dialog open={isOpen} as="div" className="relative z-10 focus:outline-none" onClose={close}>
+                <div className="fixed inset-0 z-10 w-screen overflow-y-auto">
+                    <div className="flex min-h-full items-center justify-center p-4">
+                        <DialogPanel
+                            transition
+                            className="max-w-[1180px] rounded-xl bg-white/5 p-6 backdrop-blur-2xl duration-300 ease-out data-[closed]:transform-[scale(95%)] data-[closed]:opacity-0"
+                        >
+                            <DialogTitle as="h3" className="text-3xl font-medium text-center text-white">
+                                Lịch sử
+                            </DialogTitle>
+                            <table className="w-full whitespace-nowrap mt-2">
+                                <thead className="text-white/90 bg-gradient-to-br from-black/80 via-black/50 to-black/70">
+                                <tr>
+                                    <th className="text-center p-3 rounded-l-lg">Khóa học</th>
+                                    <th className="text-left p-3">Lớp</th>
+                                    <th className="text-left p-3">Mua cho</th>
+                                    <th className="text-left p-3">Số tiền</th>
+                                    <th className="text-left p-3">Mã GD</th>
+                                    <th className="text-center p-3 rounded-r-lg">Thời gian</th>
+                                </tr>
+                                </thead>
+                                <tbody className={'text-white/80'}>
+                                {userPaymentDetails.map((data) => (
+                                    <tr key={data.course_id} className="border-b border-gray-700">
+                                        <td className="py-3 pl-2 font-bold flex items-center">
+                                            <img src={data.course.image} alt={'detail course'}
+                                                 className={'w-16 rounded-lg h-auto'}/>
+                                            <span className="p-3"> {data.course.title}</span>
+                                        </td>
+                                        <td className="p-3">{data.course.category.category_name}</td>
+                                        <td className="p-3">{data.student.username}</td>
+                                        <td className="p-3">{data.total_money} VNĐ</td>
+                                        <td className="p-3">{data.orderId}</td>
+                                        <td className="p-3">{formatDate(data.payment_date)}</td>
+                                    </tr>
+                                ))}
+                                </tbody>
+                            </table>
+                            <div className="mt-4">
+                                <Button
+                                    className="inline-flex items-center text-end gap-2 rounded-md bg-gray-700 py-1.5 px-3 text-sm/6 font-semibold text-white shadow-inner shadow-white/10 focus:outline-none data-[hover]:bg-gray-600 data-[focus]:outline-1 data-[focus]:outline-white data-[open]:bg-gray-700"
+                                    onClick={close}
+                                >
+                                    Thoát
+                                </Button>
+                            </div>
+                        </DialogPanel>
+                    </div>
+                </div>
+            </Dialog>
         </div>
     );
 }

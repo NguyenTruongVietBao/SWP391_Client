@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from 'react'
-import {Link, useParams} from 'react-router-dom'
+import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import Menu from '../../components/Student/Menu';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/features/counterSlice';
@@ -10,19 +10,45 @@ export default function StudentPage() {
     const studentId = user.user_id;
     const [courses, setCourses] = useState([]);
     const [searchTerm, setSearchTerm] = useState('');
-    const {enrollmentId} = useParams();
 
+    // Fetch all courses for the student and their completion status
     useEffect(() => {
-        api.get(`/student/${studentId}/courses`)
-            .then((res) => {
-                setCourses(res.data.data);
-            })
-            .catch(error => console.error('Error fetching courses:', error));
+        const fetchCourses = async () => {
+            try {
+                const response = await api.get(`/student/${studentId}/courses`);
+                const coursesData = response.data.data;
+
+                // Fetch completion status for each course
+                const coursesWithCompletion = await Promise.all(
+                    coursesData.map(async (course) => {
+                        const enrollmentResponse = await api.get(`/enrollment/student/${studentId}/course/${course.course_id}`);
+                        const enrollmentData = enrollmentResponse.data.data[0]; // Assuming only one enrollment per course
+
+                        // Check completion status
+                        const completionResponse = await api.get(`/completeCourse/status/${enrollmentData.enrollment_id}/${course.course_id}`);
+                        const isComplete = completionResponse.data.data;
+
+                        return {
+                            ...course,
+                            enrollment_id: enrollmentData.enrollment_id,
+                            is_complete: isComplete
+                        };
+                    })
+                );
+
+                setCourses(coursesWithCompletion);
+            } catch (error) {
+                console.error('Error fetching courses:', error);
+            }
+        };
+
+        fetchCourses();
     }, [studentId]);
 
     const handleSearchChange = (event) => {
         setSearchTerm(event.target.value);
     };
+
     const filteredCourses = courses.filter(course =>
         course.title.toLowerCase().includes(searchTerm.toLowerCase())
     );
@@ -34,10 +60,10 @@ export default function StudentPage() {
                 <div className="flex items-center justify-between text-5x1">
                     <div>
                         <Link to={'/learning'}>
-                            <img src="/assets/Logo-removebg.png" width={150} alt="a"/>
+                            <img src="/assets/Logo-removebg.png" width={150} alt="a" />
                         </Link>
                     </div>
-                    {/*Search course*/}
+                    {/* Search course */}
                     <div className="flex justify-start text-gray-700">
                         <div className="relative w-full">
                             <input
@@ -77,8 +103,14 @@ export default function StudentPage() {
                                     style={{objectFit: 'cover', width: '306px', height: '264px'}}
                                 />
                                 <p className="text-5xl text-indigo-900"><strong>{course.title}</strong></p>
-                                <Link to={`./course/${course.course_id}`}
-                                      className="bg-orange-300 text-xl text-white rounded-full px-8 py-2 border-2 border-black"><strong>Học</strong></Link>
+                                {course.is_complete ? (
+                                    <Link to={`./course/${course.course_id}`}
+                                          className="bg-mathcha-green text-xl text-white rounded-full px-8 py-2 border-2 border-black"><strong>Hoàn thành</strong></Link>
+                                ) : (
+                                    <Link to={`./course/${course.course_id}`}
+                                          className="bg-orange-300 text-xl text-white rounded-full px-8 py-2 border-2 border-black"><strong>Học</strong></Link>
+                                )}
+                                {/*<p className="text-lg text-gray-700 mt-3">Enrollment ID: {course.enrollment_id}</p>*/}
                             </div>
                         ))}
                     </div>

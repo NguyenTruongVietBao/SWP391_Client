@@ -117,7 +117,7 @@ export default function Login() {
                                         <div className="p-5 mt-5">
                                             <div className="grid grid-cols-2 gap-2">
                                                 <button type="button"
-                                                        className="transition duration-200 border border-gray-600 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block">MailUp
+                                                        className="transition duration-200 border border-gray-600 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block">Phone
                                                 </button>
                                                 <button type="button"
                                                         className="transition duration-200 border border-gray-600 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block">Google

@@ -484,7 +484,7 @@ export default function UpdatePage() {
 
         try {
             await api.put(`/user/${userId}`, updatedUser);
-            toast.success('User updated successfully!');
+            toast.success('Cập nhật người dùng thành công');
             navigate('/admin')
         } catch (err) {
             console.error('Error updating user:', err);

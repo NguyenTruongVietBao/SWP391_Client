@@ -8,32 +8,36 @@ import Loading from '../../components/Loading/Loading';
 export default function ContentManagerPage() {
     const [courses, setCourses] = useState([]);
     const [currentPage, setCurrentPage] = useState(1);
+    const [searchTerm, setSearchTerm] = useState('');
+    const [statusFilter, setStatusFilter] = useState('all');
     const coursesPerPage = 8;
-    const [filter, setFilter] = useState('all'); // New state for filter
 
     useEffect(() => {
         getCourseAll();
-    }, []);
+    }, [searchTerm, statusFilter]);
 
     function getCourseAll() {
         listCourses()
             .then((res) => {
-                // Filter courses based on the selected filter
+                const allCourses = res.data.data;
 
-                const filteredCourses = courses.filter(course => {
-                    if (filter === 'all') return true;
-                    if (filter === 'approved') return course.status === true;
-                    if (filter === 'pending') return course.status === null;
-                    if (filter === 'rejected') return course.status === false;
+                // Filter courses based on search term and status filter
+                const filteredCourses = allCourses.filter(course => {
+                    const matchesSearchTerm = course.title.toLowerCase().includes(searchTerm.toLowerCase());
+                    const matchesStatusFilter = statusFilter === 'all' ||
+                        (statusFilter === 'approved' && course.status === true) ||
+                        (statusFilter === 'rejected' && course.status === false)||
+                        (statusFilter === 'progress' && course.status === null);
+                    return matchesSearchTerm && matchesStatusFilter;
                 });
-                setCourses(res.data.data);
+
+                setCourses(filteredCourses);
             })
             .catch((error) => {
                 console.log('Error fetching courses:', error);
             });
     }
 
-    console.log('courses', courses);
     if (!courses) {
         return <div className='flex flex-col items-center justify-center h-screen'><Loading /></div>;
     }
@@ -41,7 +45,7 @@ export default function ContentManagerPage() {
     // Pagination logic
     const indexOfLastCourse = currentPage * coursesPerPage;
     const indexOfFirstCourse = indexOfLastCourse - coursesPerPage;
-    const currentCourses = courses.filter(course => course.status === true || course.status === false || course.status === null).slice(indexOfFirstCourse, indexOfLastCourse);
+    const currentCourses = courses.slice(indexOfFirstCourse, indexOfLastCourse);
     const totalPages = Math.ceil(courses.length / coursesPerPage);
 
     const handlePageChange = (pageNumber) => {
@@ -64,6 +68,25 @@ export default function ContentManagerPage() {
                                     Tạo khóa học
                                 </Link>
                             </Button>
+                        </div>
+                        <div className='flex items-center mb-4'>
+                            <input
+                                type="text"
+                                placeholder="Tìm theo tên khóa học"
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                className="mr-2 p-2 border border-gray-300 rounded"
+                            />
+                            <select
+                                value={statusFilter}
+                                onChange={(e) => setStatusFilter(e.target.value)}
+                                className="p-2 border border-gray-300 rounded"
+                            >
+                                <option value="all">Tất cả</option>
+                                <option value="approved">Đã chấp thuân</option>
+                                <option value="rejected">Đã từ chối</option>
+                                <option value="progress">Đang đợi duyệt</option>
+                            </select>
                         </div>
                         <div className="overflow-x-scroll">
                             <table className="w-full whitespace-nowrap">

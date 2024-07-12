@@ -31,6 +31,12 @@ export default function ManagerPage() {
     function formatCurrency(value) {
         return value.toLocaleString('vi-VN') + ' VNĐ';
     }
+    const formatDate = (navigateDay) => {
+        const year = navigateDay.substring(0, 4);
+        const month = navigateDay.substring(4, 6);
+        const day = navigateDay.substring(6, 8);
+        return `${year}-${month}-${day}`;   //   yyyy-MM-dd
+    };
     useEffect(() => {
         const currentDate = new Date().toISOString().split('T')[0];
         const currentMonth = new Date().toISOString().slice(0, 7);
@@ -593,18 +599,36 @@ export default function ManagerPage() {
         {/* Dialog for payment details */}
         {isDialogOpen && selectedCourse && (
             <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-                <div className="bg-white rounded-lg p-4 max-w-md w-full">
+                <div className="bg-black rounded-lg p-4 max-w-[750px] w-full">
                     <h2 className="text-xl font-bold mb-4">Chi tiết thanh toán</h2>
-                    {selectedCourse.payments.map((payment) => (
-                        <div key={payment.payment_id} className="mb-4">
-                            <p><strong>Họ tên:</strong> {payment.user.last_name}</p>
-                            <p><strong>Tổng tiền:</strong> {payment.total_money}</p>
-                            <p><strong>Ngày thanh toán:</strong> {payment.payment_date}</p>
-                            <p><strong>Mã đơn hàng:</strong> {payment.orderId}</p>
-                            <p><strong>Phương thức thanh toán:</strong> {payment.payment_method}</p>
-                        </div>
-                    ))}
-                    <button onClick={handleDialogClose} className="bg-blue-500 text-white px-4 py-2 rounded-lg">Đóng</button>
+                    <table className="w-full whitespace-nowrap mt-2">
+                        <thead
+                            className="text-white/90 bg-gradient-to-br from-black/80 via-black/50 to-black/70">
+                        <tr>
+                            <th className="text-left p-3 rounded-l-lg">Họ và tên</th>
+                            <th className="text-left p-3">Tổng tiền</th>
+                            <th className="text-left p-3">Ngày thanh toán</th>
+                            <th className="text-left p-3">Mã GD</th>
+                            <th className="text-center p-3 rounded-r-lg">Phương thức</th>
+                        </tr>
+                        </thead>
+                        <tbody className={'text-white/80'}>
+                        {selectedCourse.payments.map((payment) => (
+                            <tr className="border-b border-gray-700">
+                                <td className="py-3 pl-2 font-bold flex items-center">
+                                    <span className="p-3"> {payment.user.last_name}</span>
+                                </td>
+                                <td className="p-3">{payment.total_money}</td>
+                                <td className="p-3">{formatDate(payment.payment_date)}</td>
+                                <td className="p-3">{payment.orderId}</td>
+                                <td className="p-3 text-center">{payment.payment_method}</td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+
+                    <button onClick={handleDialogClose} className="bg-blue-500 text-white px-4 py-2 rounded-lg">Đóng
+                    </button>
                 </div>
             </div>
         )}
@@ -621,7 +645,9 @@ export default function ManagerPage() {
                             <p><strong>Phương thức thanh toán:</strong> {payment.payment_method}</p>
                         </div>
                     ))}
-                    <button onClick={handleDialogCloseUser} className="bg-blue-500 text-white px-4 py-2 rounded-lg">Đóng</button>
+                    <button onClick={handleDialogCloseUser}
+                            className="bg-blue-500 text-white px-4 py-2 rounded-lg">Đóng
+                    </button>
                 </div>
             </div>
         )}
