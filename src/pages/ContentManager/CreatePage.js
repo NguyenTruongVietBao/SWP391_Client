@@ -61,7 +61,7 @@ export default function CreatePage() {
     // Fetch categories from the API
     const fetchCategories = async () => {
       try {
-        const response = await api.get('http://localhost:8080/category/get/all');
+        const response = await api.get('/category/get/all');
         setCategories(response.data.data);
       } catch (error) {
         console.error('Error fetching categories:', error);
@@ -96,7 +96,7 @@ export default function CreatePage() {
       navigate('/content-manager/update/'+courseId);
     } catch (err) {
       console.error('Error adding course:', err);
-      toast.error('Error creating course. Please try again.');
+      toast.error('Lỗi khi tạo khóa học.');
     }
   };
 
@@ -171,6 +171,7 @@ export default function CreatePage() {
                         <span className="mt-2 text-base leading-normal">Chọn tệp</span>
                         {/*<input type='file' className="hidden"/>*/}
                         <input
+                            required
                             type="file"
                             onChange={(e) => setImg(e.target.files[0])}
                             className="mt-1 w-full text-sm text-gray-500
@@ -296,7 +297,7 @@ export default function CreatePage() {
                       <div className={' text-center'}>
                         <button
                             className="mt-5 rounded-xl hover:shadow-formrounded-md bg-[#6A64F1] py-3 px-8 text-base font-semibold text-white outline-none">
-                          Duyệt bài
+                          Tạo khóa học
                         </button>
                         {/* {error && <div className="text-red-500 mt-2">{error}</div>} */}
                       </div>

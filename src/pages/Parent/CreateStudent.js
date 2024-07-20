@@ -12,7 +12,6 @@ import { v4 } from "uuid";
 export default function CreateStudent() {
     const user = useSelector(selectUser);
     const [formErrors, setFormErrors] = useState({});
-    const [error, setError] = useState(null);
     const navigate = useNavigate();
     const [img, setImg] = useState('');
     const [imgUrl, setImgUrl] = useState('');
@@ -43,9 +42,21 @@ export default function CreateStudent() {
         const errors = {};
         if (!data.first_name) errors.first_name = 'First Name is required';
         if (!data.last_name) errors.last_name = 'Last Name is required';
-        if (!data.username) errors.username = 'Username is required';
-        if (!data.password) errors.password = 'Password is required';
-        if (data.password !== data.confirmPassword) errors.confirmPassword = 'Passwords do not match';
+        if (!data.username) {
+            errors.username = 'Username is required';
+        } else if (data.username.length < 8 || data.username.length > 32) {
+            errors.username = 'Tên đăng nhập phải lớn hơn 8 và bé hơn 32 ký tự';
+        }
+        if (!data.password) {
+            errors.password = 'Password is required';
+        } else if (data.password.length < 8 || data.password.length > 32) {
+            errors.password = 'Mật khẩu phải lớn hơn 8 và bé hơn 32 ký tự';
+        }
+        if (!data.confirmPassword) {
+            errors.confirmPassword = 'Confirm Password is required';
+        } else if (data.password !== data.confirmPassword) {
+            errors.confirmPassword = 'Passwords do not match';
+        }
         return errors;
     };
 
@@ -60,7 +71,7 @@ export default function CreateStudent() {
             address: e.target.address.value,
             image: imgUrl
         };
-
+        console.log('newUser',newUser)
         const errors = validateForm(newUser);
 
         if (Object.keys(errors).length > 0) {
@@ -74,7 +85,6 @@ export default function CreateStudent() {
         } catch (err) {
             console.log(newUser);
             console.error('Error adding user:', err);
-            setError('Error adding user data. Please try again later.');
         }
     };
 

@@ -37,7 +37,7 @@ export default function DetailCourse() {
     useEffect(() => {
         const fetchPayments = async () => {
             try {
-                const response = await api.get(`http://localhost:8080/payment/course/${courseId}`);
+                const response = await api.get(`/payment/course/${courseId}`);
                 const payments = response.data.data;
                 setNumPayments(payments.length);
             } catch (error) {
@@ -359,18 +359,18 @@ export default function DetailCourse() {
                         </div>
                         <div>
                             <dt className="text-sm font-semibold leading-6 text-gray-600">
-                                Số lượng học viên
-                            </dt>
-                            <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
-                                Lên đến {numPayments} người
-                            </dd>
-                        </div>
-                        <div>
-                            <dt className="text-sm font-semibold leading-6 text-gray-600">
                                 Chất lượng đào tạo
                             </dt>
                             <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
                                 Chuẩn quốc tế
+                            </dd>
+                        </div>
+                        <div>
+                            <dt className="text-sm font-semibold leading-6 text-gray-600">
+                                Số lượng học viên
+                            </dt>
+                            <dd className="mt-2 text-3xl font-bold leading-10 tracking-tight text-gray-900">
+                                Lên đến {numPayments} người
                             </dd>
                         </div>
                         <div>
@@ -385,7 +385,7 @@ export default function DetailCourse() {
                 </div>
             </div>
         </div>
-        
+
         {/* Form chọn học sinh */}
         <Transition appear show={isOpenPayment}>
             <Dialog as="div" className="relative z-10 focus:outline-none" onClose={close}>

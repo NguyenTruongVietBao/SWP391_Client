@@ -63,12 +63,11 @@ export default function Login() {
                             <div className="w-full md:max-w-md mt-4">
                                 <div className="flex items-center justify-end mb-5">
                                     <Link to={'/learning/login'}
-                                          className='bg-pink-200 text-xl font-bold px-10 py-1 rounded-lg text-gray-700 hover:bg-mathcha'>Trang
-                                        của bé</Link>
+                                          className='bg-pink-200 text-xl font-bold px-10 py-1 border-2 border-gray-900 rounded-lg text-gray-700 hover:bg-mathcha'>Đăng nhập cho bé</Link>
                                 </div>
                                 <div
                                     className="card bg-white/5 p-6 backdrop-blur-2xl shadow-2xl rounded-lg px-4 py-4 mb-6 ">
-                                    <form>
+                                    <form onSubmit={handleLogin}>
                                         <div className="flex items-center justify-center my-7">
                                             <h2 className="text-3xl font-bold tracking-wide font-mathcha-font-2">
                                                 Welcome to <span
@@ -90,44 +89,41 @@ export default function Login() {
                                             onChange={(e) => setPassword(e.target.value)}
                                         />
                                         {error && <div className="text-red-500 mb-4">{error}</div>}
-                                        <button
-                                            className="transition duration-200 ml-1 mb-5 mt-3 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">
-                                            <svg xmlns="http://www.w3.org/2000/svg" fill="none"
-                                                 viewBox="0 0 24 24" stroke="currentColor"
-                                                 className="w-4 h-4 inline-block align-text-top">
-                                                <path stroke-linecap="round" stroke-linejoin="round"
-                                                      stroke-width="2"
-                                                      d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/>
-                                            </svg>
-                                            <span className="inline-block ml-1">Quên mật khẩu </span>
-                                        </button>
-                                        <div className="flex items-center justify-between">
-                                            <button type="button"
-                                                    onClick={handleLogin}
-                                                    className="transition duration-200 bg-gray-800 hover:bg-mathcha-green focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
+                                        {/*<button*/}
+                                        {/*    className="transition duration-200 ml-1 mb-5 mt-3 cursor-pointer font-normal text-sm rounded-lg text-gray-500 hover:bg-gray-100 focus:outline-none focus:bg-gray-200 focus:ring-2 focus:ring-gray-400 focus:ring-opacity-50 ring-inset">*/}
+                                        {/*    <svg xmlns="http://www.w3.org/2000/svg" fill="none"*/}
+                                        {/*         viewBox="0 0 24 24" stroke="currentColor"*/}
+                                        {/*         className="w-4 h-4 inline-block align-text-top">*/}
+                                        {/*        <path stroke-linecap="round" stroke-linejoin="round"*/}
+                                        {/*              stroke-width="2"*/}
+                                        {/*              d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"/>*/}
+                                        {/*    </svg>*/}
+                                        {/*    <span className="inline-block ml-1">Quên mật khẩu </span>*/}
+                                        {/*</button>*/}
+                                        <div className="flex items-center justify-between mt-10">
+                                            <button className="transition duration-200 bg-gray-800 hover:bg-mathcha-green focus:bg-blue-700 focus:shadow-sm focus:ring-4 focus:ring-blue-500 focus:ring-opacity-50 text-white w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-semibold text-center inline-block">
                                                 <span className="text-lg font-bold inline-block mr-2">Đăng nhập</span>
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                      stroke="currentColor" className="w-4 h-4 inline-block">
-                                                    <path stroke-linecap="round" stroke-linejoin="round"
+                                                    <path stroke-linejoin="round"
                                                           stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
                                                 </svg>
                                             </button>
                                         </div>
 
-                                        <div className="p-5 mt-5">
-                                            <div className="grid grid-cols-2 gap-2">
-                                                <button type="button"
-                                                        className="transition duration-200 border border-gray-600 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block">Phone
-                                                </button>
-                                                <button type="button"
-                                                        className="transition duration-200 border border-gray-600 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block">Google
-                                                </button>
-                                            </div>
-                                        </div>
+                                        {/*<div className="p-5 mt-5">*/}
+                                        {/*    <div className="grid grid-cols-2 gap-2">*/}
+                                        {/*        <button type="button"*/}
+                                        {/*                className="transition duration-200 border border-gray-600 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block">Phone*/}
+                                        {/*        </button>*/}
+                                        {/*        <button type="button"*/}
+                                        {/*                className="transition duration-200 border border-gray-600 text-gray-500 w-full py-2.5 rounded-lg text-sm shadow-sm hover:shadow-md font-normal text-center inline-block">Google*/}
+                                        {/*        </button>*/}
+                                        {/*    </div>*/}
+                                        {/*</div>*/}
                                     </form>
                                 </div>
                             </div>
-
                         </div>
                     </div>
                 </div>

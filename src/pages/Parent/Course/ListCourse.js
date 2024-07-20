@@ -88,7 +88,7 @@ export default function ListCourse() {
                 <div className="max-w-[1180px] flex flex-col gap-[50px] lg:gap-[123px]">
                     <div className="flex flex-col gap-[50px] max-w-[1180px] justify-center w-full">
                         <div className="flex justify-center items-center">
-                            <div className="mt-20 text-6xl font-bold leading-[58px] tracking-[0.03em]" style={{ fontFamily: 'monospace, sans-serif' }}>
+                            <div className="mt-10 text-6xl font-bold leading-[58px] tracking-[0.03em]" style={{ fontFamily: 'monospace, sans-serif' }}>
                                 Danh sách các khóa học
                             </div>
                         </div>

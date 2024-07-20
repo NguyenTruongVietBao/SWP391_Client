@@ -5,7 +5,6 @@ import { Disclosure, DisclosureButton, DisclosurePanel } from "@headlessui/react
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/features/counterSlice";
-import { toast } from 'react-toastify';
 
 const MenuLesson = () => {
     const user = useSelector(selectUser);
@@ -13,6 +12,7 @@ const MenuLesson = () => {
     const [lessons, setLessons] = useState([]);
     const [topic, setTopic] = useState({});
     const [completedLessons, setCompletedLessons] = useState([]);
+    const [isTopicCompleted, setIsTopicCompleted] = useState(false);
     const studentId = user.user_id;
     const navigate = useNavigate();
 
@@ -38,6 +38,11 @@ const MenuLesson = () => {
 
                 const completedStatuses = await Promise.all(completionStatusPromises);
                 setCompletedLessons(completedStatuses);
+
+                // Get topic completion status
+                const topicStatusResponse = await api.get(`/completeTopic/status/${enrollmentId}/${topicId}`);
+                setIsTopicCompleted(topicStatusResponse.data.data);
+
             } catch (error) {
                 console.error('Failed to fetch lesson:', error);
             }
@@ -48,7 +53,7 @@ const MenuLesson = () => {
     // Check if all lessons are completed
     const allLessonsCompleted = completedLessons.every(status => status === true);
 
-    // do quiz
+    // Take quiz
     const handleTakeQuizTopic = async () => {
         try {
             const response = await api.post(`/quiz/topic/${topicId}/generate`, {
@@ -71,19 +76,26 @@ const MenuLesson = () => {
                         <Link to={'./'} className="text-xl font-medium text-black group-hover:text-black/80">
                             {topic.title}
                         </Link>
-                        <ChevronDownIcon className="size-5 fill-black/60 group-hover:fill-black/50 group-data-[open]:rotate-180"/>
+                        <ChevronDownIcon
+                            className="size-5 fill-black/60 group-hover:fill-black/50 group-data-[open]:rotate-180"/>
                     </DisclosureButton>
                     <DisclosurePanel className="ml-4 text-sm text-black/50 p-2 rounded-lg bg-white/55">
                         <Disclosure as="div" className="px-2 mb-2">
                             {/* Lessons */}
                             {lessons.map((lesson, index) => (
-                                <DisclosureButton key={lesson.lesson_id} className="group flex w-full justify-between items-center my-4">
-                                    <Link to={`/learning/course/${courseId}/topic/${topicId}/lesson/${lesson.lesson_id}`} className="text-base font-medium text-black group-hover:text-black/80">
+                                <DisclosureButton key={lesson.lesson_id}
+                                                  className="group flex w-full justify-between items-center my-4">
+                                    <Link
+                                        to={`/learning/course/${courseId}/topic/${topicId}/lesson/${lesson.lesson_id}`}
+                                        className="text-base font-medium text-black group-hover:text-black/80">
                                         {index + 1}. {lesson.title}
                                     </Link>
                                     {completedLessons[index] && (
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-5 bg-mathcha-green rounded-full text-white">
-                                            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
+                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                             strokeWidth={1.5} stroke="currentColor"
+                                             className="size-5 bg-mathcha-green rounded-full text-white">
+                                            <path strokeLinecap="round" strokeLinejoin="round"
+                                                  d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/>
                                         </svg>
                                     )}
                                 </DisclosureButton>
@@ -92,22 +104,32 @@ const MenuLesson = () => {
                     </DisclosurePanel>
                 </Disclosure>
 
-                {/* Render "Kiểm tra" button based on lessons completion */}
-                {allLessonsCompleted && (
-                    <div className="ml-7 mt-4">
-                        <button onClick={handleTakeQuizTopic} className="inline-block px-4 py-2 bg-mathcha-green font-bold text-white rounded-md my-2">
+                {/* Success Button */}
+
+
+                <div className="ml-7 mt-4">
+                    {/* Show "Kiểm tra" button only if all lessons are completed and topic is not completed */}
+                    {!isTopicCompleted && allLessonsCompleted && (
+                        <button onClick={handleTakeQuizTopic}
+                                className="inline-block px-4 py-2 bg-mathcha-green font-bold text-white rounded-md my-2">
                             Kiểm tra
                         </button>
-                    </div>
-                )}
+                    )}
 
-                {/*{!allLessonsCompleted && (*/}
-                {/*    <div className="ml-7 mt-4">*/}
-                {/*        <button onClick={() => { toast.error('Bạn cần hoàn thành hết lesson') }} className="inline-block px-4 py-2 bg-gray-600 font-bold text-white rounded-md my-2">*/}
-                {/*            Kiểm tra*/}
-                {/*        </button>*/}
-                {/*    </div>*/}
-                {/*)}*/}
+                    {/* Show "Success" button only if the topic is completed */}
+                    {isTopicCompleted && (
+                        <div className={'flex items-center gap-2'}>
+                            <button onClick={handleTakeQuizTopic}
+                                    className="inline-block px-4 py-2 bg-blue-400 font-bold text-white rounded-md my-2 hover:bg-mathcha-green">
+                                Làm lại bài
+                            </button>
+                            <span
+                                className="font-bold text-base text-mathcha-green">
+                                Đã hoàn thành
+                            </span>
+                        </div>
+                    )}
+                </div>
             </div>
         </div>
     );

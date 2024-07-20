@@ -15,12 +15,12 @@ export default function CreatePage() {
         if (!data.username) {
             errors.username = 'Username is required';
         } else if (data.username.length < 8 || data.username.length > 32) {
-            errors.username = 'Username must be between 8 and 32 characters';
+            errors.username = 'Tên đăng nhập phải lớn hơn 8 và bé hơn 32 ký tự';
         }
         if (!data.password) {
             errors.password = 'Password is required';
         } else if (data.password.length < 8 || data.password.length > 32) {
-            errors.password = 'Password must be between 8 and 32 characters';
+            errors.password = 'Mật khẩu phải lớn hơn 8 và bé hơn 32 ký tự';
         }
         if (!data.confirm_password) {
             errors.confirm_password = 'Confirm Password is required';
@@ -30,12 +30,12 @@ export default function CreatePage() {
         if (!data.email) {
             errors.email = 'Email is required';
         } else if (!/\S+@\S+\.\S+/.test(data.email)) {
-            errors.email = 'Email address is invalid';
+            errors.email = 'Email không hợp lệ';
         }
         if (!data.phone) {
             errors.phone = 'Phone is required';
-        } else if (!/^09\d{8}$/.test(data.phone)) {
-            errors.phone = 'Số điện thoại bắt đầu bằng 09 và 10 chữ số';
+        } else if (!/^0\d{9}$/.test(data.phone)) {
+            errors.phone = 'Số điện thoại bắt đầu bằng 0 và 10 chữ số';
         }
         if (!data.address) errors.address = 'Address is required';
         if (!data.role) errors.role = 'Role is required';
@@ -108,7 +108,7 @@ export default function CreatePage() {
                                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     />
                                     {formErrors.username &&
-                                        <span className="text-red-500">{formErrors.username}</span>}
+                                        <span className="text-red-400">{formErrors.username}</span>}
                                 </div>
                                 <div className="flex justify-between mb-5">
                                     <div>
@@ -124,7 +124,7 @@ export default function CreatePage() {
                                             placeholder="Họ"
                                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                         />
-                                        {formErrors.first_name && <span className="text-red-500">{formErrors.first_name}</span>}
+                                        {formErrors.first_name && <span className="text-red-400">{formErrors.first_name}</span>}
                                     </div>
                                     <div>
                                         <label htmlFor="last_name"
@@ -140,7 +140,7 @@ export default function CreatePage() {
                                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                         />
                                         {formErrors.last_name &&
-                                            <span className="text-red-500">{formErrors.last_name}</span>}
+                                            <span className="text-red-400">{formErrors.last_name}</span>}
                                     </div>
                                 </div>
                                 <div className="flex justify-between mb-5">
@@ -158,7 +158,7 @@ export default function CreatePage() {
                                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                         />
                                         {formErrors.password &&
-                                            <span className="text-red-500">{formErrors.password}</span>}
+                                            <span className="text-red-400">{formErrors.password}</span>}
                                     </div>
                                     <div>
                                         <label htmlFor="confirm_password"
@@ -174,7 +174,7 @@ export default function CreatePage() {
                                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                         />
                                         {formErrors.confirm_password &&
-                                            <span className="text-red-500">{formErrors.confirm_password}</span>}
+                                            <span className="text-red-400">{formErrors.confirm_password}</span>}
                                     </div>
                                 </div>
                                 <div className="mb-4">
@@ -188,7 +188,7 @@ export default function CreatePage() {
                                         placeholder="example@domain.com"
                                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     />
-                                    {formErrors.email && <span className="text-red-500">{formErrors.email}</span>}
+                                    {formErrors.email && <span className="text-red-400">{formErrors.email}</span>}
                                 </div>
                                 <div className="mb-4">
                                     <label htmlFor="phone" className="mb-1 block text-base font-medium text-white">
@@ -200,7 +200,7 @@ export default function CreatePage() {
                                         placeholder="09********"
                                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     />
-                                    {formErrors.phone && <span className="text-red-500">{formErrors.phone}</span>}
+                                    {formErrors.phone && <span className="text-red-400">{formErrors.phone}</span>}
                                 </div>
                                 <div className="mb-4">
                                     <label htmlFor="address" className="mb-1 block text-base font-medium text-white">
@@ -213,7 +213,7 @@ export default function CreatePage() {
                                         placeholder="Địa chỉ"
                                         className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                                     />
-                                    {formErrors.address && <span className="text-red-500">{formErrors.address}</span>}
+                                    {formErrors.address && <span className="text-red-400">{formErrors.address}</span>}
                                 </div>
                                 <div className="mb-4">
                                     <label htmlFor="role" className="mb-1 block text-base font-medium text-white">
@@ -239,7 +239,7 @@ export default function CreatePage() {
                                             </div>
                                         ))}
                                     </div>
-                                    {formErrors.role && <span className="text-red-500">{formErrors.role}</span>}
+                                    {formErrors.role && <span className="text-red-400">{formErrors.role}</span>}
                                 </div>
                                 <div>
                                     <button

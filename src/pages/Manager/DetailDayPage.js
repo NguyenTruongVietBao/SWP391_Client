@@ -113,6 +113,17 @@ export default function DetailDayPage() {
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
             },
+            {
+                label: 'Số khóa học bán ra',
+                data: dataUser.users.map(user => {
+                    const userPaymentsForDate = user.payments.filter(payment => payment.payment_date.startsWith(date.replace(/-/g, '')));
+                    const numOfCourses = userPaymentsForDate.length;
+                    return numOfCourses;
+                }),
+                backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1,
+            }
         ],
     };
 
@@ -128,6 +139,7 @@ export default function DetailDayPage() {
             },
         },
     };
+    console.log('user',userPaymentDetails)
     return (
         <div className="antialiased bg-black w-full min-h-screen text-slate-300 relative py-4">
             <div className="grid grid-cols-12 mx-auto gap-2 sm:gap-4 md:gap-6 lg:gap-10 xl:gap-14 max-w-7xl my-10 px-2">
@@ -267,6 +279,7 @@ export default function DetailDayPage() {
                                 <tr>
                                     <th className="text-center p-3 rounded-l-lg">Khóa học</th>
                                     <th className="text-left p-3">Lớp</th>
+                                    <th className="text-left p-3">Mua bởi</th>
                                     <th className="text-left p-3">Mua cho</th>
                                     <th className="text-left p-3">Số tiền</th>
                                     <th className="text-left p-3">Mã GD</th>
@@ -281,8 +294,9 @@ export default function DetailDayPage() {
                                                  className={'w-16 rounded-lg h-auto'}/>
                                             <span className="p-3"> {data.course.title}</span>
                                         </td>
-                                        <td className="p-3">{data.course.category.category_name}</td>
-                                        <td className="p-3">{data.student.username}</td>
+                                        <td className="p-3">{data.course.category.categoryName}</td>
+                                        <td className="p-3">{data.user.first_name} {data.user.last_name}</td>
+                                        <td className="p-3">{data.student.first_name} {data.student.last_name}</td>
                                         <td className="p-3">{data.total_money} VNĐ</td>
                                         <td className="p-3">{data.orderId}</td>
                                         <td className="p-3">{formatDate(data.payment_date)}</td>

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { GoogleMap, useLoadScript, useGoogleMap } from '@react-google-maps/api';
 
-const libraries = ['places'];
+const libraries = ['places']; // Add other libraries if needed
 
 const mapContainerStyle = {
     height: '400px',
@@ -13,7 +13,7 @@ const center = {
     lng: 0,
 };
 
-const About = () => {
+const MyMap = () => {
     const [address, setAddress] = useState('');
     const [map, setMap] = useState(null);
 
@@ -28,6 +28,7 @@ const About = () => {
 
     useEffect(() => {
         if (map) {
+            // Use browser's geolocation API to get current location
             navigator.geolocation.getCurrentPosition(
                 (position) => {
                     const { latitude, longitude } = position.coords;
@@ -50,7 +51,7 @@ const About = () => {
         }
     }, [map]);
 
-    if (loadError) return <div>Error loading maps: {loadError.message}</div>;
+    if (loadError) return <div>Error loading maps</div>;
     if (!isLoaded) return <div>Loading...</div>;
 
     return (
@@ -68,4 +69,4 @@ const About = () => {
     );
 };
 
-export default About;
+export default MyMap;

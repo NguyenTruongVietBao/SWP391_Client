@@ -82,7 +82,8 @@ const QuizPage = () => {
                 const res = await api.post(`/completeTopic/create/${enrollmentId}/${topicId}`);
                 await api.post(`/quiz/save`, {
                     "enrollment_id": enrollmentId,
-                    "score": newScore
+                    "score": newScore,
+                    "quiz_name": topic.title
                 });
                 console.log('create topic data', res.data.data);
                 toast.success('Chúc mừng bạn đã hoàn thành chủ đề');

@@ -75,8 +75,8 @@ export default function LoginStudent() {
                 </form>
               </div>
               <div className="flex items-center justify-center">
-                <Link to={'/login'} className='bg-sky-300 text-xl font-bold px-16 py-1 rounded-lg text-gray-800 hover:bg-mathcha'>
-                  Trang bố mẹ
+                <Link to={'/login'} className='bg-sky-300 border-2 border-gray-900 text-xl font-bold px-10 py-1 rounded-lg text-gray-800 hover:bg-mathcha'>
+                  Trang phụ huynh
                 </Link>
               </div>
             </div>

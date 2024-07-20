@@ -58,9 +58,9 @@ export default function Footer() {
               Liên kết nhanh
             </div>
             <div className="text-center font-montserrat text-base leading-5 tracking-[0.03em] flex flex-col gap-2.5 font-medium">
-              <a href="#_"> Ưu đãi</a>
-              <a href="#_"> Liên hệ</a>
-              <a href="#_"> Hỏi đáp</a>
+              <Link to={"/course"}> Ưu đãi</Link>
+              <a href={"#tu-van"}> Liên hệ</a>
+              <a href={"#tu-van"}> Hỏi đáp</a>
             </div>
           </div>
           <div className="items-start  flex flex-col gap-2 md:gap-[21px]">
@@ -68,9 +68,9 @@ export default function Footer() {
               Hệ thống trung tâm
             </div>
             <div className="text-start font-montserrat text-base leading-5 tracking-[0.03em] flex flex-col gap-2.5 font-medium">
-              <a href="#_">S7.01 Vinhome GrandPark</a>
+              <a href="#_">S7.01 Vinhome Grand Park</a>
               <a href="#_">0982 123 234</a>
-              <a href="#_">mathcha88@fpt.edu.com</a>
+              <a href="#_">mathcha@education.com</a>
             </div>
           </div>
           <div className="items-start flex flex-col gap-2 md:gap-[21px]">

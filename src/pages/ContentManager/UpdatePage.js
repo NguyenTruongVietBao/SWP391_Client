@@ -56,7 +56,6 @@ export default function UpdatePage() {
 
           return { ...chapter, topics: topicsWithLessons || [] };
         }));
-
         setChapters(chaptersWithTopics);
       } catch (error) {
         console.error('Error fetching chapters and topics:', error);
@@ -71,10 +70,10 @@ export default function UpdatePage() {
       const newChapter = response.data.data;
       setChapters((prevChapters) => [...prevChapters, { ...newChapter, topics: [] }]);
       setNewChapterTitle("");
-      toast.success("Thêm chapter thành công !");
+      toast.success("Tạo chương mới thành công !");
     } catch (error) {
       console.error('Error adding chapter:', error);
-      toast.error("Có lỗi xảy ra khi thêm chapter");
+      toast.error("Có lỗi xảy ra khi thêm chương");
     }
   };
 
@@ -102,10 +101,10 @@ export default function UpdatePage() {
         return chapter;
       });
       setChapters(updatedTopics);
-      toast.success("Thêm topic thành công !");
+      toast.success("Tạo chủ đề thành công !");
     } catch (error) {
       console.error('Error adding topic:', error);
-      toast.error("Có lỗi xảy ra khi thêm topic");
+      toast.error("Có lỗi xảy ra khi thêm chủ đề");
       // Rollback the optimistic update if necessary
       setChapters(updatedChapters);
     }
@@ -124,12 +123,10 @@ export default function UpdatePage() {
         })
       }));
       setChapters(updatedChapters);
-      toast.success("Thêm lesson thành công !");
+      toast.success("Tạo bài học thành công !");
     } catch (error) {
       console.error('Error adding lesson:', error);
-      toast.error("Có lỗi xảy ra khi thêm lesson");
-      // Optionally, rollback the optimistic update
-      // setChapters(updatedChapters);
+      toast.error("Có lỗi xảy ra khi thêm bài học");
     }
   };
 
@@ -147,15 +144,6 @@ export default function UpdatePage() {
   const handleChange = (e, field) => {
     setEditValues({ ...editValues, [field]: e.target.value });
   };
-
-  const downloadTemplate = (url) => {
-    const fileName = url.split('/').pop()
-    const aTag = document.createElement('a');
-    aTag.href = url
-    aTag.setAttribute('download', fileName);
-    document.body.appendChild(aTag);
-    aTag.click();
-  }
 
   // Loading
   if (!course) {
@@ -228,7 +216,7 @@ export default function UpdatePage() {
                         {isEditing.original_price ? (
                             <div>
                               <input
-                                  type="text"
+                                  type="number"
                                   value={editValues.original_price}
                                   onChange={(e) => handleChange(e, 'original_price')}
                                   className="mb-2 p-2 border border-gray-300 rounded"
@@ -248,7 +236,7 @@ export default function UpdatePage() {
                         {isEditing.discount_price ? (
                             <div>
                               <input
-                                  type="text"
+                                  type="number"
                                   value={editValues.discount_price}
                                   onChange={(e) => handleChange(e, 'discount_price')}
                                   className="mb-2 p-2 border border-gray-300 rounded"
@@ -277,7 +265,7 @@ export default function UpdatePage() {
                         {/* Chapter */}
                         <DisclosureButton className="group flex w-full items-center justify-between">
                       <span className="text-2xl font-medium text-black group-hover:text-black/80">
-                        {chapter.title}
+                        {index + 1}. {chapter.title}
                       </span>
                           <ChevronDownIcon
                               className="size-5 fill-black/60 group-hover:fill-black/50 group-data-[open]:rotate-180"/>
@@ -303,7 +291,7 @@ export default function UpdatePage() {
                                             <path strokeLinecap="round" strokeLinejoin="round"
                                                   d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"/>
                                           </svg>
-                                        Chỉnh sửa câu hỏi
+                                        Cập nhật câu hỏi
                                       </Link>
                                   </div>
                                   <ChevronDownIcon
@@ -371,7 +359,7 @@ export default function UpdatePage() {
                           <div className="flex flex-col mt-4">
                             <input
                                 type="text"
-                                placeholder="Topic Title"
+                                placeholder="Tiêu đề của chủ đề"
                                 value={newTopicTitle[chapter.chapter_id] || ''}
                                 onChange={(e) => setNewTopicTitle({
                                   ...newTopicTitle,
@@ -391,7 +379,7 @@ export default function UpdatePage() {
                   <div className="flex flex-col mt-4">
                     <input
                         type="text"
-                        placeholder="Chapter Title"
+                        placeholder="Nội dung của chương"
                         value={newChapterTitle}
                         onChange={(e) => setNewChapterTitle(e.target.value)}
                         className="mb-2 p-2 border border-gray-300 rounded"

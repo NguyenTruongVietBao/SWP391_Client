@@ -263,6 +263,7 @@ export default function DetailMonthPage() {
                                 <tr>
                                     <th className="text-center p-3 rounded-l-lg">Khóa học</th>
                                     <th className="text-left p-3">Lớp</th>
+                                    <th className="text-left p-3">Mua bởi</th>
                                     <th className="text-left p-3">Mua cho</th>
                                     <th className="text-left p-3">Số tiền</th>
                                     <th className="text-left p-3">Mã GD</th>
@@ -277,8 +278,9 @@ export default function DetailMonthPage() {
                                                  className={'w-16 rounded-lg h-auto'}/>
                                             <span className="p-3"> {data.course.title}</span>
                                         </td>
-                                        <td className="p-3">{data.course.category.category_name}</td>
-                                        <td className="p-3">{data.student.username}</td>
+                                        <td className="p-3">{data.course.category.categoryName}</td>
+                                        <td className="p-3">{data.user.first_name} {data.user.last_name}</td>
+                                        <td className="p-3">{data.student.first_name} {data.student.last_name}</td>
                                         <td className="p-3">{data.total_money} VNĐ</td>
                                         <td className="p-3">{data.orderId}</td>
                                         <td className="p-3">{formatDate(data.payment_date)}</td>

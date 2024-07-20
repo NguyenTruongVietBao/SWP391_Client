@@ -72,10 +72,14 @@ const DoQuizChapter = () => {
             if (newScore >= 5) {
                 const res = await api.post(`/completeChapter/create/${enrollmentId}/${chapterId}`);
                 console.log('create chapterId data', res.data.data);
+                await api.post(`/quiz/save`, {
+                    "enrollment_id": enrollmentId,
+                    "score": newScore,
+                    "quiz_name": chapter.title
+                });
+                console.log('create topic data', res.data.data);
                 toast.success('Chúc mừng bạn đã hoàn thành chương');
-            }
-            if (newScore < 5) {
-
+            } else {
                 toast.error('Rớt môn');
             }
         } catch (e) {

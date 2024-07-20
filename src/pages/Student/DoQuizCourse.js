@@ -71,11 +71,14 @@ const DoQuizCourse = () => {
             setScore(newScore);
             if (newScore >= 5) {
                 const res = await api.post(`/completeCourse/create/${enrollmentId}/${courseId}`);
+                await api.post(`/quiz/save`, {
+                    "enrollment_id": enrollmentId,
+                    "score": newScore,
+                    "quiz_name": course.title
+                });
                 console.log('create courseId data', res.data.data);
                 toast.success('Pass môn');
-            }
-            if (newScore < 5) {
-
+            } else {
                 toast.error('Rớt môn');
             }
         } catch (e) {

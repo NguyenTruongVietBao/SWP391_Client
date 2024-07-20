@@ -26,18 +26,11 @@ export default function Profile() {
             });
         }
     };
+    console.log('user.image',user.image)
     useEffect(() => {
-        listAll(ref(imageDb, "files")).then(imgs => {
-            console.log(imgs);
-            imgs.items.forEach(val => {
-                getDownloadURL(val).then(url => {
-                    setImgUrl(url);
-                });
-            });
-        });
-    }, []);
+        setImgUrl(user.image);
+    }, [user.image]);
 
-    console.log(imgUrl);
     // validate
     const validateForm = (data) => {
         const errors = {};
@@ -50,8 +43,8 @@ export default function Profile() {
         }
         if (!data.phone) {
             errors.phone = 'Phone is required';
-        } else if (!/^09\d{8}$/.test(data.phone)) {
-            errors.phone = 'Phone number is invalid. Format: 0912312312';
+        } else if (!/^0\d{9}$/.test(data.phone)) {
+            errors.phone = 'Số điện thoại bắt đầu t. Ví dụ: 0*********';
         }
         if (!data.address) errors.address = 'Address is required';
         return errors;
@@ -76,6 +69,7 @@ export default function Profile() {
             setFormErrors(errors);
             return;
         }
+        console.log('updatedUser',updatedUser)
         try {
             const response = await api.put(`/user/${user.user_id}`, updatedUser);
             console.log('User updated:', response.data); // Check response from API
@@ -97,13 +91,13 @@ export default function Profile() {
             <div id="content" className="bg-white/10 col-span-9 rounded-lg">
                 <div className="flex items-center justify-between" >
                     <div className="mx-auto w-full">
-                        <div className="text-6xl font-bold text-center mb-10 text-black">
-                            Cập nhật: {user.last_name}
+                        <div className="text-6xl font-bold text-center mb-16 text-black">
+                            Cập nhật <span className={'underline'}>{user.first_name} {user.last_name}</span>
                         </div>
                         <div className={'flex justify-center gap-16'}>
                             <div className="flex flex-col items-center space-y-4 p-4 border border-gray-200 rounded-lg shadow-md max-w-md mx-auto bg-white">
                                 <label className="block text-sm font-medium text-gray-700">
-                                   Cập nhật đại diện
+                                   Cập nhật ảnh đại diện
                                 </label>
                                 <div className="flex w-full items-center justify-center bg-grey-lighter">
                                     <label
@@ -135,7 +129,7 @@ export default function Profile() {
                                     <div className="mt-4">
                                         <img
                                             src={imgUrl}
-                                            alt="Selected"
+                                            alt="Avatar"
                                             className="rounded-lg shadow-md"
                                             style={{height: '200px', width: '200px', objectFit: 'cover'}}
                                         />

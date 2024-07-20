@@ -3,8 +3,8 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import api from "../../config/axios";
-import {useSelector} from "react-redux";
-import {selectUser} from "../../redux/features/counterSlice";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/features/counterSlice";
 
 export const MenuLearning = () => {
     const [chapters, setChapters] = useState([]);
@@ -17,6 +17,7 @@ export const MenuLearning = () => {
     const user = useSelector(selectUser);
     const studentId = user.user_id;
     const [enrollmentId, setEnrollmentId] = useState(null);
+    const [isCourseComplete, setIsCourseComplete] = useState(false);
 
     useEffect(() => {
         const fetchEnrollmentId = async () => {
@@ -32,7 +33,6 @@ export const MenuLearning = () => {
         fetchEnrollmentId();
     }, [studentId, courseId]);
 
-    // Fetch chapters
     useEffect(() => {
         const fetchChapters = async () => {
             const chaptersResponse = await api.get(`/chapter/course/${courseId}`);
@@ -41,7 +41,6 @@ export const MenuLearning = () => {
         fetchChapters();
     }, [courseId]);
 
-    // Fetch topics
     useEffect(() => {
         const fetchTopics = async () => {
             const topicsData = await Promise.all(
@@ -58,7 +57,6 @@ export const MenuLearning = () => {
         }
     }, [chapters]);
 
-    // Fetch lessons
     useEffect(() => {
         const fetchLessons = async () => {
             const lessonsData = await Promise.all(
@@ -79,7 +77,6 @@ export const MenuLearning = () => {
         }
     }, [topics]);
 
-    // Fetch completed topics
     useEffect(() => {
         const fetchCompletedTopics = async () => {
             const completedTopicsData = await Promise.all(
@@ -95,7 +92,6 @@ export const MenuLearning = () => {
         }
     }, [topics]);
 
-    // Fetch completed chapters
     useEffect(() => {
         const fetchCompletedChapters = async () => {
             const completedChaptersData = await Promise.all(
@@ -112,19 +108,30 @@ export const MenuLearning = () => {
         }
     }, [chapters]);
 
-    // Check if all topics in a chapter are completed
+    useEffect(() => {
+        const fetchCourseCompletionStatus = async () => {
+            if (enrollmentId) {
+                try {
+                    const response = await api.get(`/completeCourse/status/${enrollmentId}/${courseId}`);
+                    setIsCourseComplete(response.data.data);
+                } catch (error) {
+                    console.error('Failed to fetch course completion status:', error);
+                }
+            }
+        };
+        fetchCourseCompletionStatus();
+    }, [enrollmentId, courseId]);
+
     const isChapterCompleted = (chapterId) => {
         const chapterTopics = topics[chapterId];
         if (!chapterTopics) return false;
         return chapterTopics.every(topic => completedTopics[topic.topic_id]);
     };
 
-    // Check if all chapters in the course are completed
     const isCourseCompleted = () => {
         return chapters.every(chapter => completedChapters[chapter.chapter_id]);
     };
 
-    // Do Quiz Chapter
     const handleTakeQuizChapter = async (chapterId) => {
         try {
             const response = await api.post(`/quiz/chapter/${chapterId}/generate`, {
@@ -138,7 +145,6 @@ export const MenuLearning = () => {
         }
     };
 
-    // Do Quiz Course
     const handleTakeQuizCourse = async () => {
         try {
             const response = await api.post(`/quiz/course/${courseId}/generate`, {
@@ -200,7 +206,7 @@ export const MenuLearning = () => {
                                 </Disclosure.Button>
                             </Disclosure>
                         ))}
-                        {isChapterCompleted(chapter.chapter_id) && (
+                        {isChapterCompleted(chapter.chapter_id) && !completedChapters[chapter.chapter_id] &&  (
                             <button
                                 onClick={() => handleTakeQuizChapter(chapter.chapter_id)}
                                 className="inline-block px-4 py-2 bg-mathcha-green font-bold text-white rounded-md my-2"
@@ -208,17 +214,45 @@ export const MenuLearning = () => {
                                 Kiểm tra
                             </button>
                         )}
+                        {isChapterCompleted(chapter.chapter_id) && completedChapters[chapter.chapter_id] && (
+                            <div className={'flex gap-4 ml-1 items-center'}>
+                                <button
+                                    onClick={() => handleTakeQuizChapter(chapter.chapter_id)}
+                                    className="inline-block px-4 py-2 bg-blue-400 font-bold text-white rounded-md my-2 hover:bg-mathcha-green"
+                                >
+                                    Kiểm tra lại
+                                </button>
+                                <span
+                                    className="font-bold text-base text-mathcha-green">
+                                    Đã hoàn thành
+                                </span>
+                            </div>
+                        )}
                     </Disclosure.Panel>
                 </Disclosure>
             ))}
-            {isCourseCompleted() && (
+            {isCourseCompleted() && !isCourseComplete &&(
                 <div className="p-3">
+                <button
+                        onClick={handleTakeQuizCourse}
+                        className="w-full px-4 py-2 bg-mathcha-green font-bold text-white rounded-md hover:bg-blue-400"
+                    >
+                        Kiểm tra tổng
+                    </button>
+                </div>
+            )}
+            {isCourseCompleted() && isCourseComplete && (
+                <div className={'px-4 flex flex-col gap-4 ml-1 items-center'}>
                     <button
                         onClick={handleTakeQuizCourse}
-                        className="w-full px-4 py-2 bg-mathcha-green font-bold text-white rounded-md"
+                        className="w-full px-4 py-2 bg-mathcha-green font-bold text-white rounded-md hover:bg-blue-400"
                     >
-                        Kiểm tra Course
+                        Kiểm tra lại
                     </button>
+                    <span
+                        className="text-center w-full py-4 border border-1 mb-3 font-bold text-base bg-white/90 p-2 text-black rounded-xl">
+                        <span>🎊️🎉 <strong>Chúc mừng bạn đã hoàn thành khóa học ️</strong></span>
+                    </span>
                 </div>
             )}
         </div>

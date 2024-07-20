@@ -109,13 +109,13 @@ export default function CourseDetail() {
                 <p className="text-7xl text-indigo-900 text-center mb-10 mt-3">
                   <strong>{course.title}</strong>
                 </p>
-                <div className={'flex justify-evenly'}>
+                <div className={'flex justify-evenly gap-5'}>
                   <div className={'w-1/2 flex justify-center items-center'}>
                     <img
                         src={course.image}
                         alt="Loading..."
                         className="rounded-3xl "
-                        style={{objectFit: "cover", width: "470px", height: "400px"}}
+                        style={{objectFit: "cover", width: "430px", height: "380px"}}
                     />
                   </div>
                   <div className={'rounded-3xl w-1/2 max-w-[700px]'}>
@@ -127,7 +127,6 @@ export default function CourseDetail() {
                        <li>-<strong>Số học cơ bản</strong>Hiểu và thực hiện các phép tính cộng, trừ, nhân, chia; làm quen với các số nguyên, phân số và số thập phân.</li>
                        <li>-<strong>Hình học</strong>Nhận biết và mô tả các hình dạng cơ bản như hình vuông, hình chữ nhật, hình tròn, hình tam giác; hiểu về chu vi, diện tích và thể tích.</li>
                        <li>-<strong>Đo lường</strong>Biết cách đo lường độ dài, khối lượng, thể tích và thời gian bằng các đơn vị đo lường khác nhau.</li>
-                       <li>-<strong>Đại số cơ bản</strong>Làm quen với các khái niệm đại số đơn giản như biểu thức, phương trình và bất đẳng thức.</li>
                     </ul>
                   </div>
                 </div>

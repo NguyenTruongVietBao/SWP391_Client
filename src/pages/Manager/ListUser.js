@@ -33,6 +33,13 @@ export default function ListUser(props) {
         return value.toLocaleString('vi-VN') + ' VNĐ';
     }
 
+    const formatDate = (navigateDay) => {
+        const year = navigateDay.substring(0, 4);
+        const month = navigateDay.substring(4, 6);
+        const day = navigateDay.substring(6, 8);
+        return `${year}-${month}-${day}`;   //   yyyy-MM-dd
+    };
+
     useEffect(() => {
         const fetchUsersWithRevenue = async () => {
             try {
@@ -50,11 +57,14 @@ export default function ListUser(props) {
                             api.get(`chart/revenue/user/${user.user_id}`),
                             api.get(`/payment/user/${user.user_id}`)
                         ]);
+                        console.log('paymentResponse',paymentResponse.data.data)
+                        console.log('revenueResponse',revenueResponse.data.data)
                         return {
                             ...user,
                             revenue: revenueResponse.data.data,
                             payments: paymentResponse.data.data,
                             paymentCount: paymentResponse.data.data.length,
+
                         };
                     })
                 );
@@ -262,17 +272,56 @@ export default function ListUser(props) {
             {isDialogOpen && selectedUser && (
                 <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
                     <div className="bg-white rounded-lg p-4 max-w-md w-full">
-                        <h2 className="text-xl font-bold mb-4">Chi tiết thanh toán</h2>
+                        <h2 className="text-xl font-bold mb-4 text-black">Chi tiết thanh toán</h2>
                         {selectedUser.payments.map((payment) => (
-                            <div key={payment.payment_id} className="mb-4">
-                                <p><strong>Họ tên:</strong> {payment.user.last_name}</p>
-                                <p><strong>Tổng tiền:</strong> {payment.total_money}</p>
-                                <p><strong>Ngày thanh toán:</strong> {payment.payment_date}</p>
-                                <p><strong>Mã đơn hàng:</strong> {payment.orderId}</p>
-                                <p><strong>Phương thức thanh toán:</strong> {payment.payment_method}</p>
+                            <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+                                <div className="bg-black rounded-lg p-4 max-w-[900px] w-full">
+                                    <h2 className="text-xl font-bold mb-4">Chi tiết thanh toán</h2>
+                                    <table className="w-full whitespace-nowrap mt-2">
+                                        <thead
+                                            className="text-white/90 bg-gradient-to-br from-black/80 via-black/50 to-black/70">
+                                        <tr>
+                                            <th className="text-left p-3 rounded-r-lg">Mua cho</th>
+                                            <th className="text-left p-3">Khóa học</th>
+                                            <th className="text-left p-3">Lớp</th>
+                                            <th className="text-left p-3">Tổng tiền</th>
+                                            <th className="text-left p-3">Ngày thanh toán</th>
+                                            <th className="text-left p-3">Mã GD</th>
+                                            <th className="text-center p-3 rounded-r-lg">Phương thức</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody className={'text-white/80'}>
+                                        {selectedUser.payments.map((payment) => (
+                                            <tr className="border-b border-gray-700">
+                                                <td className="p-3 font-bold">
+                                                    {payment.student.first_name} {payment.student.last_name}
+                                                </td>
+                                                <td className="p-3 font-bold">
+                                                    <div className={'flex '}>
+                                                        <img src={payment.course.image} alt={'detail course'}
+                                                             className={'w-16 rounded-lg h-auto'}/>
+                                                        <span className="p-3"> {payment.course.title}</span>
+                                                    </div>
+                                                </td>
+                                                <td className="p-3">{payment.course.category.categoryName}</td>
+                                                <td className="p-3">{formatCurrency(payment.total_money)}</td>
+                                                <td className="p-3">{formatDate(payment.payment_date)}</td>
+                                                <td className="p-3">{payment.orderId}</td>
+                                                <td className="p-3 text-center">{payment.payment_method}</td>
+                                            </tr>
+                                        ))}
+                                        </tbody>
+                                    </table>
+
+                                    <button onClick={handleDialogClose}
+                                            className="mt-2 bg-blue-500 text-white px-4 py-2 rounded-lg">Đóng
+                                    </button>
+                                </div>
                             </div>
                         ))}
-                        <button onClick={handleDialogClose} className="bg-blue-500 text-white px-4 py-2 rounded-lg">Đóng</button>
+                        <button onClick={handleDialogClose}
+                                className="bg-blue-500 text-white px-4 py-2 rounded-lg">Đóng
+                        </button>
                     </div>
                 </div>
             )}

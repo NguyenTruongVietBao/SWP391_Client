@@ -97,7 +97,7 @@ export default function ListStudentPage() {
                                             </td>
                                             <td className="py-3 px-2 text-center">
                                                 <div className="inline-flex items-center space-x-3">
-                                                    <Link to={`./update/${data.student_id}`} title="Edit"
+                                                    <Link to={`/profile/students/update/${data.student_id}`} title="Edit"
                                                           className="hover:text-white">
                                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
                                                              viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor"

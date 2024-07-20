@@ -11,7 +11,7 @@ const CategoryModal = ({ closeModal }) => {
         // Fetch categories from the API
         const fetchCategories = async () => {
             try {
-                const response = await api.get('http://localhost:8080/category/get/all');
+                const response = await api.get('/category/get/all');
                 setCategories(response.data.data);
             } catch (error) {
                 console.error('Error fetching categories:', error);
@@ -26,8 +26,8 @@ const CategoryModal = ({ closeModal }) => {
             return; // Don't create a category if the name is empty
         }
         try {
-            await api.post('http://localhost:8080/category/create', { category_name: newCategoryName });
-            const updatedCategories = await api.get('http://localhost:8080/category/get/all');
+            await api.post('/category/create', { category_name: newCategoryName });
+            const updatedCategories = await api.get('/category/get/all');
             setCategories(updatedCategories.data.data);
             setNewCategoryName(''); // Clear the input field
         } catch (error) {
@@ -58,9 +58,9 @@ const CategoryModal = ({ closeModal }) => {
                     </button>
                 </div>
                 <ul className="mt-4">
-                    {categories.map((category) => (
+                    {categories.map((category, index) => (
                         <li key={category.category_id} className="border-b border-gray-300 py-2">
-                            {category.category_name}
+                            {index+1}. {category.category_name}
                         </li>
                     ))}
                 </ul>

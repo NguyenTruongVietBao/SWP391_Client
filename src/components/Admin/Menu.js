@@ -62,7 +62,7 @@ export default function Menu() {
                 </div>
             </span>
         </div>
-        <p className="text-sm text-center text-gray-800">v2.0.3 | © 2024 VietBao</p>
+        <p className="text-sm text-center text-gray-300">v2.0.3 | © 2024 VietBao</p>
     </div>
   )
 }
