@@ -245,7 +245,7 @@ export const MenuLearning = () => {
                 <div className={'px-4 flex flex-col gap-4 ml-1 items-center'}>
                     <button
                         onClick={handleTakeQuizCourse}
-                        className="w-full px-4 py-2 bg-mathcha-green font-bold text-white rounded-md hover:bg-blue-400"
+                        className="border-2 border-black bg-blue-400 w-full px-4 py-2 hover:bg-mathcha-green font-bold text-white rounded-md hover:bg-blue-400"
                     >
                         Kiểm tra lại
                     </button>

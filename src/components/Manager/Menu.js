@@ -57,11 +57,29 @@ export default function Menu() {
                     </div>
                 </div>
             </Link>
+            {/* User */}
+            <Link to={'/manager/users'} className="hover:bg-white/10 transition duration-150 ease-linear rounded-lg py-3 px-2 group">
+                <div className="relative flex flex-col space-y-2 md:flex-row md:space-y-0 space-x-2 items-center">
+                    <div>
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                             strokeWidth={1.5} stroke="currentColor" className="size-6">
+                            <path strokeLinecap="round" strokeLinejoin="round"
+                                  d="M15 19.128a9.38 9.38 0 0 0 2.625.372 9.337 9.337 0 0 0 4.121-.952 4.125 4.125 0 0 0-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 0 1 8.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0 1 11.964-3.07M12 6.375a3.375 3.375 0 1 1-6.75 0 3.375 3.375 0 0 1 6.75 0Zm8.25 2.25a2.625 2.625 0 1 1-5.25 0 2.625 2.625 0 0 1 5.25 0Z"/>
+                        </svg>
+                    </div>
+                    <div>
+                        <p className="font-bold text-base lg:text-lg text-slate-200 leading-4 group-hover:text-indigo-400">Khách
+                            hàng</p>
+                        <p className="text-slate-400 text-sm hidden md:block">Chi tiết khách hàng</p>
+                    </div>
+                </div>
+            </Link>
             {/* Logout */}
             <span className="hover:bg-white/10 transition duration-150 ease-linear rounded-lg py-3 px-2 group">
                 <div className="flex flex-col space-y-2 md:flex-row md:space-y-0 space-x-2 items-center">
                     <div>
-                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5} stroke="currentColor" className="size-6">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" strokeWidth={1.5}
+                             stroke="currentColor" className="size-6">
                         <path strokeLinecap="round" strokeLinejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0 0 13.5 3h-6a2.25 2.25 0 0 0-2.25 2.25v13.5A2.25 2.25 0 0 0 7.5 21h6a2.25 2.25 0 0 0 2.25-2.25V15M12 9l-3 3m0 0 3 3m-3-3h12.75" />
                         </svg>
                     </div>

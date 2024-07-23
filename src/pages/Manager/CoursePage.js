@@ -93,7 +93,7 @@ function CoursePage(props) {
                                     <th className="text-left py-3 px-2">Giá gốc</th>
                                     <th className="text-left py-3 px-2">Khuyến mãi</th>
                                     <th className="text-left py-3 px-2">Đã bán</th>
-                                    <th className="text-center py-3 px-2 rounded-r-lg">Công khai</th>
+                                    <th className="text-center py-3 px-2 rounded-r-lg">Trạng thái</th>
                                 </tr>
                                 </thead>
                                 <tbody>

@@ -39,7 +39,15 @@ export default function ListUser(props) {
         const day = navigateDay.substring(6, 8);
         return `${year}-${month}-${day}`;   //   yyyy-MM-dd
     };
-
+    const formatTime = (navigateDay) => {
+        const year = navigateDay.substring(0, 4);
+        const month = navigateDay.substring(4, 6);
+        const day = navigateDay.substring(6, 8);
+        const gio = navigateDay.substring(8, 10);
+        const phut = navigateDay.substring(10, 12);
+        const giay = navigateDay.substring(12, 14);
+        return `${gio}:${phut}:${giay}  ${day}/${month}/${year}`;
+    };
     useEffect(() => {
         const fetchUsersWithRevenue = async () => {
             try {
@@ -305,7 +313,7 @@ export default function ListUser(props) {
                                                 </td>
                                                 <td className="p-3">{payment.course.category.categoryName}</td>
                                                 <td className="p-3">{formatCurrency(payment.total_money)}</td>
-                                                <td className="p-3">{formatDate(payment.payment_date)}</td>
+                                                <td className="p-3">{formatTime(payment.payment_date)}</td>
                                                 <td className="p-3">{payment.orderId}</td>
                                                 <td className="p-3 text-center">{payment.payment_method}</td>
                                             </tr>

@@ -129,7 +129,7 @@ function HistoryQuiz(props) {
                 </div>
             </div>
             <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)}>
-                <h2 className="text-2xl font-bold mb-4">Kết quả</h2>
+                <h2 className="text-2xl font-bold mb-4">Lịch sử làm bài</h2>
                 {/*{quizResults.map((result) => (*/}
                 {/*    <div key={result.quizResult_id}>*/}
                 {/*        <div>Id: {result.quizResult_id}</div>*/}
@@ -141,20 +141,27 @@ function HistoryQuiz(props) {
                     <thead className="bg-gradient-to-br from-black/80 via-black/50 to-black/70">
                     <tr>
                         <th className="text-center py-3 pl-2 pr-4 rounded-l-lg">ID</th>
-                        <th className="text-center py-3 px-3">Bài học</th>
+                        <th className="text-center py-3 px-3">Toàn khóa</th>
+                        <th className="text-center py-3 px-3">Chương</th>
+                        <th className="text-center py-3 px-3">Chủ đề</th>
                         <th className="text-center py-3 px-3">Số điểm</th>
                         <th className="text-center py-3 px-5 rounded-r-lg">Thời gian</th>
                     </tr>
                     </thead>
                     <tbody>
-                    {quizResults.map((result) => (
-                        <tr key={result.quizResult_id} className="border-b border-gray-700">
-                            <td className="py-3 text-center"> {result.quizResult_id}</td>
-                            <td className="py-3  pl-4 font-bold">{result.quiz_name}</td>
-                            <td className="py-3  pl-4 text-center font-bold">{result.score}.0 đ</td>
-                            <td className="py-3 pl-6 mr-2 font-bold">{new Date(result.date).toLocaleString()}</td>
-                        </tr>
-                    ))}
+                        {quizResults.map((result, index) => {
+                            const [course, chapter, topic ] = result.quiz_name.split(" - ");
+                            return (
+                                <tr key={result.quizResult_id} className="border-b border-gray-700">
+                                    <td className="py-3 text-center">{index + 1}</td>
+                                    <td className="py-3 pl-4 text-center font-bold">{course}</td>
+                                    <td className="py-3 pl-4 font-bold">{chapter}</td>
+                                    <td className="py-3 pl-4 font-bold">{topic}</td>
+                                    <td className="py-3 pl-4 font-bold">{result.score}.0 đ</td>
+                                    <td className="py-3 pl-6 mr-2 font-bold">{new Date(result.date).toLocaleString()}</td>
+                                </tr>
+                            );
+                        })}
                     </tbody>
                 </table>
             </Modal>

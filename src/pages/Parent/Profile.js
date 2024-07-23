@@ -1,11 +1,10 @@
 import React, {useEffect, useState} from 'react'
 import { selectUser } from '../../redux/features/counterSlice';
 import { useSelector } from 'react-redux';
-import { Link } from 'react-router-dom';
 import Menu from '../../components/Parent/Body/Menu';
 import api from '../../config/axios';
 import { toast } from 'react-toastify';
-import {getDownloadURL, listAll, ref, uploadBytes} from "firebase/storage";
+import {getDownloadURL, ref, uploadBytes} from "firebase/storage";
 import {imageDb} from "../../config/firebase";
 import { v4 } from "uuid";
 
@@ -26,7 +25,6 @@ export default function Profile() {
             });
         }
     };
-    console.log('user.image',user.image)
     useEffect(() => {
         setImgUrl(user.image);
     }, [user.image]);
@@ -62,14 +60,11 @@ export default function Profile() {
             role: user.role,
             image: imgUrl
         };
-        console.log(updatedUser)
         const errors = validateForm(updatedUser);
-        console.log(updatedUser)
         if (Object.keys(errors).length > 0) {
             setFormErrors(errors);
             return;
         }
-        console.log('updatedUser',updatedUser)
         try {
             const response = await api.put(`/user/${user.user_id}`, updatedUser);
             console.log('User updated:', response.data); // Check response from API
@@ -135,7 +130,6 @@ export default function Profile() {
                                         />
                                     </div>
                                 )}
-
                             </div>
 
                             <form onSubmit={handleUpdateUser}>

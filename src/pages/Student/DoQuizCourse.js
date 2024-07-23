@@ -74,12 +74,12 @@ const DoQuizCourse = () => {
                 await api.post(`/quiz/save`, {
                     "enrollment_id": enrollmentId,
                     "score": newScore,
-                    "quiz_name": course.title
+                    "quiz_name": `${course.title} - - - -`
                 });
                 console.log('create courseId data', res.data.data);
-                toast.success('Pass môn');
+                toast.success('Chúc mừng bạn đã hoàn thành khóa học');
             } else {
-                toast.error('Rớt môn');
+                toast.error('Bài kiểm tra chưa đạt');
             }
         } catch (e) {
             console.log(e);

@@ -37,6 +37,15 @@ export default function ManagerPage() {
         const day = navigateDay.substring(6, 8);
         return `${year}-${month}-${day}`;   //   yyyy-MM-dd
     };
+    const formatTime = (navigateDay) => {
+        const year = navigateDay.substring(0, 4);
+        const month = navigateDay.substring(4, 6);
+        const day = navigateDay.substring(6, 8);
+        const gio = navigateDay.substring(8, 10);
+        const phut = navigateDay.substring(10, 12);
+        const giay = navigateDay.substring(12, 14);
+        return `${gio}:${phut}:${giay}  ${day}/${month}/${year}`;
+    };
     useEffect(() => {
         const currentDate = new Date().toISOString().split('T')[0];
         const currentMonth = new Date().toISOString().slice(0, 7);
@@ -245,91 +254,8 @@ export default function ManagerPage() {
             <Menu/>
             {/* Content */}
             <div id="content" className="bg-white/10 col-span-9 rounded-lg p-6">
-                {/* Day */}
-                <div id="statistic">
-                    <h1 className="font-bold py-4 uppercase">Thống kê 24h qua</h1>
-                    <div className="mb-4">
-                        <input
-                            type="date"
-                            value={date}
-                            onChange={(e) => setDate(e.target.value)}
-                            className="border p-2 rounded text-gray-500"
-                        />
-                        <button onClick={handleFetchDailyRevenue} className="bg-blue-500 text-white p-2 rounded ml-2">
-                            Thống kê
-                        </button>
-                    </div>
-                    <div id="stats" className="flex gap-16">
-                        <div className="bg-black/60 to-white/5 p-6 rounded-lg">
-                            <div className="flex flex-row space-x-4 items-center">
-                                <div id="stats-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 text-white">
-                                        <path strokeLinecap="round" strokeLinejoin="round"
-                                              d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
-                                    </svg>
-                                </div>
-                                <div className={'px-2'}>
-                                    <p className="text-indigo-300 text-sm font-medium uppercase leading-4">Khóa học đã
-                                        bán</p>
-                                    <p className="text-white font-bold text-2xl inline-flex items-center space-x-2">
-                                        <span>+{numUser}</span>
-                                        <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round"
-                                          d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/>
-                                    </svg>
-                                </span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <div className="bg-black/60 p-6 rounded-lg w-64">
-                            <div className="flex flex-row space-x-4 items-center">
-                                <div id="stats-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         strokeWidth="1.5" stroke="currentColor" className="w-10 h-10 text-white">
-                                        <path strokeLinecap="round" strokeLinejoin="round"
-                                              d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p className="text-teal-300 text-sm font-medium uppercase w-full leading-4">Doanh
-                                        thu</p>
-                                    <p className="text-white font-bold text-2xl inline-flex items-center space-x-2">
-                                        <span>{dailyRevenue !== null && <div>$ {dailyRevenue}</div>}</span>
-                                        <span>
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
-                                    <path strokeLinecap="round" strokeLinejoin="round"
-                                          d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/>
-                                    </svg>
-                                </span>
-                                    </p>
-                                </div>
-                            </div>
-                        </div>
-                        <button onClick={handleDetailDay} className="bg-black/60 p-2 rounded-lg  w-32 h-12 flex items-center justify-center">
-                            <div className="flex items-center justify-center space-x-2">
-                                <div id="stats-1">
-                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                         strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
-                                        <path strokeLinecap="round" strokeLinejoin="round"
-                                              d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <span className="text-mathcha-orange font-medium text-xl">
-                                        Chi tiết
-                                    </span>
-                                </div>
-                            </div>
-                        </button>
-                    </div>
-                </div>
                 {/* Top 3 */}
-                <div id="manage-money" className="py-12">
+                <div id="manage-money" className="pb-12">
                     {/*course*/}
                     <div className={'flex items-center justify-between mb-2'}>
                         <h1 className="font-bold uppercase">Top 3 khóa học nổi bật</h1>
@@ -417,6 +343,89 @@ export default function ManagerPage() {
                                 </div>
                             </div>
                         ))}
+                    </div>
+                </div>
+                {/* Day */}
+                <div id="statistic" className={' mb-12'}>
+                    <h1 className="font-bold py-4 uppercase">Thống kê theo ngày</h1>
+                    <div className="mb-4">
+                        <input
+                            type="date"
+                            value={date}
+                            onChange={(e) => setDate(e.target.value)}
+                            className="border p-2 rounded text-gray-500"
+                        />
+                        <button onClick={handleFetchDailyRevenue} className="bg-blue-500 text-white p-2 rounded ml-2">
+                            Thống kê
+                        </button>
+                    </div>
+                    <div id="stats" className="flex gap-16">
+                        <div className="bg-black/60 to-white/5 p-6 rounded-lg">
+                            <div className="flex flex-row space-x-4 items-center">
+                                <div id="stats-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         strokeWidth={1.5} stroke="currentColor" className="w-10 h-10 text-white">
+                                        <path strokeLinecap="round" strokeLinejoin="round"
+                                              d="M12 6.042A8.967 8.967 0 0 0 6 3.75c-1.052 0-2.062.18-3 .512v14.25A8.987 8.987 0 0 1 6 18c2.305 0 4.408.867 6 2.292m0-14.25a8.966 8.966 0 0 1 6-2.292c1.052 0 2.062.18 3 .512v14.25A8.987 8.987 0 0 0 18 18a8.967 8.967 0 0 0-6 2.292m0-14.25v14.25"/>
+                                    </svg>
+                                </div>
+                                <div className={'px-2'}>
+                                    <p className="text-indigo-300 text-sm font-medium uppercase leading-4">Khóa học đã
+                                        bán</p>
+                                    <p className="text-white font-bold text-2xl inline-flex items-center space-x-2">
+                                        <span>+{numUser}</span>
+                                        <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                          d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/>
+                                    </svg>
+                                </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div className="bg-black/60 p-6 rounded-lg w-64">
+                            <div className="flex flex-row space-x-4 items-center">
+                                <div id="stats-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         strokeWidth="1.5" stroke="currentColor" className="w-10 h-10 text-white">
+                                        <path strokeLinecap="round" strokeLinejoin="round"
+                                              d="M12 6v12m-3-2.818l.879.659c1.171.879 3.07.879 4.242 0 1.172-.879 1.172-2.303 0-3.182C13.536 12.219 12.768 12 12 12c-.725 0-1.45-.22-2.003-.659-1.106-.879-1.106-2.303 0-3.182s2.9-.879 4.006 0l.415.33M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <p className="text-teal-300 text-sm font-medium uppercase w-full leading-4">Doanh
+                                        thu</p>
+                                    <p className="text-white font-bold text-2xl inline-flex items-center space-x-2">
+                                        <span>{dailyRevenue !== null && <div>$ {dailyRevenue}</div>}</span>
+                                        <span>
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
+                                    <path strokeLinecap="round" strokeLinejoin="round"
+                                          d="M2.25 18L9 11.25l4.306 4.307a11.95 11.95 0 015.814-5.519l2.74-1.22m0 0l-5.94-2.28m5.94 2.28l-2.28 5.941"/>
+                                    </svg>
+                                </span>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <button onClick={handleDetailDay} className="bg-black/60 p-2 rounded-lg  w-32 h-12 flex items-center justify-center">
+                            <div className="flex items-center justify-center space-x-2">
+                                <div id="stats-1">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                         strokeWidth={1.5} stroke="currentColor" className="w-6 h-6 text-white">
+                                        <path strokeLinecap="round" strokeLinejoin="round"
+                                              d="m8.25 4.5 7.5 7.5-7.5 7.5"/>
+                                    </svg>
+                                </div>
+                                <div>
+                                    <span className="text-mathcha-orange font-medium text-xl">
+                                        Chi tiết
+                                    </span>
+                                </div>
+                            </div>
+                        </button>
                     </div>
                 </div>
                 {/* Month  */}
@@ -633,7 +642,7 @@ export default function ManagerPage() {
                                 <td className="p-3">{payment.user.user_id}</td>
                                 {/*<td className="p-3">{payment.course.category.category_id}</td>*/}
                                 <td className="p-3">{payment.total_money}</td>
-                                <td className="p-3">{formatDate(payment.payment_date)}</td>
+                                <td className="p-3">{formatTime(payment.payment_date)}</td>
                                 <td className="p-3">{payment.orderId}</td>
                                 <td className="p-3 text-center">{payment.payment_method}</td>
                             </tr>
@@ -678,7 +687,7 @@ export default function ManagerPage() {
                                 </td>
                                 <td className="p-3">{payment.course.category.categoryName}</td>
                                 <td className="p-3">{formatCurrency(payment.total_money)}</td>
-                                <td className="p-3">{formatDate(payment.payment_date)}</td>
+                                <td className="p-3">{formatTime(payment.payment_date)}</td>
                                 <td className="p-3">{payment.orderId}</td>
                                 <td className="p-3 text-center">{payment.payment_method}</td>
                             </tr>

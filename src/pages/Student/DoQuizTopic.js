@@ -80,6 +80,8 @@ const DoQuizTopic = () => {
             setScore(newScore);
             if (newScore >= 5) {
                 const res = await api.post(`/completeTopic/create/${enrollmentId}/${topicId}`);
+                const resChapter = await api.get(`/topic/${topicId}/chapter`);
+                console.log('chapter of topic ',resChapter.data.data)
                 await api.post(`/quiz/save`, {
                     "enrollment_id": enrollmentId,
                     "score": newScore
@@ -87,7 +89,7 @@ const DoQuizTopic = () => {
                 console.log('create topic data', res.data.data);
                 toast.success('Chúc mừng bạn đã hoàn thành chủ đề');
             } else {
-                toast.error('Rớt môn');
+                toast.error('Bài kiểm tra chưa đạt');
             }
         } catch (e) {
             console.log(e);

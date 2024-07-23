@@ -203,20 +203,20 @@ export default function DetailCourse() {
                         </h1>
                         <div className="max-w-xl">
                             <p className="mt-6">
-                                <strong className={'mr-1'}> - Mô tả khóa học: </strong> Học sinh sẽ học cách đếm, so sánh, và sắp xếp các số trong phạm vi 100. Ngoài ra, khóa học còn tập trung vào việc phát triển kỹ năng giải quyết vấn đề thông qua các bài toán đố và tình huống thực tế.
+                                <strong className={'mr-1'}> - Mô tả khóa học: </strong>  {course.description}.
                             </p>
                             <p className="my-5">
                                 <strong> - Yêu cầu khóa học: </strong>
                                 <ul className={'list-disc'}>
-                                    <li className={'ml-10'}>  Học sinh có khả năng thực hiện các phép tính cơ bản như cộng và trừ trong phạm vi 20.</li>
-                                    <li className={'ml-10'}>Học sinh có khả năng đọc, viết và hiểu các con số từ 1 đến 100.</li>
+                                    <li className={'ml-10'}> {course.description}.</li>
+                                    <li className={'ml-10'}> {course.description}.</li>
                                 </ul>
                             </p>
                             <p>
                                 <strong> - Kết quả đạt được: </strong>
                                 <ul className={'list-disc'}>
-                                    <li className={'ml-10'}>Học sinh sẽ phát triển kỹ năng tư duy logic và khả năng giải quyết vấn đề thông qua việc thực hành các bài toán đố.</li>
-                                    <li className={'ml-10'}>Học sinh sẽ có khả năng áp dụng kiến thức toán học vào các tình huống thực tế hàng ngày.</li>
+                                    <li className={'ml-10'}> {course.description}.</li>
+                                    <li className={'ml-10'}> {course.description}.</li>
                                 </ul>
                             </p>
                         </div>
@@ -288,17 +288,18 @@ export default function DetailCourse() {
                             />
                             <div className="aspect-[1097/845] w-[68.5625rem] bg-gradient-to-tr from-[#E8FFD9] to-[rgba(153,229,219,1)]" />
                         </div>
-                        <iframe
-                            className="relative rounded-2xl"
-                            width="420"
-                            height="237"
-                            src="https://www.youtube.com/embed/gxOkoMHIgC8"
-                            title="WREN EVANS - LOI CHOI không điểm dừng | Full Album Experience (ft. itsnk)"
-                            frameborder="0"
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-                            referrerpolicy="strict-origin-when-cross-origin"
-                            allowfullscreen
-                        ></iframe>
+                        {/*<iframe*/}
+                        {/*    className="relative rounded-2xl"*/}
+                        {/*    width="420px"*/}
+                        {/*    height="237px"*/}
+                        {/*    src="https://www.youtube.com/embed/gxOkoMHIgC8"*/}
+                        {/*    title="WREN EVANS - LOI CHOI không điểm dừng | Full Album Experience (ft. itsnk)"*/}
+                        {/*    frameborder="0"*/}
+                        {/*    allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"*/}
+                        {/*    referrerpolicy="strict-origin-when-cross-origin"*/}
+                        {/*    allowfullscreen*/}
+                        {/*></iframe>*/}
+                        <img src={course.image} className="relative rounded-2xl" alt={'a'} style={{width:'420px', height:'237px'}}/>
                         <figure className="relative isolate">
                             <svg
                                 viewBox="0 0 162 128"
@@ -440,7 +441,15 @@ export default function DetailCourse() {
                                     </label>
                                 ))}
                             </div>
-                            <div className="mt-4 flex justify-end">
+                            <div className="mt-4 flex justify-between">
+                                <div className=" flex justify-start items-center">
+                                    <Button
+                                        className="gap-2 rounded-md bg-gray-50 py-1 px-2 text-base font-semibold text-mathcha-orange shadow-inner shadow-white/10 focus:outline-none hover:bg-gray-600 focus:bg-gray-700 focus:outline-1 focus:outline-white"
+                                        onClick={openCreate}
+                                    >
+                                        Thêm tài khoản
+                                    </Button>
+                                </div>
                                 <Button
                                     className="gap-2 rounded-md bg-gray-50 py-3 px-4 text-xl font-semibold text-mathcha-green shadow-inner shadow-white/10 focus:outline-none hover:bg-gray-600 focus:bg-gray-700 focus:outline-1 focus:outline-white"
                                     onClick={handlePurchase}
@@ -452,7 +461,7 @@ export default function DetailCourse() {
                         ) : (
                             <>
                                 <DialogTitle className="text-4xl font-medium text-center text-white">
-                                    Bạn chưa có tài khoản cho con ?
+                                    Bạn chưa có tài khoản cho học sinh ?
                                 </DialogTitle>
                                 <div className="flex justify-center my-10">
                                     <Button

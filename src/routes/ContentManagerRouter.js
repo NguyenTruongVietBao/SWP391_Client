@@ -8,6 +8,7 @@ import ProfilePage from '../pages/ContentManager/ProfilePage'
 import UpdatePage from '../pages/ContentManager/UpdatePage'
 import UpdateQuizPage from "../pages/ContentManager/UpdateQuizPage";
 import UpdatePage2 from "../pages/ContentManager/UpdatePage2";
+import ListQuizPage from "../pages/ContentManager/ListQuizPage";
 
 export default function ContentManagerRouter() {
   return (
@@ -21,6 +22,7 @@ export default function ContentManagerRouter() {
           <Route path='profile' element={<ProfilePage/>}></Route>
           <Route path='detail/:courseId' element={<DetailPage/>}></Route>
           <Route path='update-quiz/:topicId' element={<UpdateQuizPage/>}></Route>
+            <Route path='display-quiz/:topicId' element={<ListQuizPage/>}></Route>
         </Routes>
      </div>
   )

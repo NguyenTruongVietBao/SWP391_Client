@@ -36,7 +36,6 @@ const QuizPage = () => {
                 const fetchedEnrollmentId = enrollmentArray[0]?.enrollment_id;
                 setEnrollmentId(fetchedEnrollmentId);
                 setTopic(responseTopic.data.data);
-
                 // Fetch first lesson ID
                 const responseLessons = await api.get(`/lessons/topic/${topicId}`);
                 const lessons = responseLessons.data.data;
@@ -80,15 +79,16 @@ const QuizPage = () => {
             setScore(newScore);
             if (newScore >= 5) {
                 const res = await api.post(`/completeTopic/create/${enrollmentId}/${topicId}`);
+                const resChapter = await api.get(`/topic/${topicId}/chapter`);
                 await api.post(`/quiz/save`, {
                     "enrollment_id": enrollmentId,
                     "score": newScore,
-                    "quiz_name": topic.title
+                    "quiz_name": `- - ${resChapter.data.data.title} - ${topic.title}`
                 });
                 console.log('create topic data', res.data.data);
                 toast.success('Chúc mừng bạn đã hoàn thành chủ đề');
             } else {
-                toast.error('Rớt môn');
+                toast.error('Bài kiểm tra chưa đạt');
             }
         } catch (e) {
             console.log(e);

@@ -33,6 +33,18 @@ export default function DetailYearPage() {
     const [isOpen, setIsOpen] = useState(false)
     const [dateDetail, setDateDetail] = useState('');
 
+    const formatTime = (navigateDay) => {
+        const year = navigateDay.substring(0, 4);
+        const month = navigateDay.substring(4, 6);
+        const day = navigateDay.substring(6, 8);
+        const gio = navigateDay.substring(8, 10);
+        const phut = navigateDay.substring(10, 12);
+        const giay = navigateDay.substring(12, 14);
+        return `${gio}:${phut}:${giay}  ${day}/${month}/${year}`;
+    };
+    function formatCurrency(value) {
+        return value.toLocaleString('vi-VN') + ' VNĐ';
+    }
     function open() {
         setIsOpen(true)
     }
@@ -99,6 +111,17 @@ export default function DetailYearPage() {
                 borderColor: 'rgba(75, 192, 192, 1)',
                 borderWidth: 1,
             },
+            {
+                label: 'Số khóa học bán ra',
+                data: dataUser.users.map(user => {
+                    const userPaymentsForDate = user.payments.filter(payment => payment.payment_date.startsWith(year.replace(/-/g, '')));
+                    const numOfCourses = userPaymentsForDate.length;
+                    return numOfCourses;
+                }),
+                backgroundColor: 'rgba(153, 102, 255, 0.6)',
+                borderColor: 'rgba(153, 102, 255, 1)',
+                borderWidth: 1,
+            }
         ],
     };
 
@@ -166,7 +189,7 @@ export default function DetailYearPage() {
                                     </div>
                                 </div>
                             </div>
-                            <div className="bg-black/60 p-6 rounded-lg w-64">
+                            <div className="bg-black/60 p-6 rounded-lg w-82">
                                 <div className="flex flex-row space-x-4 items-center">
                                     <div id="stats-1">
                                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -179,7 +202,8 @@ export default function DetailYearPage() {
                                         <p className="text-teal-300 text-sm font-medium uppercase leading-4">Doanh
                                             thu</p>
                                         <p className="text-white font-bold text-2xl inline-flex items-center space-x-2">
-                                            <span>{yearRevenue !== null && <div>$ {yearRevenue}</div>}</span>
+                                            <span>{formatCurrency(yearRevenue) !== null &&
+                                                <div>$ {formatCurrency(yearRevenue)}</div>}</span>
                                             <span>
                                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
                                                      strokeWidth="1.5" stroke="currentColor" className="w-6 h-6">
@@ -223,7 +247,7 @@ export default function DetailYearPage() {
                                             <td className="py-3 text-center">{index + 1}</td>
                                             <td className="py-3 pl-4 font-bold">{user.last_name}</td>
                                             <td className="py-3 pl-4 font-bold">{numOfCourses} khóa học</td>
-                                            <td className="py-3 pl-4">{totalRevenue} VNĐ</td>
+                                            <td className="py-3 pl-4">{formatCurrency(totalRevenue)}</td>
                                             <td className="py-3">
                                                 <Button
                                                     onClick={() => handleViewDetailsClick(user.user_id)}
@@ -274,9 +298,9 @@ export default function DetailYearPage() {
                                         </td>
                                         <td className="p-3">{data.course.category.category_name}</td>
                                         <td className="p-3">{data.student.username}</td>
-                                        <td className="p-3">{data.total_money} VNĐ</td>
+                                        <td className="p-3">{formatCurrency(data.total_money)}</td>
                                         <td className="p-3">{data.orderId}</td>
-                                        <td className="p-3">{formatDate(data.payment_date)}</td>
+                                        <td className="p-3">{formatTime(data.payment_date)}</td>
                                     </tr>
                                 ))}
                                 </tbody>

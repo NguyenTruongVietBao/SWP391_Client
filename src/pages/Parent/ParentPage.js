@@ -78,35 +78,32 @@ export default function ParentPage() {
     const statusPayment = searchParams.get('vnp_TransactionStatus');
     const [selectedCourse, setSelectedCourse] = useState(null);
 
+    const handleClosePopup = () => {
+        setSelectedCourse(null);
+    };
+
+    //Email
     const [formData, setFormData] = useState({
         name: '',
         email: '',
         phone: '',
         message: '',
     });
-
     const handleChangeEmail = (e) => {
         const { name, value } = e.target;
         setFormData({ ...formData, [name]: value });
     };
-
     const handleSubmitEmail = (e) => {
         e.preventDefault();
-
         emailjs.send('service_xzjz7va', 'template_sv75qhk', formData, 'YuhNo2B2OWcBdGUzh')
             .then((response) => {
-                console.log('SUCCESS!', response.status, response.text);
+                console.log('Send mail SUCCESS!', response.status, response.text);
                 toast.success('Đăng ký tư vấn thành công');
                 navigate('/')
             }, (error) => {
-                console.error('FAILED...', error);
+                console.error('Send mail FAILED...', error);
                 toast.error('Đăng ký tư vấn thất bại');
             });
-        // emailjs.send("service_xzjz7va","template_sv75qhk",{
-        //     name: "123",
-        //     email: "12",
-        //     message: "12"
-        // });
         // Clear the form after submission
         setFormData({
             name: '',
@@ -116,24 +113,43 @@ export default function ParentPage() {
         });
     };
 
+    // Image
     const handleImageClick = (course) => {
         setSelectedCourse(course);
     };
-    const handleClosePopup = () => {
-        setSelectedCourse(null);
-    };
+
+    // get all course
     useEffect(() => {
         if (user === null) {
             getCourseAll()
         }
-    });
-    function getCourseAll(){
-        listCourses()
-            .then((res)=>{
-                setCourses(res.data.data)
-                setDisplayedCourses(res.data.data.slice(0, 6));
-            })
+    }, [user]);
+    async function getCourseAll() {
+        try {
+            const res = await listCourses();
+            const coursesData = res.data.data;
+
+            const coursesWithCategoryNames = await Promise.all(
+                coursesData.map(async (course) => {
+                    const categoryRes = await api.get(`/category/get/${course.category_id}`);
+                    console.log('categoryRes', categoryRes.data.data);
+                    return {
+                        ...course,
+                        category_name: categoryRes.data.data.category_name
+                    };
+                })
+            );
+
+            setCourses(coursesWithCategoryNames);
+            console.log('course', coursesWithCategoryNames);
+            setDisplayedCourses(coursesWithCategoryNames.slice(0, 6));
+        } catch (error) {
+            console.error('Error fetching courses:', error);
+        }
     }
+
+
+    // get course not bought
     useEffect(() => {
         if (user !== null) {
             setUserId(user.user_id);
@@ -147,8 +163,21 @@ export default function ParentPage() {
     const getCourseNotBought = async (userId) => {
         try {
             const resCourse = await api.get(`/course/notbought/${userId}`);
-            setCourses(resCourse.data.data);
-            setDisplayedCourses(resCourse.data.data.slice(0, 6));
+            const coursesData = resCourse.data.data;
+            const coursesWithCategoryNames = await Promise.all(
+                coursesData.map(async (course) => {
+                    const categoryRes = await api.get(`/category/get/${course.category_id}`);
+                    console.log('categoryRes',categoryRes.data.data)
+                    return {
+                        ...course,
+                        category_name: categoryRes.data.data.category_name
+                    };
+                })
+            );
+            setCourses(coursesWithCategoryNames);
+            console.log('course',courses)
+            setDisplayedCourses(coursesWithCategoryNames.slice(0, 6));
+            console.log('displayedCourses')
         } catch (error) {
             console.error("Failed to fetch courses", error);
         }
@@ -184,8 +213,8 @@ export default function ParentPage() {
         navigate('/')
       }
     }, [course_id, student_id, amount, statusPayment]);
-    console.log(courses)
-    console.log(displayedCourses)
+
+
   return (
     <div className="flex text-gray-800 flex-col items-center w-full overflow-x-hidden">
         <div
@@ -245,12 +274,7 @@ export default function ParentPage() {
                                                         </div>
                                                         <div
                                                             className="from-neutral-950 text-lg font-medium leading-[34px] bg-blue-200 rounded-xl px-1">
-                                                            {course.category_id === 1 ? 'Lớp 1' :
-                                                                course.category_id === 2 ? 'Lớp 2' :
-                                                                    course.category_id === 3 ? 'Lớp 3' :
-                                                                        course.category_id === 4 ? 'Lớp 4' :
-                                                                            course.category_id === 5 ? 'Lớp 5' :
-                                                                                'Unknown Category'}
+                                                            {course.category_name}
                                                         </div>
                                                     </div>
                                                     <div className="flex justify-between items-center my-2">

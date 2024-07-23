@@ -75,12 +75,12 @@ const DoQuizChapter = () => {
                 await api.post(`/quiz/save`, {
                     "enrollment_id": enrollmentId,
                     "score": newScore,
-                    "quiz_name": chapter.title
+                    "quiz_name": `- - ${chapter.title}`
                 });
                 console.log('create topic data', res.data.data);
                 toast.success('Chúc mừng bạn đã hoàn thành chương');
             } else {
-                toast.error('Rớt môn');
+                toast.error('Bài kiểm tra chưa đạt');
             }
         } catch (e) {
             console.log(e);

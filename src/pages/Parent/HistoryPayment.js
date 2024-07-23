@@ -23,12 +23,13 @@ export default function HistoryPayment() {
         if (dateString.length !== 14) {
             return 'Invalid date';
         }
-
         const year = dateString.substring(0, 4);
         const month = dateString.substring(4, 6);
         const day = dateString.substring(6, 8);
-
-        return `${day}/${month}/${year}`;
+        const gio = dateString.substring(8, 10);
+        const phut = dateString.substring(10, 12);
+        const giay = dateString.substring(12, 14);
+        return `${gio}:${phut}:${giay}  ${day}/${month}/${year}`;
     };
 
     return (

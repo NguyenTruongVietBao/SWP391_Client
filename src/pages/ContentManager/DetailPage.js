@@ -70,32 +70,13 @@ export default function DetailPage() {
                                 src={course.image}
                                 alt="img not found"
                                 className="rounded-3xl"
-                                width="306"
+                                width="330"
                                 height="306"
-                                style={{ objectFit: 'cover', width: '306px', height: '306px' }}
+                                style={{ objectFit: 'cover', width: '340px', height: '306px' }}
                             />
                             <div className="lg:w-1/2 w-full lg:pl-10 lg:mt-0">
                                 <h1 className="text-gray-900 text-4xl title-font font-medium mb-3">{course.title}</h1>
-                                <div className="flex mb-4">
-                                <span className="flex items-center">
-                                    <b className='mr-2'>Level: </b>
-                                    <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                    </svg>
-                                    <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                    </svg>
-                                    <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                    </svg>
-                                    <svg fill="currentColor" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                    </svg>
-                                    <svg fill="none" stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} className="w-4 h-4 text-red-500" viewBox="0 0 24 24">
-                                    <path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z" />
-                                    </svg>
-                                </span>                               
-                                </div>
+
                                 <p className="leading-relaxed">{course.description}</p>
                                 <div className="flex justify-between mt-10">
                                     <h1 className="flex justify-start text-2xl font-medium line-through text-black border-0 py-2 focus:outline-none hover:bg-red-00 rounded">
@@ -115,7 +96,7 @@ export default function DetailPage() {
                                     key={index}
                                     as="div"
                                     className="p-4"
-                                    defaultOpen={true}
+                                    defaultOpen={false}
                                 >
                                     {/* Chapter */}
                                     <DisclosureButton className="group flex w-full items-center justify-between">
@@ -133,12 +114,25 @@ export default function DetailPage() {
                                         className="px-6 mb-2"
                                         >
                                         {/* Topic */}
-                                        <DisclosureButton className="group flex w-full items-center justify-between">
-                                            <span className="text-lg font-medium mt-2 text-black group-data-[hover]:text-black/80">
-                                            {topicIndex+1}. {topic.title}
-                                            </span>
-                                            <ChevronDownIcon className="size-5 fill-black/60 group-data-[hover]:fill-black/50 group-data-[open]:rotate-180" />
-                                        </DisclosureButton>
+                                            <DisclosureButton className="group flex w-full items-center justify-between">
+                                                <div className={'flex items-center mt-2'}>
+                                                      <span className="text-lg font-medium text-black group-hover:text-black/80">
+                                                        {topicIndex + 1}. {topic.title}
+                                                      </span>
+                                                    <Link
+                                                        className={'flex items-center bg-mathcha-orange ml-4 py-1 px-3 rounded-xl font-medium text-base text-black hover:bg-black hover:text-white gap-2'}
+                                                        to={`/content-manager/display-quiz/${topic.topic_id}`}>
+                                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                                             strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                                            <path strokeLinecap="round" strokeLinejoin="round"
+                                                                  d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"/>
+                                                        </svg>
+                                                        Câu hỏi
+                                                    </Link>
+                                                </div>
+                                                <ChevronDownIcon
+                                                    className="size-5 fill-black/60 group-hover:fill-black/50  group-data-[open]:rotate-180"/>
+                                            </DisclosureButton>
                                         {/* Lessons */}
                                         {topic.lessons && topic.lessons.map((lesson, lessonIndex) => (                           
                                             <DisclosurePanel key={lessonIndex} className="flex items-center justify-between mb-3 mt-1 ml-6 text-sm/5 text-black/70">

@@ -64,7 +64,18 @@ export default function ListCourse() {
     const getCourseNotBought = async (userId) => {
         try {
             const resCourse = await api.get(`/course/notbought/${userId}`);
-            setCourses(resCourse.data.data);
+            const coursesData = resCourse.data.data;
+            const coursesWithCategoryNames = await Promise.all(
+                coursesData.map(async (course) => {
+                    const categoryRes = await api.get(`/category/get/${course.category_id}`);
+                    console.log('categoryRes',categoryRes.data.data)
+                    return {
+                        ...course,
+                        category_name: categoryRes.data.data.category_name
+                    };
+                })
+            );
+            setCourses(coursesWithCategoryNames);
         } catch (error) {
             console.error("Failed to fetch courses", error);
         }
@@ -150,7 +161,7 @@ export default function ListCourse() {
                                                             </div>
                                                             <div
                                                                 className="from-neutral-950 text-lg font-medium leading-[34px] bg-blue-200 rounded-xl px-1">
-                                                                Lớp {course.category_id}
+                                                                {course.category_name}
                                                             </div>
                                                         </div>
                                                         <div className="flex justify-between items-center my-2">

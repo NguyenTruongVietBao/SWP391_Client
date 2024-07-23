@@ -1,12 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useParams } from 'react-router-dom'
-import { getCourseById } from '../../services/CourseService/CourseService';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { Disclosure, DisclosureButton, DisclosurePanel } from '@headlessui/react';
 import Menu from '../../components/ContentManager/Menu';
 import Loading from '../../components/Loading/Loading';
 import api from '../../config/axios';
 import { toast } from 'react-toastify';
+import {getDownloadURL, ref, uploadBytes} from "firebase/storage";
+import {imageDb} from "../../config/firebase";
+import { v4 } from "uuid";
 
 export default function UpdatePage() {
   const [course, setCourse] = useState(null);
@@ -22,6 +24,20 @@ export default function UpdatePage() {
     original_price: false,
     discount_price: false
   });
+  // const [img, setImg] = useState('');
+  // const [imgUrl, setImgUrl] = useState('');
+  //
+  // const handleClick = () => {
+  //   if (img !== null) {
+  //     const imgRef = ref(imageDb, `avatarImg/${v4()}`);
+  //     uploadBytes(imgRef, img).then(value => {
+  //       getDownloadURL(value.ref).then(url => {
+  //         setImgUrl(url);
+  //       });
+  //     });
+  //   }
+  // };
+
 
   // Get Detail course
   useEffect(() => {
@@ -64,7 +80,16 @@ export default function UpdatePage() {
     fetchChaptersAndTopics();
   }, [courseId]);
 
+  //Handle Chapter
+  const validateTitle = (title) => {
+    const specialCharPattern = /[!@#$%^&*(),.?":{}|<>]/g;
+    return title.trim() !== '' && !specialCharPattern.test(title);
+  };
   const handleAddChapter = async () => {
+    if (!validateTitle(newChapterTitle)) {
+      toast.error("Tiêu đề chương không được để trống hoặc chứa ký tự đặc biệt");
+      return;
+    }
     try {
       const response = await api.post(`/chapter/${courseId}`, { title: newChapterTitle, number: 1 });
       const newChapter = response.data.data;
@@ -77,6 +102,7 @@ export default function UpdatePage() {
     }
   };
 
+  //Handle Topic
   const handleAddTopic = async (chapterId, title) => {
     const newTopic = { title, number: 1, lessons: [] };
     const updatedChapters = chapters.map(chapter => {
@@ -110,6 +136,7 @@ export default function UpdatePage() {
     }
   };
 
+  //Handle Lesson
   const handleAddLesson = async (topicId, lessonData) => {
     try {
       const response = await api.post(`/lessons/${topicId}`, lessonData);
@@ -126,7 +153,7 @@ export default function UpdatePage() {
       toast.success("Tạo bài học thành công !");
     } catch (error) {
       console.error('Error adding lesson:', error);
-      toast.error("Có lỗi xảy ra khi thêm bài học");
+      toast.error("Bạn cần nhập tất cả các trường của bài học");
     }
   };
 
@@ -160,39 +187,46 @@ export default function UpdatePage() {
             <section className="text-gray-700 body-font overflow-hidden bg-orange-50">
               <div className="container py-6 mx-auto">
                 {/* Top */}
+
                 <div className="lg:w-4/5 mx-auto flex flex-wrap gap-10">
                   <img
                       src={course.image}
                       alt="img not found"
                       className="rounded-3xl"
-                      width="306"
+                      width="340"
                       height="306"
-                      style={{objectFit: 'cover', width: '306px', height: '306px'}}
+                      style={{objectFit: 'cover', width: '310px', height: '306px'}}
                   />
                   <div className="lg:w-1/2 w-full">
-                    {/*<div className={'flex justify-between '}>*/}
-                    {/*  <span></span>*/}
-                    {/*  <span className={'py-2 px-4 rounded-xl bg-blue-500 font-medium text-lg text-white'}>Quiz </span>*/}
-                    {/*</div>*/}
-                    <span>Tên khóa học: </span>
-                    {isEditing.title ? (
-                        <div>
-                          <input
-                              type="text"
-                              value={editValues.title}
-                              onChange={(e) => handleChange(e, 'title')}
-                              className="mb-2 p-2 border border-gray-300 rounded"
-                          />
-                          <button onClick={() => handleSaveClick('title')}
-                                  className="bg-blue-500 text-white p-2 rounded">Save
-                          </button>
-                        </div>
-                    ) : (
-                        <h1 className="text-gray-900 text-4xl title-font font-medium mb-6"
-                            onClick={() => handleEditClick('title')}>{course.title}</h1>
-                    )}
+                    <div className={'flex justify-between items-center'}>
+                      <div>
+                        <span>Tên khóa học </span>
+                        {isEditing.title ? (
+                            <div>
+                              <input
+                                  type="text"
+                                  value={editValues.title}
+                                  onChange={(e) => handleChange(e, 'title')}
+                                  className="mb-2 p-2 border border-gray-300 rounded"
+                              />
+                              <button onClick={() => handleSaveClick('title')}
+                                      className="bg-blue-500 text-white p-2 rounded">Save
+                              </button>
+                            </div>
+                        ) : (
+                            <h1 className="text-gray-900 text-4xl title-font font-medium mb-6"
+                                onClick={() => handleEditClick('title')}>{course.title}</h1>
+                        )}
+                      </div>
+                      <div className={'flex flex-col'}>
+                        <span
+                            className={'p-2 rounded-xl ' + (course.status === null ? 'bg-yellow-500' : course.status ? 'bg-mathcha-green' : 'bg-red-500') + ' text-white'}>
+                                                    {course.status === null ? 'Đang chờ duyệt' : course.status ? 'Đã chấp thuận' : 'Đã từ chối'}
+                                                </span>
+                      </div>
+                    </div>
                     {/* description */}
-                    <span>Mô tả khóa học: </span>
+                    <span>Mô tả khóa học </span>
                     {isEditing.description ? (
                         <div>
                       <textarea
@@ -205,14 +239,14 @@ export default function UpdatePage() {
                           </button>
                         </div>
                     ) : (
-                        <p className="leading-relaxed font-medium text-2xl"
+                        <p className="leading-relaxed font-medium text-xl"
                            onClick={() => handleEditClick('description')}>{course.description}</p>
                     )}
                     {/* price */}
                     <div className="flex mt-10 justify-between">
                       {/* original_price */}
                       <div>
-                        <span>Giá gốc:</span>
+                        <span>Giá gốc</span>
                         {isEditing.original_price ? (
                             <div>
                               <input
@@ -232,7 +266,7 @@ export default function UpdatePage() {
                       </div>
                       {/* discount_price */}
                       <div>
-                        <span>Giá khuyến mãi:</span>
+                        <span>Giá khuyến mãi</span>
                         {isEditing.discount_price ? (
                             <div>
                               <input
@@ -250,7 +284,9 @@ export default function UpdatePage() {
                                 onClick={() => handleEditClick('discount_price')}>{course.discount_price}.000</h1>
                         )}
                       </div>
+
                     </div>
+                    <div className={'text-end'}>Đơn vị (1.000 đồng)</div>
                   </div>
                 </div>
                 {/* Bot */}
@@ -283,16 +319,16 @@ export default function UpdatePage() {
                                   <span className="text-lg font-medium text-black group-hover:text-black/80">
                                     {topicIndex + 1}. {topic.title}
                                   </span>
-                                      <Link
-                                          className={'flex items-center bg-mathcha-orange ml-4 py-1 px-3 rounded-xl font-medium text-base text-black hover:bg-black hover:text-white gap-2'}
-                                          to={`/content-manager/update-quiz/${topic.topic_id}`}>
-                                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
-                                             strokeWidth={1.5} stroke="currentColor" className="size-6">
-                                            <path strokeLinecap="round" strokeLinejoin="round"
-                                                  d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"/>
-                                          </svg>
-                                        Cập nhật câu hỏi
-                                      </Link>
+                                    <Link
+                                        className={'flex items-center bg-mathcha-orange ml-4 py-1 px-3 rounded-xl font-medium text-base text-black hover:bg-black hover:text-white gap-2'}
+                                        to={`/content-manager/update-quiz/${topic.topic_id}`}>
+                                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
+                                           strokeWidth={1.5} stroke="currentColor" className="size-6">
+                                        <path strokeLinecap="round" strokeLinejoin="round"
+                                              d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 0 1 .865-.501 48.172 48.172 0 0 0 3.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0 0 12 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018Z"/>
+                                      </svg>
+                                      Cập nhật câu hỏi
+                                    </Link>
                                   </div>
                                   <ChevronDownIcon
                                       className="size-5 fill-black/60 group-hover:fill-black/50  group-data-[open]:rotate-180"/>
@@ -305,8 +341,8 @@ export default function UpdatePage() {
                                 <span className="text-base">
                                   <ul>
                                     <li> - {lesson.title}</li>
-                                    <li className={'ml-3'}>+ <a href={lesson.video_url}>Video_URL</a></li>
-                                    <li className={'ml-3'}>+ <a href={lesson.document}>Document_URL</a></li>
+                                    <li className={'ml-3'}>+ <a href={lesson.video_url}>Video URL</a></li>
+                                    <li className={'ml-3'}>+ <a href={lesson.document}>Document URL</a></li>
                                   </ul>
                                 </span>
                                       </div>
@@ -318,6 +354,7 @@ export default function UpdatePage() {
                                 <div className="flex flex-col mt-4">
                                   <div className={'flex justify-between'}>
                                     <input
+                                        required
                                         type="text"
                                         placeholder="Tiêu đề bài học"
                                         value={newLesson[topic.topic_id]?.title || ''}
@@ -328,6 +365,7 @@ export default function UpdatePage() {
                                         className="mb-2 p-2 border border-gray-300 rounded"
                                     />
                                     <input
+                                        required
                                         type="text"
                                         placeholder="Link video"
                                         value={newLesson[topic.topic_id]?.video_url || ''}
@@ -338,6 +376,7 @@ export default function UpdatePage() {
                                         className="mb-2 p-2 border border-gray-300 rounded"
                                     />
                                     <input
+                                        required
                                         type="text"
                                         placeholder="Link tài liệu"
                                         value={newLesson[topic.topic_id]?.document || ''}
@@ -367,8 +406,9 @@ export default function UpdatePage() {
                                 })}
                                 className="mb-2 p-2 border border-gray-300 rounded"
                             />
-                            <button onClick={() => handleAddTopic(chapter.chapter_id, newTopicTitle[chapter.chapter_id])}
-                                    className="bg-blue-500 text-white p-2 rounded">
+                            <button
+                                onClick={() => handleAddTopic(chapter.chapter_id, newTopicTitle[chapter.chapter_id])}
+                                className="bg-blue-500 text-white p-2 rounded">
                               Tạo chủ đề
                             </button>
                           </div>

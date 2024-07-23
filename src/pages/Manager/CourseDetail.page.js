@@ -156,8 +156,8 @@ export const CourseDetailPage = () => {
                                 ))}
                             </div>
                             <div className={'mt-10 mr-2 flex justify-end items-center gap-5'}>
-                                <button onClick={handleAccept} className={'border-2 border-black rounded-xl py-2 px-4 bg-mathcha-green text-lg font-medium text-white'}>Công khai</button>
-                                <button onClick={handleReject} className={'border-2 border-black rounded-xl py-2 px-4 bg-red-500 text-lg font-medium text-white'}>Không công khai</button>
+                                <button onClick={handleAccept} className={'border-2 border-black rounded-xl py-2 px-4 bg-mathcha-green text-lg font-medium text-white'}>Duyệt</button>
+                                <button onClick={handleReject} className={'border-2 border-black rounded-xl py-2 px-4 bg-red-500 text-lg font-medium text-white'}>Từ chối</button>
                             </div>
                         </div>
                     </section>

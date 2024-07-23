@@ -124,17 +124,17 @@ export default function CreatePage() {
         });
       }
     }
-    if (name === 'course_title') {
+    if (name === 'title') {
       const alphanumericRegex = /^[a-zA-Z0-9]*$/;
       if (!alphanumericRegex.test(value)) {
         setFormErrors({
           ...formErrors,
-          course_title: 'Title can only contain alphanumeric characters without spaces or special characters'
+          title: 'Tên khóa học không thể bắt đầu bằng khoảng trắng'
         });
       } else {
         setFormErrors({
           ...formErrors,
-          course_title: ''
+          title: ''
         });
       }
     }
@@ -214,7 +214,7 @@ export default function CreatePage() {
                             onChange={handleChange}
                             className="w-full rounded-md border border-[#e0e0e0] bg-white py-3 px-6 text-base font-medium text-[#6B7280] outline-none focus:border-[#6A64F1] focus:shadow-md"
                         />
-                        {formErrors.title && <span className="text-red-500">{formErrors.title}</span>}
+                        {formErrors.title && <span className="text-red-500 w-full">{formErrors.title}</span>}
                       </div>
                       <div className="mb-5">
                         <label htmlFor="description" className="mb-1 ml-1 block text-base font-medium text-gray-800">
@@ -231,7 +231,7 @@ export default function CreatePage() {
                         />
                         {formErrors.description && <span className="text-red-500">{formErrors.description}</span>}
                       </div>
-                      <div className="flex justify-between mb-5 gap-10">
+                      <div className="flex justify-between gap-10">
                         <div>
                           <label htmlFor="original_price"
                                  className="mb-1 ml-1 block text-base font-medium text-gray-800">
@@ -249,6 +249,7 @@ export default function CreatePage() {
                           {formErrors.original_price &&
                               <span className="text-red-500">{formErrors.original_price}</span>}
                         </div>
+
                         <div className={'max-w-64'}>
                           <label htmlFor="discount_price"
                                  className="mb-1 ml-1 block text-base font-medium text-gray-800">
@@ -267,7 +268,8 @@ export default function CreatePage() {
                               <span className="text-red-500">{formErrors.discount_price}</span>}
                         </div>
                       </div>
-                      <div className={''}>
+                      <p className={'ml-2 mb-5'}>Đơn vị: (1.000 đồng)</p>
+                      <div>
                         <label htmlFor="category_id" className="mb-1 ml-1 block text-base font-medium text-gray-800">
                           Lớp
                         </label>

@@ -46,6 +46,7 @@ export default function Register() {
     last_name: Yup.string().required('Tên bắt buộc'),
     username: Yup.string()
         .required('Tên đăng nhập bắt buộc')
+        .matches(/^[^\s].*[^\s]$/, 'Tên đăng nhập không được để trống')
         .min(8, 'Tên đăng nhập ít nhất 8 ký tự')
         .max(32, 'Tên đăng nhập tối đa 32 ký tự'),
     email: Yup.string()
